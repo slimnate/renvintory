@@ -1,0 +1,66 @@
+Bar: Pig and whistle
+Drafts:
+Miller lite 7
+coors light 7
+blue moon 8
+oktoberfest 9
+guiness 9
+woodchuck 8
+smithwicks 7
+
+Mead:
+mead 10
+
+Cans:
+coors banquet 8
+topo chico 7
+callsign ipa 8
+happy thursday 7
+arnold palmer 13
+simply spiked 13
+wine 8
+
+Bar: Wizard
+Cans:
+miller lite 8
+coors light 8
+blue moon 12
+blue moon light 7
+blue moon N/A 6
+Summer Shandy 7
+coors banquet 8
+topo chico 7
+callsign ipa 8
+happy thursday 7
+arnold palmer 13
+Guinness 11
+harp 8
+smithwicks 8
+Woodchuck amber 8
+Woodchuck granny smith 8
+wine 8
+
+
+
+miller lite 8
+coors light 8
+blue moon 12
+blue moon light 7
+blue moon N/A 6
+Summer Shandy 7
+coors banquet 8
+topo chico 7
+callsign ipa 8
+happy thursday 7
+arnold palmer 13
+simply spiked 13
+Guinness 11
+harp 8
+smithwicks 8
+Woodchuck amber 8
+Woodchuck granny smith 8
+wine 8
+5oz cups 10
+12 oz cups 7
+12 oz cups 8
+12 oz cups 9
