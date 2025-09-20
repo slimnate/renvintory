@@ -1,7 +1,14 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import type { PageData } from './$types';
 	let { data }: { data: PageData } = $props();
-	let { inventory, location, items, itemContainers, counts } = data;
+
+	const inventory = $derived(data.inventory);
+	const location = $derived(data.location);
+	const items = $derived(data.items);
+	const itemContainers = $derived(data.itemContainers);
+	const counts = $derived(data.counts);
 
 	function totalFor(itemId: number) {
 		const itemCounts = counts?.filter((c: any) => Number(c.item_id) === Number(itemId));
@@ -54,7 +61,7 @@
 					</div>
 					<div class="grid w-full grid-cols-1 gap-2">
 						{#each containersFor(Number(item.id)) as ic}
-							<form method="POST" action="?/increment" class="w-full">
+							<form method="POST" action="?/increment" class="w-full" use:enhance>
 								<input type="hidden" name="item_id" value={String(item.id)} />
 								<input type="hidden" name="container_id" value={String(ic.container_id)} />
 								<div class="join grid w-full grid-cols-8">
