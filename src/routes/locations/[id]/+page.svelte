@@ -2,7 +2,9 @@
 	import { enhance } from '$app/forms';
 	import type { PageData } from './$types';
 	let { data, form }: { data: PageData; form: any } = $props();
-	let { location, inventories, items } = data;
+	let { location, items } = data;
+
+	const inventories = $derived(data.inventories);
 </script>
 
 {#if !location}
