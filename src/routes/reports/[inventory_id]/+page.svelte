@@ -12,9 +12,14 @@
 	const location = $derived(reportData.data?.location ?? null);
 	const counts = $derived(reportData.data?.counts ?? []);
 	const totals = $derived(reportData.data?.totals ?? []);
+    const pageTitle = $derived(`${location?.name} - ${inventory?.date} - ${inventory?.inventoryType === 'close' ? 'Closing' : 'Opening'} Report`);
 
 	let closingTotals = [];
 </script>
+
+<svelte:head>
+    <title>{pageTitle} - Renvintory</title>
+</svelte:head>
 
 <div>
 	{#if reportData.error}

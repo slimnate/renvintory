@@ -39,7 +39,13 @@
 		const item = items.find((i) => i._id === itemId);
 		return item?.containers ?? [];
 	}
+
+    const pageTitle = $derived(`${location?.name} - ${inventory?.date} - ${inventory?.inventoryType === 'close' ? 'Closing' : 'Opening'} Count`);
 </script>
+
+<svelte:head>
+    <title>{pageTitle}</title>
+</svelte:head>
 
 {#if countPageDataQuery.error}
 	<div class="mb-6 flex items-center gap-4">

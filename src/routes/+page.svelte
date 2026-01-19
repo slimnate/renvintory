@@ -7,6 +7,10 @@
 	const locationsQuery = useQuery(api.locations.getLocations);
 </script>
 
+<svelte:head>
+    <title>Renvintory</title>
+</svelte:head>
+
 <h1 class="mb-6 text-2xl font-semibold tracking-tight">Locations</h1>
 {#if locationsQuery.error}
 	<div class="mb-4 alert alert-error">

@@ -16,6 +16,10 @@
 	const items = $derived(itemsQuery.data ?? []);
 </script>
 
+<svelte:head>
+    <title>{location?.name} - Renvintory</title>
+</svelte:head>
+
 {#if locationQuery.error || inventoriesQuery.error || itemsQuery.error}
 	<div class="mb-6 flex items-center gap-4">
 		<a href="/" class="link text-sm link-hover">← Back</a>

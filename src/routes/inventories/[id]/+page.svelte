@@ -56,7 +56,13 @@
 	}
 
 	const grouped = $derived(groupByItem(counts));
+
+    const pageTitle = $derived(`${location?.name} - ${inventory?.date} - ${inventory?.inventoryType === 'close' ? 'Closing' : 'Opening'} Inventory`);
 </script>
+
+<svelte:head>
+    <title>{pageTitle}</title>
+</svelte:head>
 
 {#if inventoryQuery.error || locationQuery.error || countsQuery.error}
 	<div class="mb-6 flex items-center gap-4">
