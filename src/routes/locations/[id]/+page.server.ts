@@ -1,58 +1,54 @@
-import type { Actions, PageServerLoad } from './$types';
-import initDB from '$lib/database/db';
-
-const db = initDB();
-
-export const load: PageServerLoad = async ({ params }) => {
-	const locationId = Number(params.id);
-
-	const location = db.prepare('SELECT * FROM locations WHERE id = ?').get(locationId);
-	if (!location) {
-		return { location: null, inventories: [], items: [] };
-	}
-
-	const inventories = db
-		.prepare('SELECT * FROM inventorys WHERE location_id = ? ORDER BY date DESC, created_at DESC')
-		.all(locationId);
-
-	const items = db
-		.prepare(
-			`SELECT i.* FROM items i
-			JOIN location_items li ON li.item_id = i.id
-			WHERE li.location_id = ?
-			ORDER BY i.name`
-		)
-		.all(locationId);
-
-	return { location, inventories, items };
-};
+import type { Actions } from './$types';
+import { ConvexHttpClient } from 'convex/browser';
+import { api } from '../../../convex/_generated/api';
+import { PUBLIC_CONVEX_URL } from '$env/static/public';
+import type { Id } from '../../../convex/_generated/dataModel';
 
 export const actions: Actions = {
 	createInventory: async ({ params }) => {
-		const locationId = Number(params.id);
+		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
+		const locationId = params.id as Id<"locations">;
 		const now = new Date();
 		const date = now.toISOString().slice(0, 10);
-		const createdAt = now.toISOString();
 
-		const inventory = db
-			.prepare('SELECT * FROM inventorys WHERE location_id = ? AND date = ?')
-			.get(locationId, date);
-		if (inventory) {
-			return { success: false, error: 'Inventory already exists' };
+		try {
+			await client.mutation(api.inventories.createInventory, {
+				locationId,
+				date
+			});
+			return { op: 'createInventory', success: true };
+		} catch (error) {
+			return {
+				op: 'createInventory',
+				success: false,
+				error: error instanceof Error ? error.message : 'Failed to create inventory'
+			};
+		}
+	},
+	deleteInventory: async ({ request }) => {
+		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
+		const form = await request.formData();
+		const inventoryId = form.get('id') as Id<"inventories">;
+
+		if (!inventoryId) {
+			return {
+				op: 'deleteInventory',
+				success: false,
+				error: 'Inventory ID is required'
+			};
 		}
 
-		db.prepare(
-			'INSERT INTO inventorys (location_id, date, time_of_day, created_at) VALUES (?, ?, ?, ?)'
-		).run(locationId, date, 'open', createdAt);
-		db.prepare(
-			'INSERT INTO inventorys (location_id, date, time_of_day, created_at) VALUES (?, ?, ?, ?)'
-		).run(locationId, date, 'close', createdAt);
-
-		return { success: true };
-	},
-	deleteInventory: async ({ params }) => {
-		const inventoryId = Number(params.id);
-		db.prepare('DELETE FROM inventorys WHERE id = ?').run(inventoryId);
-		return { success: true };
+		try {
+			await client.mutation(api.inventories.deleteInventory, {
+				inventoryId
+			});
+			return { op: 'deleteInventory', success: true };
+		} catch (error) {
+			return {
+				op: 'deleteInventory',
+				success: false,
+				error: error instanceof Error ? error.message : 'Failed to delete inventory'
+			};
+		}
 	}
 };

@@ -1,18 +1,30 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import type { PageData } from './$types';
-	let { data, form }: { data: PageData; form: any } = $props();
-	let { location, items } = data;
+	import { page } from '$app/state';
+	import { useQuery } from 'convex-svelte';
+	import { api } from '../../../convex/_generated/api';
+	import type { Id } from '../../../convex/_generated/dataModel';
+	let { params }: { params: { id: string } } = $props();
 
-	const inventories = $derived(data.inventories);
+	const locationQuery = useQuery(api.locations.getLocationById, { id: params.id as Id<"locations"> });
+	const inventoriesQuery = useQuery(api.inventories.getInventoriesByLocationId, { locationId: params.id as Id<"locations"> });
+	const itemsQuery = useQuery(api.items.getItemsByLocationId, { locationId: params.id as Id<"locations"> });
+
+	const form = $derived(page.form);
+	const location = $derived(locationQuery.data);
+	const inventories = $derived(inventoriesQuery.data ?? []);
+	const items = $derived(itemsQuery.data ?? []);
 </script>
 
-{#if !location}
-	<h2 class="text-xl font-semibold">Location not found</h2>
+{#if locationQuery.error || inventoriesQuery.error || itemsQuery.error}
+	<div class="mb-6 flex items-center gap-4">
+		<a href="/" class="link text-sm link-hover">← Back</a>
+		<h2 class="text-2xl font-semibold tracking-tight">{locationQuery.error || inventoriesQuery.error || itemsQuery.error}</h2>
+	</div>
 {:else}
 	<div class="mb-6 flex items-center gap-4">
 		<a href="/" class="link text-sm link-hover">← Back</a>
-		<h2 class="text-2xl font-semibold tracking-tight">{location.name}</h2>
+		<h2 class="text-2xl font-semibold tracking-tight">{location?.name}</h2>
 	</div>
 
 	<section class="mb-8">
@@ -23,9 +35,16 @@
 			</form>
 		</div>
 		{#if form?.success}
-			<div class="mb-3 alert alert-success">
-				<span>Inventory created successfully.</span>
-			</div>
+			{#if form?.op === 'createInventory'}
+				<div class="mb-3 alert alert-success">
+					<span>Inventory created successfully.</span>
+				</div>
+			{/if}
+			{#if form?.op === 'deleteInventory'}
+				<div class="mb-3 alert alert-success">
+					<span>Inventory deleted successfully.</span>
+				</div>
+			{/if}
 		{:else if form?.error}
 			<div class="mb-3 alert alert-error">
 				<span>{form.error}</span>
@@ -39,13 +58,19 @@
 					<li class="flex flex-row items-center justify-between gap-4 p-2 px-4">
 						<span>
 							<span class="font-medium">{inv.date}</span>
-							{#if inv.time_of_day}
-								<span class="ml-2 opacity-70">{inv.time_of_day}</span>
+							{#if inv.inventoryType}
+								<span class="ml-2 opacity-70">{inv.inventoryType}</span>
 							{/if}
 						</span>
-						<a class="" href={`/inventories/${inv.id}`}>
-							<span class="btn btn-outline">View</span>
-						</a>
+						<div class="flex gap-2">
+							<a class="" href={`/inventories/${inv._id}`}>
+								<span class="btn btn-outline">View</span>
+							</a>
+							<form method="POST" action="?/deleteInventory" use:enhance>
+								<input type="hidden" name="id" value={inv._id} />
+								<button type="submit" class="btn btn-error">Delete</button>
+							</form>
+						</div>
 					</li>
 				{/each}
 			</ul>
