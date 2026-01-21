@@ -40,6 +40,22 @@
 		return item?.containers ?? [];
 	}
 
+    function packLabel(containerSize: number, containerCount: number): string {
+        if (containerCount <= 1) {
+            if (containerSize === 1) {
+                return '';
+            } else {
+                return `pack`;
+            }
+        } else {
+            if (containerSize === 1) {
+                return '';
+            } else {
+                return 'packs';
+            }
+        }
+    }
+
     const pageTitle = $derived(`${location?.name} - ${inventory?.date} - ${inventory?.inventoryType === 'close' ? 'Closing' : 'Opening'} Count`);
 </script>
 
@@ -95,7 +111,7 @@
 											>{countFor(container._id, item._id)}</span
 										>
 										<span class="text-neutral/60">x</span>
-										<span class="text-sm text-neutral/60">{container.size} pack</span>
+										<span class="text-sm text-neutral/60">{container.size} {packLabel(container.size, countFor(container._id, item._id))}</span>
 									</div>
 									<button
 										name="op"
