@@ -49,14 +49,24 @@
 			<thead>
 				<tr>
 					<th>Item</th>
-					<th>Total</th>
+					<th>Price</th>
+					<th>Per container</th>
+					<th class="text-right">Total</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each totals as itemTotal}
 					<tr>
 						<td>{itemTotal.item_name}</td>
-						<td>{itemTotal.total}</td>
+						<td>${itemTotal.price}</td>
+						<td>
+							<div class="flex flex-wrap gap-2">
+								{#each itemTotal.perContainer as pc}
+									<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
+								{/each}
+							</div>
+						</td>
+						<td class="text-right">{itemTotal.total}</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -84,14 +94,24 @@
 			<thead>
 				<tr>
 					<th>Item</th>
-					<th>Total</th>
+					<th>Price</th>
+					<th>Per container</th>
+					<th class="text-right">Total</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each totals as itemTotal}
 					<tr>
 						<td>{itemTotal.item_name}</td>
-						<td>{itemTotal.total}</td>
+						<td>${itemTotal.price}</td>
+						<td>
+							<div class="flex flex-wrap gap-2">
+								{#each itemTotal.perContainer as pc}
+									<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
+								{/each}
+							</div>
+						</td>
+						<td class="text-right">{itemTotal.total}</td>
 					</tr>
 				{/each}
 			</tbody>

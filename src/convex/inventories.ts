@@ -234,7 +234,8 @@ export const getReportData = query({
                     itemId: count.itemId,
                     item: item ? {
                         _id: item._id,
-                        name: item.name
+                        name: item.name,
+                        price: item.price
                     } : null,
                     container: container ? {
                         _id: container._id,
@@ -245,19 +246,38 @@ export const getReportData = query({
             })
         );
 
-        // Calculate totals by item
-        const itemTotals = new Map<string, { item_name: string; total: number }>();
+        // Calculate totals by item with price and per container info
+        const itemTotals = new Map<string, { 
+            item_name: string; 
+            price: number;
+            perContainer: Array<{ size: number; count: number }>;
+            total: number;
+        }>();
         
         for (const c of countsWithDetails) {
             if (!c.item || !c.container) continue;
             
             const itemId = c.itemId;
             const itemName = c.item.name;
-            const total = (c.count ?? 0) * (c.container.size ?? 0);
+            const itemPrice = c.item.price;
+            const containerSize = c.container.size;
+            const countValue = c.count ?? 0;
+            const total = countValue * containerSize;
             
-            const current = itemTotals.get(itemId) ?? { item_name: itemName, total: 0 };
+            const current = itemTotals.get(itemId) ?? { 
+                item_name: itemName, 
+                price: itemPrice,
+                perContainer: [],
+                total: 0 
+            };
+            current.perContainer.push({ size: containerSize, count: countValue });
             current.total += total;
             itemTotals.set(itemId, current);
+        }
+
+        // Sort per container arrays by size
+        for (const entry of itemTotals.values()) {
+            entry.perContainer.sort((a, b) => a.size - b.size);
         }
 
         const totals = Array.from(itemTotals.values());
