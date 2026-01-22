@@ -73,7 +73,11 @@
                             <a class="" href={`/reports/${inv._id}`}>
                                 <span class="btn btn-primary">Report</span>
                             </a>
-							<form method="POST" action="?/deleteInventory" use:enhance>
+							<form method="POST" action="?/deleteInventory" use:enhance={({ cancel}) => {
+                                if(!confirm('Are you sure you want to delete this inventory?')) {
+                                    cancel();
+                                }
+                            }}>
 								<input type="hidden" name="id" value={inv._id} />
 								<button type="submit" class="btn btn-error">Delete</button>
 							</form>
