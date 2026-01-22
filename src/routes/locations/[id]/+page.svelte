@@ -70,6 +70,9 @@
 							<a class="" href={`/inventories/${inv._id}`}>
 								<span class="btn btn-outline">View</span>
 							</a>
+                            <a class="" href={`/reports/${inv._id}`}>
+                                <span class="btn btn-primary">Report</span>
+                            </a>
 							<form method="POST" action="?/deleteInventory" use:enhance>
 								<input type="hidden" name="id" value={inv._id} />
 								<button type="submit" class="btn btn-error">Delete</button>
