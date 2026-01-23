@@ -11,7 +11,7 @@ export default defineSchema({
 		_id: v.id('inventories'),
 		locationId: v.id('locations'),
 		date: v.string(),
-		inventoryType: v.union(v.literal('open'), v.literal('close')), //timeOfDay: v.string(),
+		inventoryType: v.union(v.literal('open'), v.literal('close'), v.literal('spill'), v.literal('intake')), //timeOfDay: v.string(),
 		createdAt: v.string()
 	})
 		.index('by_date', ['date'])

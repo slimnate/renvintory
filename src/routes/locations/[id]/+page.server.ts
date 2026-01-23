@@ -25,29 +25,31 @@ export const actions: Actions = {
 			};
 		}
 	},
-	deleteInventory: async ({ request }) => {
+	deleteInventory: async ({ params, request }) => {
 		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
 		const form = await request.formData();
-		const inventoryId = form.get('id') as Id<'inventories'>;
+		const locationId = params.id as Id<'locations'>;
+		const date = form.get('date') as string;
 
-		if (!inventoryId) {
+		if (!date) {
 			return {
 				op: 'deleteInventory',
 				success: false,
-				error: 'Inventory ID is required'
+				error: 'Date is required'
 			};
 		}
 
 		try {
-			await client.mutation(api.inventories.deleteInventory, {
-				inventoryId
+			await client.mutation(api.inventories.deleteInventoriesByDate, {
+				locationId,
+				date
 			});
 			return { op: 'deleteInventory', success: true };
 		} catch (error) {
 			return {
 				op: 'deleteInventory',
 				success: false,
-				error: error instanceof Error ? error.message : 'Failed to delete inventory'
+				error: error instanceof Error ? error.message : 'Failed to delete inventories'
 			};
 		}
 	},

@@ -80,6 +80,12 @@ export const createInventory = mutation({
 		if (!existing.some((inv) => inv.inventoryType === 'close')) {
 			toCreate.push('close');
 		}
+		if (!existing.some((inv) => inv.inventoryType === 'spill')) {
+			toCreate.push('spill');
+		}
+		if (!existing.some((inv) => inv.inventoryType === 'intake')) {
+			toCreate.push('intake');
+		}
 
 		if (toCreate.length === 0) {
 			throw new Error('All inventories already exist for this location and date');
@@ -90,7 +96,7 @@ export const createInventory = mutation({
 			await ctx.db.insert('inventories', {
 				locationId,
 				date,
-				inventoryType: invType as 'open' | 'close',
+				inventoryType: invType as 'open' | 'close' | 'spill' | 'intake',
 				createdAt: now
 			});
 		}
@@ -103,6 +109,39 @@ export const deleteInventory = mutation({
 	args: { inventoryId: v.id('inventories') },
 	handler: async (ctx, { inventoryId }) => {
 		await ctx.db.delete(inventoryId);
+		return { success: true };
+	}
+});
+
+export const deleteInventoriesByDate = mutation({
+	args: {
+		locationId: v.id('locations'),
+		date: v.string()
+	},
+	handler: async (ctx, { locationId, date }) => {
+		// Find all inventories for this location and date
+		const inventoriesToDelete = await ctx.db
+			.query('inventories')
+			.filter((q) => q.and(q.eq(q.field('locationId'), locationId), q.eq(q.field('date'), date)))
+			.collect();
+
+		// Delete all counts associated with these inventories
+		for (const inventory of inventoriesToDelete) {
+			const counts = await ctx.db
+				.query('counts')
+				.filter((q) => q.eq(q.field('inventoryId'), inventory._id))
+				.collect();
+			
+			for (const count of counts) {
+				await ctx.db.delete(count._id);
+			}
+		}
+
+		// Delete all inventories
+		for (const inventory of inventoriesToDelete) {
+			await ctx.db.delete(inventory._id);
+		}
+
 		return { success: true };
 	}
 });
@@ -204,6 +243,86 @@ export const incrementCount = mutation({
 			});
 			return { success: true, count: newCount };
 		}
+	}
+});
+
+export const getInventoriesByLocationAndDate = query({
+	args: {
+		locationId: v.id('locations'),
+		date: v.string()
+	},
+	handler: async (ctx, { locationId, date }) => {
+		const location = await ctx.db.get(locationId);
+		if (!location) {
+			return null;
+		}
+
+		// Get all inventories for this location and date
+		const allInventories = await ctx.db
+			.query('inventories')
+			.filter((q) => q.and(q.eq(q.field('locationId'), locationId), q.eq(q.field('date'), date)))
+			.collect();
+
+		// Organize inventories by type
+		const inventories = {
+			open: allInventories.find((inv) => inv.inventoryType === 'open') ?? null,
+			close: allInventories.find((inv) => inv.inventoryType === 'close') ?? null,
+			spill: allInventories.find((inv) => inv.inventoryType === 'spill') ?? null,
+			intake: allInventories.find((inv) => inv.inventoryType === 'intake') ?? null
+		};
+
+		// Get counts for each inventory type
+		const getCountsForInventory = async (inventoryId: Id<'inventories'> | null) => {
+			if (!inventoryId) return [];
+			const counts = await ctx.db
+				.query('counts')
+				.filter((q) => q.eq(q.field('inventoryId'), inventoryId))
+				.collect();
+
+			// Fetch related items and containers for each count
+			const countsWithDetails = await Promise.all(
+				counts.map(async (count) => {
+					const item = await ctx.db.get(count.itemId);
+					const container = await ctx.db.get(count.containerId);
+
+					return {
+						_id: count._id,
+						itemId: count.itemId,
+						containerId: count.containerId,
+						count: count.count,
+						item: item
+							? {
+									_id: item._id,
+									name: item.name,
+									price: item.price
+								}
+							: null,
+						container: container
+							? {
+									_id: container._id,
+									size: container.size,
+									type: container.type
+								}
+							: null
+					};
+				})
+			);
+
+			return countsWithDetails;
+		};
+
+		const counts = {
+			open: await getCountsForInventory(inventories.open?._id ?? null),
+			close: await getCountsForInventory(inventories.close?._id ?? null),
+			spill: await getCountsForInventory(inventories.spill?._id ?? null),
+			intake: await getCountsForInventory(inventories.intake?._id ?? null)
+		};
+
+		return {
+			location,
+			inventories,
+			counts
+		};
 	}
 });
 

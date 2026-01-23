@@ -13,17 +13,54 @@
 
 	const form = $derived(page.form);
 	const location = $derived(locationQuery.data);
-	const inventories = $derived(inventoriesQuery.data ?? []);
 	const items = $derived(itemsQuery.data ?? []);
 	const allItems = $derived(allItemsQuery.data ?? []);
 
 	let showAddModal = $state(false);
 	let selectedItemId = $state<string | null>(null);
 
+	// Inventory type definition
+	type Inventory = {
+		_id: Id<'inventories'>;
+		locationId: Id<'locations'>;
+		date: string;
+		inventoryType: 'open' | 'close' | 'spill' | 'intake';
+		createdAt: string;
+	};
+
+	const inventories = $derived(inventoriesQuery.data ?? []) as Inventory[];
+
 	// Filter out items that are already in the location
 	const availableItems = $derived(
 		allItems.filter(item => !items.some(locationItem => locationItem._id === item._id))
 	);
+
+	// Format date to human-readable format (e.g., "Sat - 1/23/26")
+	function formatDate(dateString: string): string {
+		const date = new Date(dateString);
+		const dayAbbr = date.toLocaleDateString('en-US', { weekday: 'short' });
+		const month = date.getMonth() + 1;
+		const day = date.getDate();
+		const year = date.getFullYear().toString().slice(-2);
+		return `${dayAbbr} - ${month}/${day}/${year}`;
+	}
+
+	// Group inventories by date
+	const inventoriesByDate = $derived.by(() => {
+		if (!inventories || inventories.length === 0) {
+			return [];
+		}
+		const grouped = new Map<string, Inventory[]>();
+		for (const inv of inventories) {
+			const date = inv.date;
+			if (!grouped.has(date)) {
+				grouped.set(date, []);
+			}
+			grouped.get(date)!.push(inv);
+		}
+		// Sort dates descending (most recent first) and convert to array
+		return Array.from(grouped.entries()).sort((a, b) => b[0].localeCompare(a[0]));
+	});
 </script>
 
 <svelte:head>
@@ -56,7 +93,7 @@
 			{/if}
 			{#if form?.op === 'deleteInventory'}
 				<div class="mb-3 alert alert-success">
-					<span>Inventory deleted successfully.</span>
+					<span>All inventories for the day deleted successfully.</span>
 				</div>
 			{/if}
 			{#if form?.op === 'removeItem'}
@@ -78,28 +115,48 @@
 			<p class="text-gray-600">No inventories yet.</p>
 		{:else}
 			<ul class="w-full rounded-box border bg-base-100 shadow-sm">
-				{#each inventories as inv}
+				{#each inventoriesByDate as [date, dateInventories]}
+					{@const openInv = dateInventories.find(inv => inv.inventoryType === 'open')}
+					{@const closeInv = dateInventories.find(inv => inv.inventoryType === 'close')}
+					{@const spillInv = dateInventories.find(inv => inv.inventoryType === 'spill')}
+					{@const intakeInv = dateInventories.find(inv => inv.inventoryType === 'intake')}
 					<li class="flex flex-row items-center justify-between gap-4 p-2 px-4">
-						<span>
-							<span class="font-medium">{inv.date}</span>
-							{#if inv.inventoryType}
-								<span class="ml-2 opacity-70">{inv.inventoryType}</span>
-							{/if}
-						</span>
-						<div class="flex gap-2">
-							<a class="" href={`/inventories/${inv._id}`}>
-								<span class="btn btn-outline">View</span>
-							</a>
-                            <a class="" href={`/reports/${inv._id}`}>
-                                <span class="btn btn-primary">Report</span>
-                            </a>
+						<span class="font-medium">{formatDate(date)}</span>
+						<div class="flex gap-3 items-center flex-wrap">
+							<div class="join">
+								{#if openInv}
+									<a href={`/count/${openInv._id}`} class="btn btn-sm btn-outline join-item">Open</a>
+								{/if}
+								{#if closeInv}
+									<a href={`/count/${closeInv._id}`} class="btn btn-sm btn-outline join-item">Close</a>
+								{/if}
+								{#if spillInv}
+									<a href={`/count/${spillInv._id}`} class="btn btn-sm btn-outline join-item">Spill</a>
+								{/if}
+								{#if intakeInv}
+									<a href={`/count/${intakeInv._id}`} class="btn btn-sm btn-outline join-item">Intake</a>
+								{/if}
+							</div>
+							<div class="join">
+								{#if openInv}
+									<a href={`/reports/${openInv._id}`} class="btn btn-sm btn-primary btn-outline join-item">
+										Opening Report
+									</a>
+								{/if}
+								{#if closeInv}
+									<a href={`/reports/${closeInv._id}`} class="btn btn-sm btn-primary btn-outline join-item">
+										Closing Report
+									</a>
+								{/if}
+							</div>
+							<a href={`/inventories/${params.id}/${date}`} class="btn btn-sm btn-outline">Details</a>
 							<form method="POST" action="?/deleteInventory" use:enhance={({ cancel}) => {
-                                if(!confirm('Are you sure you want to delete this inventory?')) {
+                                if(!confirm('Are you sure you want to delete all inventories for this day?')) {
                                     cancel();
                                 }
                             }}>
-								<input type="hidden" name="id" value={inv._id} />
-								<button type="submit" class="btn btn-error">Delete</button>
+								<input type="hidden" name="date" value={date} />
+								<button type="submit" class="btn btn-sm btn-error">Delete</button>
 							</form>
 						</div>
 					</li>

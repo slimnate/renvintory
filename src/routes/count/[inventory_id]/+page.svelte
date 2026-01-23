@@ -52,7 +52,7 @@
         return containerCount === 1 ? containerType : `${containerType}s`;
     }
 
-    const pageTitle = $derived(`${location?.name} - ${inventory?.date} - ${inventory?.inventoryType === 'close' ? 'Closing' : 'Opening'} Count`);
+    const pageTitle = $derived(`${location?.name} - ${inventory?.date} - ${inventory?.inventoryType === 'close' ? 'Closing' : inventory?.inventoryType === 'spill' ? 'Spill' : inventory?.inventoryType === 'intake' ? 'Intake' : 'Opening'} Count`);
 </script>
 
 <svelte:head>
@@ -71,7 +71,7 @@
 	</div>
 {:else}
 	<div class="mb-6 flex w-full items-center justify-between gap-4">
-		<a href={`/inventories/${inventory._id}`} class="link text-sm text-nowrap link-hover">← Back</a>
+		<a href={`/locations/${inventory.locationId}`} class="link text-sm text-nowrap link-hover">← Back</a>
 		<h2 class="flex items-end gap-2 text-2xl font-semibold tracking-tight">
 			<span class="border-r-1 border-neutral/20 pr-2 text-neutral">{location?.name}</span>
 			<span class="text-neutral"
