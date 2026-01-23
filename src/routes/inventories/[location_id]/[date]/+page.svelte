@@ -133,7 +133,6 @@
 			<section class="mb-8">
 				<div class="flex justify-between gap-4 mb-3">
 					<h3 class="text-lg font-medium flex items-center gap-2">
-						<span class="badge uppercase badge-neutral">{section.type}</span>
 						<span>{section.label} Inventory</span>
 					</h3>
 					<a class="btn btn-sm btn-primary" href={`/count/${section.inventory._id}`}>Edit</a>
@@ -167,7 +166,7 @@
 										<td>
 											<div class="flex flex-wrap gap-2">
 												{#each row.perContainer as pc}
-													<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
+													<span>{pc.count} x {pc.size}</span>
 												{/each}
 											</div>
 										</td>
@@ -184,6 +183,7 @@
 					</div>
 				{/if}
 			</section>
+			<div class="divider"></div>
 		{/if}
 	{/if}
 
@@ -193,7 +193,6 @@
 			<section class="mb-8">
 				<div class="flex justify-between gap-4 mb-3">
 					<h3 class="text-lg font-medium flex items-center gap-2">
-						<span class="badge uppercase badge-neutral">{section.type}</span>
 						<span>{section.label} Inventory</span>
 					</h3>
 					<a class="btn btn-sm btn-primary" href={`/count/${section.inventory._id}`}>Edit</a>
@@ -227,7 +226,7 @@
 										<td>
 											<div class="flex flex-wrap gap-2">
 												{#each row.perContainer as pc}
-													<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
+													<span>{pc.count} x {pc.size}</span>
 												{/each}
 											</div>
 										</td>
@@ -244,6 +243,7 @@
 					</div>
 				{/if}
 			</section>
+			<div class="divider"></div>
 		{/if}
 	{/if}
 
@@ -253,7 +253,6 @@
 			<section class="mb-8">
 				<div class="flex justify-between gap-4 mb-3">
 					<h3 class="text-lg font-medium flex items-center gap-2">
-						<span class="badge uppercase badge-neutral">{section.type}</span>
 						<span>{section.label} Inventory</span>
 					</h3>
 					<a class="btn btn-sm btn-primary" href={`/count/${section.inventory._id}`}>Edit</a>
@@ -282,7 +281,7 @@
 										<td>
 											<div class="flex flex-wrap gap-2">
 												{#each row.perContainer as pc}
-													<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
+													<span>{pc.count} x {pc.size}</span>
 												{/each}
 											</div>
 										</td>
@@ -294,6 +293,7 @@
 					</div>
 				{/if}
 			</section>
+			<div class="divider"></div>
 		{/if}
 	{/if}
 
@@ -303,7 +303,6 @@
 			<section class="mb-8">
 				<div class="flex justify-between gap-4 mb-3">
 					<h3 class="text-lg font-medium flex items-center gap-2">
-						<span class="badge uppercase badge-neutral">{section.type}</span>
 						<span>{section.label} Inventory</span>
 					</h3>
 					<a class="btn btn-sm btn-primary" href={`/count/${section.inventory._id}`}>Edit</a>
@@ -332,7 +331,7 @@
 										<td>
 											<div class="flex flex-wrap gap-2">
 												{#each row.perContainer as pc}
-													<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
+													<span>{pc.count} x {pc.size}</span>
 												{/each}
 											</div>
 										</td>
