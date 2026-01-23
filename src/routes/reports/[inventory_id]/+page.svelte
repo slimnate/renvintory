@@ -12,9 +12,8 @@
 	const location = $derived(reportData.data?.location ?? null);
 	const counts = $derived(reportData.data?.counts ?? []);
 	const totals = $derived(reportData.data?.totals ?? []);
+	const closeReport = $derived(reportData.data?.closeReport ?? null);
     const pageTitle = $derived(`${location?.name} - ${inventory?.date} - ${inventory?.inventoryType === 'close' ? 'Closing' : inventory?.inventoryType === 'spill' ? 'Spill' : inventory?.inventoryType === 'intake' ? 'Intake' : 'Opening'} Report`);
-
-	let closingTotals = [];
 </script>
 
 <svelte:head>
@@ -42,6 +41,54 @@
 			</h2>
 		</div>
 		<h1>Report - Close</h1>
+		{#if closeReport}
+			<div class="overflow-x-auto">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Item</th>
+							<th>Price</th>
+							<th class="text-right">Open</th>
+							<th class="text-right">Close</th>
+							<th class="text-right">Spill</th>
+							<th class="text-right">Intake</th>
+							<th class="text-right">Open + Intake</th>
+							<th class="text-right">Total Used</th>
+							<th class="text-right">Spilled Value</th>
+							<th class="text-right">Sales</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each closeReport.rows as row}
+							<tr>
+								<td>{row.name}</td>
+								<td>${row.price.toFixed(2)}</td>
+								<td class="text-right">{row.openCount}</td>
+								<td class="text-right">{row.closeCount}</td>
+								<td class="text-right">{row.spillCount}</td>
+								<td class="text-right">{row.intakeCount}</td>
+								<td class="text-right">{row.openPlusIntakeCount}</td>
+								<td class="text-right">{row.totalUsed}</td>
+								<td class="text-right">${row.spilledValue.toFixed(2)}</td>
+								<td class="text-right">${row.sales.toFixed(2)}</td>
+							</tr>
+						{/each}
+					</tbody>
+					<tfoot>
+						<tr>
+							<th colspan="9" class="text-right">Total sales for the location for that day:</th>
+							<th class="text-right">${closeReport.totals.totalSales.toFixed(2)}</th>
+						</tr>
+						<tr>
+							<th colspan="9" class="text-right">Total spillage for that day:</th>
+							<th class="text-right">${closeReport.totals.totalSpillage.toFixed(2)}</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		{:else}
+			<p>No close report data available.</p>
+		{/if}
 	{:else if inventory.inventoryType === 'spill'}
 		<div class="mb-6 flex w-full items-center justify-between gap-4">
 			<a href={`/locations/${inventory.locationId}`} class="link text-sm link-hover">← Back</a>
