@@ -18,6 +18,7 @@
 
 	let showAddModal = $state(false);
 	let selectedItemId = $state<string | null>(null);
+	let editMode = $state(false);
 
 	// Inventory type definition
 	type Inventory = {
@@ -168,7 +169,9 @@
 	<section>
 		<div class="mb-3 flex items-center justify-between gap-4">
 			<h3 class="text-lg font-medium">Available items</h3>
-			<a href="/items" class="btn btn-sm btn-primary">Manage items</a>
+			<button type="button" class="btn btn-sm btn-primary" onclick={() => editMode = !editMode}>
+				{editMode ? 'Done' : 'Manage items'}
+			</button>
 		</div>
 		{#if items.length === 0 && availableItems.length === 0}
 			<div class="alert">
@@ -182,23 +185,25 @@
 							<span class="card-title text-base">{item.name}</span>
 							<div class="flex items-center gap-2">
 								<span class="badge badge-neutral">${item.price}</span>
-								<form method="POST" action="?/removeItem" use:enhance={({ cancel }) => {
-									if (!confirm(`Are you sure you want to remove ${item.name} from this location?`)) {
-										cancel();
-									}
-								}}>
-									<input type="hidden" name="itemId" value={item._id} />
-									<button type="submit" class="btn btn-sm btn-error btn-circle" aria-label={`Remove ${item.name} from location`}>
-										<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-										</svg>
-									</button>
-								</form>
+								{#if editMode}
+									<form method="POST" action="?/removeItem" use:enhance={({ cancel }) => {
+										if (!confirm(`Are you sure you want to remove ${item.name} from this location?`)) {
+											cancel();
+										}
+									}} class="flex-shrink-0">
+										<input type="hidden" name="itemId" value={item._id} />
+										<button type="submit" class="btn btn-sm btn-error btn-circle w-6 h-6 min-h-0 p-0" aria-label={`Remove ${item.name} from location`}>
+											<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+											</svg>
+										</button>
+									</form>
+								{/if}
 							</div>
 						</div>
 					</li>
 				{/each}
-				{#if availableItems.length > 0}
+				{#if editMode && availableItems.length > 0}
 					<li class="card border border-dashed bg-base-100 shadow-sm">
 						<button 
 							type="button" 
