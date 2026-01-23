@@ -3,6 +3,7 @@
 	import favicon from '$lib/assets/favicon.svg';
     import { PUBLIC_CONVEX_URL } from '$env/static/public';
     import { setupConvex } from 'convex-svelte';
+    import Toast from '$lib/components/Toast.svelte'
 
 	const { children } = $props();
 
@@ -32,4 +33,6 @@
 			&copy; {new Date().getFullYear()} Renvintory
 		</div>
 	</footer>
+
+    <Toast />
 </div>
