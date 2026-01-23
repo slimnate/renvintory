@@ -7,7 +7,7 @@ import type { Id } from '../../../convex/_generated/dataModel';
 export const actions: Actions = {
 	createInventory: async ({ params }) => {
 		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
-		const locationId = params.id as Id<"locations">;
+		const locationId = params.id as Id<'locations'>;
 		const now = new Date();
 		const date = now.toISOString().slice(0, 10);
 
@@ -28,7 +28,7 @@ export const actions: Actions = {
 	deleteInventory: async ({ request }) => {
 		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
 		const form = await request.formData();
-		const inventoryId = form.get('id') as Id<"inventories">;
+		const inventoryId = form.get('id') as Id<'inventories'>;
 
 		if (!inventoryId) {
 			return {
@@ -54,8 +54,8 @@ export const actions: Actions = {
 	removeItem: async ({ params, request }) => {
 		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
 		const form = await request.formData();
-		const locationId = params.id as Id<"locations">;
-		const itemId = form.get('itemId') as Id<"items">;
+		const locationId = params.id as Id<'locations'>;
+		const itemId = form.get('itemId') as Id<'items'>;
 
 		if (!itemId) {
 			return {
@@ -82,8 +82,8 @@ export const actions: Actions = {
 	addItem: async ({ params, request }) => {
 		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
 		const form = await request.formData();
-		const locationId = params.id as Id<"locations">;
-		const itemId = form.get('itemId') as Id<"items">;
+		const locationId = params.id as Id<'locations'>;
+		const itemId = form.get('itemId') as Id<'items'>;
 
 		if (!itemId) {
 			return {

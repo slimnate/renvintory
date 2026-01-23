@@ -23,7 +23,7 @@
 	<div class="mb-4 alert alert-info">
 		<span>No locations available.</span>
 	</div>
-{:else}
+{:else if locationsQuery.data}
 	<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		{#each locationsQuery.data as location}
 			<li class="card border bg-base-100 shadow-sm transition hover:shadow">

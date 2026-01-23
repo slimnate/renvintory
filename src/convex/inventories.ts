@@ -1,296 +1,303 @@
-import { query, mutation } from "./_generated/server";
-import { v } from "convex/values";
-import type { Id } from "./_generated/dataModel";
+import { query, mutation } from './_generated/server';
+import { v } from 'convex/values';
+import type { Id } from './_generated/dataModel';
 
 export const getInventoriesByLocationId = query({
-    args: { locationId: v.id("locations") },
-    handler: async (ctx, { locationId }) => {
-        return await ctx.db
-            .query("inventories")
-            .filter((q) => q.eq(q.field("locationId"), locationId))
-            .order("desc")
-            .collect();
-    }
+	args: { locationId: v.id('locations') },
+	handler: async (ctx, { locationId }) => {
+		return await ctx.db
+			.query('inventories')
+			.filter((q) => q.eq(q.field('locationId'), locationId))
+			.order('desc')
+			.collect();
+	}
 });
 
 export const getInventoryById = query({
-    args: { id: v.id("inventories") },
-    handler: async (ctx, { id }) => {
-        return await ctx.db.get(id);
-    }
+	args: { id: v.id('inventories') },
+	handler: async (ctx, { id }) => {
+		return await ctx.db.get(id);
+	}
 });
 
 export const getCountsByInventoryId = query({
-    args: { inventoryId: v.id("inventories") },
-    handler: async (ctx, { inventoryId }) => {
-        const counts = await ctx.db
-            .query("counts")
-            .filter((q) => q.eq(q.field("inventoryId"), inventoryId))
-            .collect();
-        
-        // Fetch related items and containers for each count
-        const countsWithDetails = await Promise.all(
-            counts.map(async (count) => {
-                const item = await ctx.db.get(count.itemId);
-                const container = await ctx.db.get(count.containerId);
-                
-                return {
-                    _id: count._id,
-                    itemId: count.itemId,
-                    containerId: count.containerId,
-                    count: count.count,
-                    item: item ? {
-                        _id: item._id,
-                        name: item.name,
-                        price: item.price
-                    } : null,
-                    container: container ? {
-                        _id: container._id,
-                        size: container.size,
-                        type: container.type
-                    } : null
-                };
-            })
-        );
-        
-        return countsWithDetails;
-    }
+	args: { inventoryId: v.id('inventories') },
+	handler: async (ctx, { inventoryId }) => {
+		const counts = await ctx.db
+			.query('counts')
+			.filter((q) => q.eq(q.field('inventoryId'), inventoryId))
+			.collect();
+
+		// Fetch related items and containers for each count
+		const countsWithDetails = await Promise.all(
+			counts.map(async (count) => {
+				const item = await ctx.db.get(count.itemId);
+				const container = await ctx.db.get(count.containerId);
+
+				return {
+					_id: count._id,
+					itemId: count.itemId,
+					containerId: count.containerId,
+					count: count.count,
+					item: item
+						? {
+								_id: item._id,
+								name: item.name,
+								price: item.price
+							}
+						: null,
+					container: container
+						? {
+								_id: container._id,
+								size: container.size,
+								type: container.type
+							}
+						: null
+				};
+			})
+		);
+
+		return countsWithDetails;
+	}
 });
 
 export const createInventory = mutation({
-    args: { 
-        locationId: v.id("locations"),
-        date: v.string()
-    },
-    handler: async (ctx, { locationId, date }) => {
-        // Check if inventories already exist for this location/date
-        const existing = await ctx.db
-            .query("inventories")
-            .filter((q) => 
-                q.and(
-                    q.eq(q.field("locationId"), locationId),
-                    q.eq(q.field("date"), date)
-                )
-            ).collect();
+	args: {
+		locationId: v.id('locations'),
+		date: v.string()
+	},
+	handler: async (ctx, { locationId, date }) => {
+		// Check if inventories already exist for this location/date
+		const existing = await ctx.db
+			.query('inventories')
+			.filter((q) => q.and(q.eq(q.field('locationId'), locationId), q.eq(q.field('date'), date)))
+			.collect();
 
-        let toCreate = [];
-        if (!existing.some((inv) => inv.inventoryType === "open")) {
-            toCreate.push("open");
-        }
-        if (!existing.some((inv) => inv.inventoryType === "close")) {
-            toCreate.push("close");
-        }
+		let toCreate = [];
+		if (!existing.some((inv) => inv.inventoryType === 'open')) {
+			toCreate.push('open');
+		}
+		if (!existing.some((inv) => inv.inventoryType === 'close')) {
+			toCreate.push('close');
+		}
 
-        if (toCreate.length === 0) {
-            throw new Error("All inventories already exist for this location and date");
-        }
+		if (toCreate.length === 0) {
+			throw new Error('All inventories already exist for this location and date');
+		}
 
-        const now = new Date().toISOString();
-        for(let invType of toCreate) {
-            await ctx.db.insert("inventories", {
-                locationId,
-                date,
-                inventoryType: invType as "open" | "close",
-                createdAt: now
-            });
-        }
+		const now = new Date().toISOString();
+		for (let invType of toCreate) {
+			await ctx.db.insert('inventories', {
+				locationId,
+				date,
+				inventoryType: invType as 'open' | 'close',
+				createdAt: now
+			});
+		}
 
-        return { success: true };
-    }
+		return { success: true };
+	}
 });
 
 export const deleteInventory = mutation({
-    args: { inventoryId: v.id("inventories") },
-    handler: async (ctx, { inventoryId }) => {
-        await ctx.db.delete(inventoryId);
-        return { success: true };
-    }
+	args: { inventoryId: v.id('inventories') },
+	handler: async (ctx, { inventoryId }) => {
+		await ctx.db.delete(inventoryId);
+		return { success: true };
+	}
 });
 
 export const getCountPageData = query({
-    args: { inventoryId: v.id("inventories") },
-    handler: async (ctx, { inventoryId }) => {
-        const inventory = await ctx.db.get(inventoryId);
-        if (!inventory) {
-            return null;
-        }
+	args: { inventoryId: v.id('inventories') },
+	handler: async (ctx, { inventoryId }) => {
+		const inventory = await ctx.db.get(inventoryId);
+		if (!inventory) {
+			return null;
+		}
 
-        const location = await ctx.db.get(inventory.locationId);
-        if (!location) {
-            return null;
-        }
+		const location = await ctx.db.get(inventory.locationId);
+		if (!location) {
+			return null;
+		}
 
-        // Get items for this location
-        const items = await Promise.all(
-            location.items.map((itemId: Id<"items">) => ctx.db.get(itemId))
-        );
-        const validItems = items.filter((item): item is NonNullable<typeof item> => item !== null);
+		// Get items for this location
+		const items = await Promise.all(
+			location.items.map((itemId: Id<'items'>) => ctx.db.get(itemId))
+		);
+		const validItems = items.filter((item): item is NonNullable<typeof item> => item !== null);
 
-        // Get containers for each item
-        const itemsWithContainers = await Promise.all(
-            validItems.map(async (item) => {
-                const containers = await Promise.all(
-                    item.containers.map((containerId: Id<"containers">) => ctx.db.get(containerId))
-                );
-                const validContainers = containers.filter((c): c is NonNullable<typeof c> => c !== null);
-                return {
-                    _id: item._id,
-                    name: item.name,
-                    price: item.price,
-                    containers: validContainers.map(c => ({
-                        _id: c._id,
-                        size: c.size,
-                        type: c.type
-                    }))
-                };
-            })
-        );
+		// Get containers for each item
+		const itemsWithContainers = await Promise.all(
+			validItems.map(async (item) => {
+				const containers = await Promise.all(
+					item.containers.map((containerId: Id<'containers'>) => ctx.db.get(containerId))
+				);
+				const validContainers = containers.filter((c): c is NonNullable<typeof c> => c !== null);
+				return {
+					_id: item._id,
+					name: item.name,
+					price: item.price,
+					containers: validContainers.map((c) => ({
+						_id: c._id,
+						size: c.size,
+						type: c.type
+					}))
+				};
+			})
+		);
 
-        // Get existing counts for this inventory
-        const counts = await ctx.db
-            .query("counts")
-            .filter((q) => q.eq(q.field("inventoryId"), inventoryId))
-            .collect();
+		// Get existing counts for this inventory
+		const counts = await ctx.db
+			.query('counts')
+			.filter((q) => q.eq(q.field('inventoryId'), inventoryId))
+			.collect();
 
-        return {
-            inventory,
-            location,
-            items: itemsWithContainers,
-            counts: counts.map(c => ({
-                _id: c._id,
-                itemId: c.itemId,
-                containerId: c.containerId,
-                count: c.count
-            }))
-        };
-    }
+		return {
+			inventory,
+			location,
+			items: itemsWithContainers,
+			counts: counts.map((c) => ({
+				_id: c._id,
+				itemId: c.itemId,
+				containerId: c.containerId,
+				count: c.count
+			}))
+		};
+	}
 });
 
 export const incrementCount = mutation({
-    args: {
-        inventoryId: v.id("inventories"),
-        itemId: v.id("items"),
-        containerId: v.id("containers"),
-        op: v.union(v.literal("inc"), v.literal("dec"))
-    },
-    handler: async (ctx, { inventoryId, itemId, containerId, op }) => {
-        // Find existing count
-        const existing = await ctx.db
-            .query("counts")
-            .filter((q) =>
-                q.and(
-                    q.eq(q.field("inventoryId"), inventoryId),
-                    q.eq(q.field("itemId"), itemId),
-                    q.eq(q.field("containerId"), containerId)
-                )
-            )
-            .first();
+	args: {
+		inventoryId: v.id('inventories'),
+		itemId: v.id('items'),
+		containerId: v.id('containers'),
+		op: v.union(v.literal('inc'), v.literal('dec'))
+	},
+	handler: async (ctx, { inventoryId, itemId, containerId, op }) => {
+		// Find existing count
+		const existing = await ctx.db
+			.query('counts')
+			.filter((q) =>
+				q.and(
+					q.eq(q.field('inventoryId'), inventoryId),
+					q.eq(q.field('itemId'), itemId),
+					q.eq(q.field('containerId'), containerId)
+				)
+			)
+			.first();
 
-        if (existing) {
-            let newCount = existing.count + (op === "dec" ? -1 : 1);
-            if (newCount < 0) newCount = 0;
-            
-            await ctx.db.patch(existing._id, { count: newCount });
-            return { success: true, count: newCount };
-        } else {
-            let newCount = op === "dec" ? 0 : 1;
-            if (newCount < 0) newCount = 0;
-            
-            await ctx.db.insert("counts", {
-                inventoryId,
-                itemId,
-                containerId,
-                count: newCount
-            });
-            return { success: true, count: newCount };
-        }
-    }
+		if (existing) {
+			let newCount = existing.count + (op === 'dec' ? -1 : 1);
+			if (newCount < 0) newCount = 0;
+
+			await ctx.db.patch(existing._id, { count: newCount });
+			return { success: true, count: newCount };
+		} else {
+			let newCount = op === 'dec' ? 0 : 1;
+			if (newCount < 0) newCount = 0;
+
+			await ctx.db.insert('counts', {
+				inventoryId,
+				itemId,
+				containerId,
+				count: newCount
+			});
+			return { success: true, count: newCount };
+		}
+	}
 });
 
 export const getReportData = query({
-    args: { inventoryId: v.id("inventories") },
-    handler: async (ctx, { inventoryId }) => {
-        const inventory = await ctx.db.get(inventoryId);
-        if (!inventory) {
-            return null;
-        }
+	args: { inventoryId: v.id('inventories') },
+	handler: async (ctx, { inventoryId }) => {
+		const inventory = await ctx.db.get(inventoryId);
+		if (!inventory) {
+			return null;
+		}
 
-        const location = await ctx.db.get(inventory.locationId);
-        if (!location) {
-            return null;
-        }
+		const location = await ctx.db.get(inventory.locationId);
+		if (!location) {
+			return null;
+		}
 
-        // Get counts for this inventory
-        const counts = await ctx.db
-            .query("counts")
-            .filter((q) => q.eq(q.field("inventoryId"), inventoryId))
-            .collect();
+		// Get counts for this inventory
+		const counts = await ctx.db
+			.query('counts')
+			.filter((q) => q.eq(q.field('inventoryId'), inventoryId))
+			.collect();
 
-        // Fetch items and containers for each count
-        const countsWithDetails = await Promise.all(
-            counts.map(async (count) => {
-                const item = await ctx.db.get(count.itemId);
-                const container = await ctx.db.get(count.containerId);
-                
-                return {
-                    itemId: count.itemId,
-                    item: item ? {
-                        _id: item._id,
-                        name: item.name,
-                        price: item.price
-                    } : null,
-                    container: container ? {
-                        _id: container._id,
-                        size: container.size,
-                        type: container.type
-                    } : null,
-                    count: count.count
-                };
-            })
-        );
+		// Fetch items and containers for each count
+		const countsWithDetails = await Promise.all(
+			counts.map(async (count) => {
+				const item = await ctx.db.get(count.itemId);
+				const container = await ctx.db.get(count.containerId);
 
-        // Calculate totals by item with price and per container info
-        const itemTotals = new Map<string, { 
-            item_name: string; 
-            price: number;
-            perContainer: Array<{ size: number; count: number; type: "can" | "bottle" | "cup" }>;
-            total: number;
-        }>();
-        
-        for (const c of countsWithDetails) {
-            if (!c.item || !c.container) continue;
-            
-            const itemId = c.itemId;
-            const itemName = c.item.name;
-            const itemPrice = c.item.price;
-            const containerSize = c.container.size;
-            const containerType = c.container.type;
-            const countValue = c.count ?? 0;
-            const total = countValue * containerSize;
-            
-            const current = itemTotals.get(itemId) ?? { 
-                item_name: itemName, 
-                price: itemPrice,
-                perContainer: [],
-                total: 0 
-            };
-            current.perContainer.push({ size: containerSize, count: countValue, type: containerType });
-            current.total += total;
-            itemTotals.set(itemId, current);
-        }
+				return {
+					itemId: count.itemId,
+					item: item
+						? {
+								_id: item._id,
+								name: item.name,
+								price: item.price
+							}
+						: null,
+					container: container
+						? {
+								_id: container._id,
+								size: container.size,
+								type: container.type
+							}
+						: null,
+					count: count.count
+				};
+			})
+		);
 
-        // Sort per container arrays by size
-        for (const entry of itemTotals.values()) {
-            entry.perContainer.sort((a, b) => a.size - b.size);
-        }
+		// Calculate totals by item with price and per container info
+		const itemTotals = new Map<
+			string,
+			{
+				item_name: string;
+				price: number;
+				perContainer: Array<{ size: number; count: number; type: 'can' | 'bottle' | 'cup' }>;
+				total: number;
+			}
+		>();
 
-        const totals = Array.from(itemTotals.values());
+		for (const c of countsWithDetails) {
+			if (!c.item || !c.container) continue;
 
-        return {
-            inventory,
-            location,
-            counts: countsWithDetails,
-            totals
-        };
-    }
+			const itemId = c.itemId;
+			const itemName = c.item.name;
+			const itemPrice = c.item.price;
+			const containerSize = c.container.size;
+			const containerType = c.container.type;
+			const countValue = c.count ?? 0;
+			const total = countValue * containerSize;
+
+			const current = itemTotals.get(itemId) ?? {
+				item_name: itemName,
+				price: itemPrice,
+				perContainer: [],
+				total: 0
+			};
+			current.perContainer.push({ size: containerSize, count: countValue, type: containerType });
+			current.total += total;
+			itemTotals.set(itemId, current);
+		}
+
+		// Sort per container arrays by size
+		for (const entry of itemTotals.values()) {
+			entry.perContainer.sort((a, b) => a.size - b.size);
+		}
+
+		const totals = Array.from(itemTotals.values());
+
+		return {
+			inventory,
+			location,
+			counts: countsWithDetails,
+			totals
+		};
+	}
 });

@@ -45,7 +45,7 @@ export const actions: Actions = {
 	updateItem: async ({ request }) => {
 		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
 		const form = await request.formData();
-		const itemId = form.get('itemId') as Id<"items">;
+		const itemId = form.get('itemId') as Id<'items'>;
 		const name = form.get('name') as string;
 		const priceStr = form.get('price') as string;
 
@@ -98,7 +98,7 @@ export const actions: Actions = {
 	deleteItem: async ({ request }) => {
 		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
 		const form = await request.formData();
-		const itemId = form.get('itemId') as Id<"items">;
+		const itemId = form.get('itemId') as Id<'items'>;
 
 		if (!itemId) {
 			return {
