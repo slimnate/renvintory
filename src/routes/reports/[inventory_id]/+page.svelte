@@ -62,26 +62,26 @@
 						{#each closeReport.rows as row}
 							<tr>
 								<td>{row.name}</td>
-								<td>${row.price.toFixed(2)}</td>
+								<td>${row.price.toFixed(0)}</td>
 								<td class="text-right">{row.openCount}</td>
 								<td class="text-right">{row.closeCount}</td>
 								<td class="text-right">{row.spillCount}</td>
 								<td class="text-right">{row.intakeCount}</td>
 								<td class="text-right">{row.openPlusIntakeCount}</td>
 								<td class="text-right">{row.totalUsed}</td>
-								<td class="text-right">${row.spilledValue.toFixed(2)}</td>
-								<td class="text-right">${row.sales.toFixed(2)}</td>
+								<td class="text-right">${row.spilledValue.toFixed(0)}</td>
+								<td class="text-right">${row.sales.toFixed(0)}</td>
 							</tr>
 						{/each}
 					</tbody>
 					<tfoot>
 						<tr>
 							<th colspan="9" class="text-right">Total sales for the location for that day:</th>
-							<th class="text-right">${closeReport.totals.totalSales.toFixed(2)}</th>
+							<th class="text-right">${closeReport.totals.totalSales.toFixed(0)}</th>
 						</tr>
 						<tr>
 							<th colspan="9" class="text-right">Total spillage for that day:</th>
-							<th class="text-right">${closeReport.totals.totalSpillage.toFixed(2)}</th>
+							<th class="text-right">${closeReport.totals.totalSpillage.toFixed(0)}</th>
 						</tr>
 					</tfoot>
 				</table>
@@ -121,7 +121,7 @@
 				{#each totals as itemTotal}
 					<tr>
 						<td>{itemTotal.item_name}</td>
-						<td>${itemTotal.price}</td>
+						<td>${itemTotal.price.toFixed(0)}</td>
 						<td>
 							<div class="flex flex-wrap gap-2">
 								{#each itemTotal.perContainer as pc}
@@ -166,7 +166,7 @@
 				{#each totals as itemTotal}
 					<tr>
 						<td>{itemTotal.item_name}</td>
-						<td>${itemTotal.price}</td>
+						<td>${itemTotal.price.toFixed(0)}</td>
 						<td>
 							<div class="flex flex-wrap gap-2">
 								{#each itemTotal.perContainer as pc}
@@ -211,7 +211,7 @@
 				{#each totals as itemTotal}
 					<tr>
 						<td>{itemTotal.item_name}</td>
-						<td>${itemTotal.price}</td>
+						<td>${itemTotal.price.toFixed(0)}</td>
 						<td>
 							<div class="flex flex-wrap gap-2">
 								{#each itemTotal.perContainer as pc}
