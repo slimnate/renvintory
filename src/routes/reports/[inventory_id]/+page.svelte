@@ -15,11 +15,6 @@
     const pageTitle = $derived(`${location?.name} - ${inventory?.date} - ${inventory?.inventoryType === 'close' ? 'Closing' : 'Opening'} Report`);
 
 	let closingTotals = [];
-
-	function formatContainerLabel(pc: { size: number; count: number; type: "can" | "bottle" | "cup" }): string {
-		const unitLabel = pc.count === 1 ? pc.type : `${pc.type}s`;
-		return `${pc.count} x ${pc.size} ${unitLabel}`;
-	}
 </script>
 
 <svelte:head>
@@ -67,7 +62,7 @@
 						<td>
 							<div class="flex flex-wrap gap-2">
 								{#each itemTotal.perContainer as pc}
-									<span class="badge badge-ghost">{formatContainerLabel(pc)}</span>
+									<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
 								{/each}
 							</div>
 						</td>
@@ -112,7 +107,7 @@
 						<td>
 							<div class="flex flex-wrap gap-2">
 								{#each itemTotal.perContainer as pc}
-									<span class="badge badge-ghost">{formatContainerLabel(pc)}</span>
+									<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
 								{/each}
 							</div>
 						</td>
