@@ -109,7 +109,10 @@
 	</section>
 
 	<section>
-		<h3 class="mb-3 text-lg font-medium">Available items</h3>
+		<div class="mb-3 flex items-center justify-between gap-4">
+			<h3 class="text-lg font-medium">Available items</h3>
+			<a href="/items" class="btn btn-sm btn-primary">Manage items</a>
+		</div>
 		{#if items.length === 0 && availableItems.length === 0}
 			<div class="alert">
 				<span>No items configured for this location.</span>
