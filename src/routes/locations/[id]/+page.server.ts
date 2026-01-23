@@ -50,5 +50,61 @@ export const actions: Actions = {
 				error: error instanceof Error ? error.message : 'Failed to delete inventory'
 			};
 		}
+	},
+	removeItem: async ({ params, request }) => {
+		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
+		const form = await request.formData();
+		const locationId = params.id as Id<"locations">;
+		const itemId = form.get('itemId') as Id<"items">;
+
+		if (!itemId) {
+			return {
+				op: 'removeItem',
+				success: false,
+				error: 'Item ID is required'
+			};
+		}
+
+		try {
+			await client.mutation(api.locations.removeItemFromLocation, {
+				locationId,
+				itemId
+			});
+			return { op: 'removeItem', success: true };
+		} catch (error) {
+			return {
+				op: 'removeItem',
+				success: false,
+				error: error instanceof Error ? error.message : 'Failed to remove item'
+			};
+		}
+	},
+	addItem: async ({ params, request }) => {
+		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
+		const form = await request.formData();
+		const locationId = params.id as Id<"locations">;
+		const itemId = form.get('itemId') as Id<"items">;
+
+		if (!itemId) {
+			return {
+				op: 'addItem',
+				success: false,
+				error: 'Item ID is required'
+			};
+		}
+
+		try {
+			await client.mutation(api.locations.addItemToLocation, {
+				locationId,
+				itemId
+			});
+			return { op: 'addItem', success: true };
+		} catch (error) {
+			return {
+				op: 'addItem',
+				success: false,
+				error: error instanceof Error ? error.message : 'Failed to add item'
+			};
+		}
 	}
 };

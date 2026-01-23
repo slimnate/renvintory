@@ -9,11 +9,21 @@
 	const locationQuery = useQuery(api.locations.getLocationById, { id: params.id as Id<"locations"> });
 	const inventoriesQuery = useQuery(api.inventories.getInventoriesByLocationId, { locationId: params.id as Id<"locations"> });
 	const itemsQuery = useQuery(api.items.getItemsByLocationId, { locationId: params.id as Id<"locations"> });
+	const allItemsQuery = useQuery(api.items.getAllItems);
 
 	const form = $derived(page.form);
 	const location = $derived(locationQuery.data);
 	const inventories = $derived(inventoriesQuery.data ?? []);
 	const items = $derived(itemsQuery.data ?? []);
+	const allItems = $derived(allItemsQuery.data ?? []);
+
+	let showAddModal = $state(false);
+	let selectedItemId = $state<string | null>(null);
+
+	// Filter out items that are already in the location
+	const availableItems = $derived(
+		allItems.filter(item => !items.some(locationItem => locationItem._id === item._id))
+	);
 </script>
 
 <svelte:head>
@@ -47,6 +57,16 @@
 			{#if form?.op === 'deleteInventory'}
 				<div class="mb-3 alert alert-success">
 					<span>Inventory deleted successfully.</span>
+				</div>
+			{/if}
+			{#if form?.op === 'removeItem'}
+				<div class="mb-3 alert alert-success">
+					<span>Item removed successfully.</span>
+				</div>
+			{/if}
+			{#if form?.op === 'addItem'}
+				<div class="mb-3 alert alert-success">
+					<span>Item added successfully.</span>
 				</div>
 			{/if}
 		{:else if form?.error}
@@ -90,7 +110,7 @@
 
 	<section>
 		<h3 class="mb-3 text-lg font-medium">Available items</h3>
-		{#if items.length === 0}
+		{#if items.length === 0 && availableItems.length === 0}
 			<div class="alert">
 				<span>No items configured for this location.</span>
 			</div>
@@ -100,11 +120,86 @@
 					<li class="card border bg-base-100 shadow-sm">
 						<div class="card-body flex flex-row items-center justify-between gap-4">
 							<span class="card-title text-base">{item.name}</span>
-							<span class="badge badge-neutral">${item.price}</span>
+							<div class="flex items-center gap-2">
+								<span class="badge badge-neutral">${item.price}</span>
+								<form method="POST" action="?/removeItem" use:enhance={({ cancel }) => {
+									if (!confirm(`Are you sure you want to remove ${item.name} from this location?`)) {
+										cancel();
+									}
+								}}>
+									<input type="hidden" name="itemId" value={item._id} />
+									<button type="submit" class="btn btn-sm btn-error btn-circle" aria-label={`Remove ${item.name} from location`}>
+										<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+										</svg>
+									</button>
+								</form>
+							</div>
 						</div>
 					</li>
 				{/each}
+				{#if availableItems.length > 0}
+					<li class="card border border-dashed bg-base-100 shadow-sm">
+						<button 
+							type="button" 
+							class="card-body flex flex-row items-center justify-center gap-4 min-h-[80px] hover:bg-base-200 transition-colors"
+							onclick={() => showAddModal = true}
+						>
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+							</svg>
+							<span class="text-base font-medium">Add item</span>
+						</button>
+					</li>
+				{/if}
 			</ul>
 		{/if}
 	</section>
+
+	{#if showAddModal}
+		<div class="modal modal-open">
+			<div class="modal-box">
+				<h3 class="font-bold text-lg mb-4">Add item to location</h3>
+				{#if availableItems.length === 0}
+					<p class="text-gray-600">All available items have been added to this location.</p>
+				{:else}
+					<form method="POST" action="?/addItem" use:enhance={() => {
+						showAddModal = false;
+						selectedItemId = null;
+					}}>
+						<div class="form-control mb-4">
+							<label for="item-select" class="label">
+								<span class="label-text">Select an item</span>
+							</label>
+							<select 
+								id="item-select"
+								name="itemId" 
+								class="select select-bordered w-full"
+								bind:value={selectedItemId}
+								required
+							>
+								<option value="">Choose an item...</option>
+								{#each availableItems as item}
+									<option value={item._id}>{item.name} - ${item.price}</option>
+								{/each}
+							</select>
+						</div>
+						<div class="modal-action">
+							<button type="button" class="btn" onclick={() => {
+								showAddModal = false;
+								selectedItemId = null;
+							}}>Cancel</button>
+							<button type="submit" class="btn btn-primary" disabled={!selectedItemId}>Add</button>
+						</div>
+					</form>
+				{/if}
+			</div>
+			<form method="dialog">
+				<button class="modal-backdrop" onclick={() => {
+					showAddModal = false;
+					selectedItemId = null;
+				}}>close</button>
+			</form>
+		</div>
+	{/if}
 {/if}

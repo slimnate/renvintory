@@ -19,3 +19,10 @@ export const getItemsByLocationId = query({
         return items.filter((item): item is NonNullable<typeof item> => item !== null);
     }
 });
+
+export const getAllItems = query({
+    args: {},
+    handler: async (ctx) => {
+        return await ctx.db.query("items").collect();
+    }
+});
