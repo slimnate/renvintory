@@ -2,14 +2,55 @@ import { mutation } from "./_generated/server";
 import type { Id } from "./_generated/dataModel";
 
 export const seedDatabase = mutation(async (ctx) => {
-	// Map to store container IDs keyed by size
-	const containerIdMap = new Map<number, Id<"containers">>();
+	// Clear existing data in dependency order to prevent duplicates
+	const counts = await ctx.db.query("counts").collect();
+	for (const count of counts) {
+		await ctx.db.delete(count._id);
+	}
 
-	// Insert containers and store IDs
-	const containerSizes = [1, 4, 6, 12, 24, 70, 90, 420, 2520];
-	for (const size of containerSizes) {
-		const containerId = await ctx.db.insert("containers", { size });
-		containerIdMap.set(size, containerId);
+	const inventories = await ctx.db.query("inventories").collect();
+	for (const inventory of inventories) {
+		await ctx.db.delete(inventory._id);
+	}
+
+	const locations = await ctx.db.query("locations").collect();
+	for (const location of locations) {
+		await ctx.db.delete(location._id);
+	}
+
+	const items = await ctx.db.query("items").collect();
+	for (const item of items) {
+		await ctx.db.delete(item._id);
+	}
+
+	const containers = await ctx.db.query("containers").collect();
+	for (const container of containers) {
+		await ctx.db.delete(container._id);
+	}
+
+	// Map to store container IDs keyed by size and type (e.g., "1-can", "4-bottle")
+	const containerIdMap = new Map<string, Id<"containers">>();
+
+	// Create containers with types
+	// Cans: sizes [1, 4, 6, 12, 24] for beer/cider items
+	const canSizes = [1, 4, 6, 12, 24];
+	for (const size of canSizes) {
+		const containerId = await ctx.db.insert("containers", { size, type: "can" });
+		containerIdMap.set(`${size}-can`, containerId);
+	}
+
+	// Bottles: sizes [1, 4, 24] for Wine
+	const bottleSizes = [1, 4, 24];
+	for (const size of bottleSizes) {
+		const containerId = await ctx.db.insert("containers", { size, type: "bottle" });
+		containerIdMap.set(`${size}-bottle`, containerId);
+	}
+
+	// Cups: sizes [1, 70, 90, 420, 2520] for cup items
+	const cupSizes = [1, 70, 90, 420, 2520];
+	for (const size of cupSizes) {
+		const containerId = await ctx.db.insert("containers", { size, type: "cup" });
+		containerIdMap.set(`${size}-cup`, containerId);
 	}
 
 	// Map to store item IDs keyed by name
@@ -37,11 +78,11 @@ export const seedDatabase = mutation(async (ctx) => {
 	];
 
 	const containersFor1to17 = [
-		containerIdMap.get(1)!,
-		containerIdMap.get(4)!,
-		containerIdMap.get(6)!,
-		containerIdMap.get(12)!,
-		containerIdMap.get(24)!,
+		containerIdMap.get("1-can")!,
+		containerIdMap.get("4-can")!,
+		containerIdMap.get("6-can")!,
+		containerIdMap.get("12-can")!,
+		containerIdMap.get("24-can")!,
 	];
 
 	for (const item of items1to17) {
@@ -53,38 +94,38 @@ export const seedDatabase = mutation(async (ctx) => {
 		itemIdMap.set(item.name, itemId);
 	}
 
-	// Item 18: Wine with containers [1, 4, 24]
+	// Item 18: Wine with containers [1, 4, 24] - bottles
 	const wineId = await ctx.db.insert("items", {
 		name: "Wine",
 		price: 8,
 		containers: [
-			containerIdMap.get(1)!,
-			containerIdMap.get(4)!,
-			containerIdMap.get(24)!,
+			containerIdMap.get("1-bottle")!,
+			containerIdMap.get("4-bottle")!,
+			containerIdMap.get("24-bottle")!,
 		],
 	});
 	itemIdMap.set("Wine", wineId);
 
-	// Item 19: 5oz Cups with containers [1, 90, 2520]
+	// Item 19: 5oz Cups with containers [1, 90, 2520] - cups
 	const cups5ozId = await ctx.db.insert("items", {
 		name: "5oz Cups",
 		price: 10,
 		containers: [
-			containerIdMap.get(1)!,
-			containerIdMap.get(90)!,
-			containerIdMap.get(2520)!,
+			containerIdMap.get("1-cup")!,
+			containerIdMap.get("90-cup")!,
+			containerIdMap.get("2520-cup")!,
 		],
 	});
 	itemIdMap.set("5oz Cups", cups5ozId);
 
-	// Item 20: 12 Oz Cups with containers [1, 70, 420]
+	// Item 20: 12 Oz Cups with containers [1, 70, 420] - cups
 	const cups12ozId = await ctx.db.insert("items", {
 		name: "12 Oz Cups",
 		price: 7,
 		containers: [
-			containerIdMap.get(1)!,
-			containerIdMap.get(70)!,
-			containerIdMap.get(420)!,
+			containerIdMap.get("1-cup")!,
+			containerIdMap.get("70-cup")!,
+			containerIdMap.get("420-cup")!,
 		],
 	});
 	itemIdMap.set("12 Oz Cups", cups12ozId);

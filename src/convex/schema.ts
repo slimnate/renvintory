@@ -25,6 +25,7 @@ export default defineSchema({
     containers: defineTable({
         _id: v.id("containers"),
         size: v.number(),
+        type: v.union(v.literal("can"), v.literal("bottle"), v.literal("cup")),
     }),
     counts: defineTable({
         _id: v.id("counts"),

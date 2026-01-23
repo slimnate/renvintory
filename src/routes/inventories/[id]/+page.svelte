@@ -24,13 +24,13 @@
 		count: number;
 	};
 
-	function groupByItem(rows: Array<{ itemId: Id<"items">; item: { name: string; price: number } | null; containerId: Id<"containers">; container: { size: number } | null; count: number }>) {
+	function groupByItem(rows: Array<{ itemId: Id<"items">; item: { name: string; price: number } | null; containerId: Id<"containers">; container: { size: number; type: "can" | "bottle" | "cup" } | null; count: number }>) {
 		const map = new Map<
 			string,
 			{
 				name: string;
 				price: number;
-				perContainer: Array<{ size: number; count: number }>;
+				perContainer: Array<{ size: number; count: number; type: "can" | "bottle" | "cup" }>;
 				total: number;
 			}
 		>();
@@ -45,7 +45,7 @@
 			};
 			const size = r.container.size;
 			const count = r.count || 0;
-			current.perContainer.push({ size, count });
+			current.perContainer.push({ size, count, type: r.container.type });
 			current.total += size * count;
 			map.set(itemId, current);
 		}
@@ -53,6 +53,11 @@
 			entry.perContainer.sort((a, b) => a.size - b.size);
 		}
 		return Array.from(map.entries()).map(([itemId, data]) => ({ itemId, ...data }));
+	}
+
+	function formatContainerLabel(pc: { size: number; count: number; type: "can" | "bottle" | "cup" }): string {
+		const unitLabel = pc.count === 1 ? pc.type : `${pc.type}s`;
+		return `${pc.count} x ${pc.size} ${unitLabel}`;
 	}
 
 	const grouped = $derived(groupByItem(counts));
@@ -129,7 +134,7 @@
 								<td>
 									<div class="flex flex-wrap gap-2">
 										{#each row.perContainer as pc}
-											<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
+											<span class="badge badge-ghost">{formatContainerLabel(pc)}</span>
 										{/each}
 									</div>
 								</td>

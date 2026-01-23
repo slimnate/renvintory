@@ -46,7 +46,8 @@ export const getCountsByInventoryId = query({
                     } : null,
                     container: container ? {
                         _id: container._id,
-                        size: container.size
+                        size: container.size,
+                        type: container.type
                     } : null
                 };
             })
@@ -138,7 +139,8 @@ export const getCountPageData = query({
                     price: item.price,
                     containers: validContainers.map(c => ({
                         _id: c._id,
-                        size: c.size
+                        size: c.size,
+                        type: c.type
                     }))
                 };
             })
@@ -239,7 +241,8 @@ export const getReportData = query({
                     } : null,
                     container: container ? {
                         _id: container._id,
-                        size: container.size
+                        size: container.size,
+                        type: container.type
                     } : null,
                     count: count.count
                 };
@@ -250,7 +253,7 @@ export const getReportData = query({
         const itemTotals = new Map<string, { 
             item_name: string; 
             price: number;
-            perContainer: Array<{ size: number; count: number }>;
+            perContainer: Array<{ size: number; count: number; type: "can" | "bottle" | "cup" }>;
             total: number;
         }>();
         
@@ -261,6 +264,7 @@ export const getReportData = query({
             const itemName = c.item.name;
             const itemPrice = c.item.price;
             const containerSize = c.container.size;
+            const containerType = c.container.type;
             const countValue = c.count ?? 0;
             const total = countValue * containerSize;
             
@@ -270,7 +274,7 @@ export const getReportData = query({
                 perContainer: [],
                 total: 0 
             };
-            current.perContainer.push({ size: containerSize, count: countValue });
+            current.perContainer.push({ size: containerSize, count: countValue, type: containerType });
             current.total += total;
             itemTotals.set(itemId, current);
         }

@@ -40,20 +40,16 @@
 		return item?.containers ?? [];
 	}
 
-    function packLabel(containerSize: number, containerCount: number): string {
-        if (containerCount <= 1) {
-            if (containerSize === 1) {
-                return '';
-            } else {
-                return `pack`;
-            }
-        } else {
-            if (containerSize === 1) {
-                return '';
-            } else {
-                return 'packs';
-            }
+    function packLabel(containerType: "can" | "bottle" | "cup", containerSize: number, containerCount: number): string {
+        // For size 1, show unit type (e.g., "1 can", "2 bottles")
+        if (containerSize === 1) {
+            return containerCount === 1 ? containerType : `${containerType}s`;
         }
+        
+        // For packs, show pack count with unit type (e.g., "1 pack of 12 cans", "2 packs of 24 bottles")
+        // But actually, let's simplify: just show the unit type for the pack
+        // e.g., "12 cans", "24 bottles"
+        return containerCount === 1 ? containerType : `${containerType}s`;
     }
 
     const pageTitle = $derived(`${location?.name} - ${inventory?.date} - ${inventory?.inventoryType === 'close' ? 'Closing' : 'Opening'} Count`);
@@ -111,7 +107,7 @@
 											>{countFor(container._id, item._id)}</span
 										>
 										<span class="text-neutral/60">x</span>
-										<span class="text-sm text-neutral/60">{container.size} {packLabel(container.size, countFor(container._id, item._id))}</span>
+										<span class="text-sm text-neutral/60">{container.size} {packLabel(container.type, container.size, countFor(container._id, item._id))}</span>
 									</div>
 									<button
 										name="op"
