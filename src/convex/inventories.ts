@@ -70,29 +70,29 @@ export const createInventory = mutation({
                     q.eq(q.field("locationId"), locationId),
                     q.eq(q.field("date"), date)
                 )
-            )
-            .first();
-        
-        if (existing) {
-            throw new Error("Inventory already exists for this location and date");
+            ).collect();
+
+        let toCreate = [];
+        if (!existing.some((inv) => inv.inventoryType === "open")) {
+            toCreate.push("open");
+        }
+        if (!existing.some((inv) => inv.inventoryType === "close")) {
+            toCreate.push("close");
         }
 
-        const createdAt = new Date().toISOString();
+        if (toCreate.length === 0) {
+            throw new Error("All inventories already exist for this location and date");
+        }
 
-        // Create both "open" and "close" inventory records
-        await ctx.db.insert("inventories", {
-            locationId,
-            date,
-            inventoryType: "open",
-            createdAt
-        });
-
-        await ctx.db.insert("inventories", {
-            locationId,
-            date,
-            inventoryType: "close",
-            createdAt
-        });
+        const now = new Date().toISOString();
+        for(let invType of toCreate) {
+            await ctx.db.insert("inventories", {
+                locationId,
+                date,
+                inventoryType: invType as "open" | "close",
+                createdAt: now
+            });
+        }
 
         return { success: true };
     }
