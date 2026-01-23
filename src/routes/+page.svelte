@@ -17,7 +17,7 @@
 <h1 class="mb-6 text-2xl font-semibold tracking-tight">Locations</h1>
 {#if locationsQuery.error}
 	<div class="mb-4 alert alert-error">
-		<span>{locationsQuery.error}</span>
+		<span>{locationsQuery.error instanceof Error ? locationsQuery.error.message : String(locationsQuery.error)}</span>
 	</div>
 {:else if locationsQuery.data && locationsQuery.data.length === 0}
 	<div class="mb-4 alert alert-info">
@@ -46,7 +46,7 @@
 	</div>
 	{#if itemsQuery.error}
 		<div class="mb-4 alert alert-error">
-			<span>{itemsQuery.error}</span>
+			<span>{itemsQuery.error instanceof Error ? itemsQuery.error.message : String(itemsQuery.error)}</span>
 		</div>
 	{:else if items.length === 0}
 		<div class="mb-4 alert alert-info">

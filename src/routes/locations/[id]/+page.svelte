@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { page } from '$app/state';
 	import { useQuery } from 'convex-svelte';
 	import { api } from '../../../convex/_generated/api';
 	import type { Id } from '../../../convex/_generated/dataModel';
+	import { toast } from '$lib/stores/toast';
 	let { params }: { params: { id: string } } = $props();
 
 	const locationQuery = useQuery(api.locations.getLocationById, { id: params.id as Id<"locations"> });
@@ -11,7 +11,6 @@
 	const itemsQuery = useQuery(api.items.getItemsByLocationId, { locationId: params.id as Id<"locations"> });
 	const allItemsQuery = useQuery(api.items.getAllItems);
 
-	const form = $derived(page.form);
 	const location = $derived(locationQuery.data);
 	const items = $derived(itemsQuery.data ?? []);
 	const allItems = $derived(allItemsQuery.data ?? []);
@@ -71,7 +70,15 @@
 {#if locationQuery.error || inventoriesQuery.error || itemsQuery.error}
 	<div class="mb-6 flex items-center gap-4">
 		<a href="/" class="link text-sm link-hover">← Back</a>
-		<h2 class="text-2xl font-semibold tracking-tight">{locationQuery.error || inventoriesQuery.error || itemsQuery.error}</h2>
+		<h2 class="text-2xl font-semibold tracking-tight">
+			{locationQuery.error 
+				? (locationQuery.error instanceof Error ? locationQuery.error.message : String(locationQuery.error))
+				: inventoriesQuery.error
+					? (inventoriesQuery.error instanceof Error ? inventoriesQuery.error.message : String(inventoriesQuery.error))
+					: itemsQuery.error
+						? (itemsQuery.error instanceof Error ? itemsQuery.error.message : String(itemsQuery.error))
+						: 'Unknown error'}
+		</h2>
 	</div>
 {:else}
 	<div class="mb-6 flex items-center gap-4">
@@ -82,36 +89,26 @@
 	<section class="mb-8">
 		<div class="mb-3 flex items-center justify-between gap-4">
 			<h3 class="text-lg font-medium">Inventories</h3>
-			<form method="POST" action="?/createInventory" use:enhance>
+			<form method="POST" action="?/createInventory" use:enhance={() => {
+				return ({ result, update }) => {
+					update();
+					if (result.type === 'success') {
+						const data = result.data as { success?: boolean; error?: string } | undefined;
+						if (data?.success) {
+							toast.success('Inventory created successfully.');
+						} else if (data?.error) {
+							toast.error(data.error);
+						}
+					} else if (result.type === 'failure') {
+						const data = result.data as { error?: string } | undefined;
+						const error = data?.error || 'Failed to create inventory';
+						toast.error(error);
+					}
+				};
+			}}>
 				<button type="submit" class="btn btn-sm btn-primary">New inventory</button>
 			</form>
 		</div>
-		{#if form?.success}
-			{#if form?.op === 'createInventory'}
-				<div class="mb-3 alert alert-success">
-					<span>Inventory created successfully.</span>
-				</div>
-			{/if}
-			{#if form?.op === 'deleteInventory'}
-				<div class="mb-3 alert alert-success">
-					<span>All inventories for the day deleted successfully.</span>
-				</div>
-			{/if}
-			{#if form?.op === 'removeItem'}
-				<div class="mb-3 alert alert-success">
-					<span>Item removed successfully.</span>
-				</div>
-			{/if}
-			{#if form?.op === 'addItem'}
-				<div class="mb-3 alert alert-success">
-					<span>Item added successfully.</span>
-				</div>
-			{/if}
-		{:else if form?.error}
-			<div class="mb-3 alert alert-error">
-				<span>{form.error}</span>
-			</div>
-		{/if}
 		{#if inventories.length === 0}
 			<p class="text-gray-600">No inventories yet.</p>
 		{:else}
@@ -151,11 +148,27 @@
 								{/if}
 							</div>
 							<a href={`/inventories/${params.id}/${date}`} class="btn btn-sm btn-outline">Details</a>
-							<form method="POST" action="?/deleteInventory" use:enhance={({ cancel}) => {
-                                if(!confirm('Are you sure you want to delete all inventories for this day?')) {
-                                    cancel();
-                                }
-                            }}>
+							<form method="POST" action="?/deleteInventory" use:enhance={({ cancel }) => {
+								if (!confirm('Are you sure you want to delete all inventories for this day?')) {
+									cancel();
+									return;
+								}
+								return ({ result, update }) => {
+									update();
+									if (result.type === 'success') {
+										const data = result.data as { success?: boolean; error?: string } | undefined;
+										if (data?.success) {
+											toast.success('All inventories for the day deleted successfully.');
+										} else if (data?.error) {
+											toast.error(data.error);
+										}
+									} else if (result.type === 'failure') {
+										const data = result.data as { error?: string } | undefined;
+										const error = data?.error || 'Failed to delete inventories';
+										toast.error(error);
+									}
+								};
+							}}>
 								<input type="hidden" name="date" value={date} />
 								<button type="submit" class="btn btn-sm btn-error">Delete</button>
 							</form>
@@ -189,7 +202,23 @@
 									<form method="POST" action="?/removeItem" use:enhance={({ cancel }) => {
 										if (!confirm(`Are you sure you want to remove ${item.name} from this location?`)) {
 											cancel();
+											return;
 										}
+										return ({ result, update }) => {
+											update();
+											if (result.type === 'success') {
+												const data = result.data as { success?: boolean; error?: string } | undefined;
+												if (data?.success) {
+													toast.success('Item removed successfully.');
+												} else if (data?.error) {
+													toast.error(data.error);
+												}
+											} else if (result.type === 'failure') {
+												const data = result.data as { error?: string } | undefined;
+												const error = data?.error || 'Failed to remove item';
+												toast.error(error);
+											}
+										};
 									}} class="flex-shrink-0">
 										<input type="hidden" name="itemId" value={item._id} />
 										<button type="submit" class="btn btn-sm btn-error btn-circle w-6 h-6 min-h-0 p-0" aria-label={`Remove ${item.name} from location`}>
@@ -229,8 +258,23 @@
 					<p class="text-gray-600">All available items have been added to this location.</p>
 				{:else}
 					<form method="POST" action="?/addItem" use:enhance={() => {
-						showAddModal = false;
-						selectedItemId = null;
+						return ({ result, update }) => {
+							update();
+							if (result.type === 'success') {
+								const data = result.data as { success?: boolean; error?: string } | undefined;
+								if (data?.success) {
+									toast.success('Item added successfully.');
+									showAddModal = false;
+									selectedItemId = null;
+								} else if (data?.error) {
+									toast.error(data.error);
+								}
+							} else if (result.type === 'failure') {
+								const data = result.data as { error?: string } | undefined;
+								const error = data?.error || 'Failed to add item';
+								toast.error(error);
+							}
+						};
 					}}>
 						<div class="form-control mb-4">
 							<label for="item-select" class="label">

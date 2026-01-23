@@ -3,6 +3,7 @@
 	import { useQuery } from 'convex-svelte';
 	import { api } from '../../../convex/_generated/api';
 	import type { Id } from '../../../convex/_generated/dataModel';
+	import { toast } from '$lib/stores/toast';
 	let { params }: { params: { inventory_id: string } } = $props();
 
 	const countPageDataQuery = useQuery(api.inventories.getCountPageData, { 
@@ -62,7 +63,9 @@
 {#if countPageDataQuery.error}
 	<div class="mb-6 flex items-center gap-4">
 		<a href="/" class="link text-sm link-hover">← Back</a>
-		<h2 class="text-2xl font-semibold tracking-tight">{countPageDataQuery.error}</h2>
+		<h2 class="text-2xl font-semibold tracking-tight">
+			{countPageDataQuery.error instanceof Error ? countPageDataQuery.error.message : String(countPageDataQuery.error)}
+		</h2>
 	</div>
 {:else if !inventory}
 	<div class="mb-6 flex items-center gap-4">
@@ -95,7 +98,21 @@
 					</div>
 					<div class="grid w-full grid-cols-1 gap-2">
 						{#each containersFor(item._id) as container}
-							<form method="POST" action="?/increment" class="w-full" use:enhance>
+							<form method="POST" action="?/increment" class="w-full" use:enhance={() => {
+								return ({ result, update }) => {
+									update();
+									if (result.type === 'success') {
+										const data = result.data as { success?: boolean; error?: string } | undefined;
+										if (data?.error) {
+											toast.error(data.error);
+										}
+									} else if (result.type === 'failure') {
+										const data = result.data as { error?: string } | undefined;
+										const error = data?.error || 'Failed to update count';
+										toast.error(error);
+									}
+								};
+							}}>
 								<input type="hidden" name="item_id" value={item._id} />
 								<input type="hidden" name="container_id" value={container._id} />
 								<div class="join grid w-full grid-cols-8">

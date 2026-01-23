@@ -105,7 +105,9 @@
 {#if dataQuery.error}
 	<div class="mb-6 flex items-center gap-4">
 		<a href="/" class="link text-sm link-hover">← Back</a>
-		<h2 class="text-2xl font-semibold tracking-tight">{dataQuery.error}</h2>
+		<h2 class="text-2xl font-semibold tracking-tight">
+			{dataQuery.error instanceof Error ? dataQuery.error.message : String(dataQuery.error)}
+		</h2>
 	</div>
 {:else if !location}
 	<div class="mb-6 flex items-center gap-4">

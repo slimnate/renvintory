@@ -22,7 +22,7 @@
 
 <div>
 	{#if reportData.error}
-		<h1>Error loading report: {reportData.error}</h1>
+		<h1>Error loading report: {reportData.error instanceof Error ? reportData.error.message : String(reportData.error)}</h1>
 	{:else if !inventory}
 		<h1>Inventory not found</h1>
 	{:else if inventory.inventoryType === 'close'}

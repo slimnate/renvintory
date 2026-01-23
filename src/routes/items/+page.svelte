@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { page } from '$app/state';
 	import { useQuery } from 'convex-svelte';
 	import { api } from '../../convex/_generated/api';
 	import type { Id } from '../../convex/_generated/dataModel';
+	import { toast } from '$lib/stores/toast';
 
 	const itemsQuery = useQuery(api.items.getAllItems);
-	const form = $derived(page.form);
 	const items = $derived(itemsQuery.data ?? []);
 
 	let editingItemId = $state<Id<"items"> | null>(null);
@@ -37,31 +36,9 @@
 
 {#if itemsQuery.error}
 	<div class="mb-4 alert alert-error">
-		<span>{itemsQuery.error}</span>
+		<span>{itemsQuery.error instanceof Error ? itemsQuery.error.message : String(itemsQuery.error)}</span>
 	</div>
 {:else}
-	{#if form?.success}
-		{#if form?.op === 'createItem'}
-			<div class="mb-3 alert alert-success">
-				<span>Item created successfully.</span>
-			</div>
-		{/if}
-		{#if form?.op === 'updateItem'}
-			<div class="mb-3 alert alert-success">
-				<span>Item updated successfully.</span>
-			</div>
-			{@const _ = cancelEdit()}
-		{/if}
-		{#if form?.op === 'deleteItem'}
-			<div class="mb-3 alert alert-success">
-				<span>Item deleted successfully.</span>
-			</div>
-		{/if}
-	{:else if form?.error}
-		<div class="mb-3 alert alert-error">
-			<span>{form.error}</span>
-		</div>
-	{/if}
 
 	<section class="mb-8">
 		<div class="border rounded-box bg-base-100 p-4">
@@ -72,7 +49,21 @@
 				Add New Item
 			</h2>
 			<form method="POST" action="?/createItem" use:enhance={() => {
-				// Reset form on success
+				return ({ result, update }) => {
+					update();
+					if (result.type === 'success') {
+						const data = result.data as { success?: boolean; error?: string } | undefined;
+						if (data?.success) {
+							toast.success('Item created successfully.');
+						} else if (data?.error) {
+							toast.error(data.error);
+						}
+					} else if (result.type === 'failure') {
+						const data = result.data as { error?: string } | undefined;
+						const error = data?.error || 'Failed to create item';
+						toast.error(error);
+					}
+				};
 			}}>
 				<div class="flex gap-2">
 					<input
@@ -112,7 +103,22 @@
 								method="POST" 
 								action="?/updateItem" 
 								use:enhance={() => {
-									cancelEdit();
+									return ({ result, update }) => {
+										update();
+										if (result.type === 'success') {
+											const data = result.data as { success?: boolean; error?: string } | undefined;
+											if (data?.success) {
+												toast.success('Item updated successfully.');
+												cancelEdit();
+											} else if (data?.error) {
+												toast.error(data.error);
+											}
+										} else if (result.type === 'failure') {
+											const data = result.data as { error?: string } | undefined;
+											const error = data?.error || 'Failed to update item';
+											toast.error(error);
+										}
+									};
 								}}
 								class="col-span-3 grid grid-cols-[1fr_auto_auto_auto] gap-2 items-center"
 							>
@@ -159,7 +165,23 @@
 									use:enhance={({ cancel }) => {
 										if (!confirm(`Are you sure you want to delete ${item.name}?`)) {
 											cancel();
+											return;
 										}
+										return ({ result, update }) => {
+											update();
+											if (result.type === 'success') {
+												const data = result.data as { success?: boolean; error?: string } | undefined;
+												if (data?.success) {
+													toast.success('Item deleted successfully.');
+												} else if (data?.error) {
+													toast.error(data.error);
+												}
+											} else if (result.type === 'failure') {
+												const data = result.data as { error?: string } | undefined;
+												const error = data?.error || 'Failed to delete item';
+												toast.error(error);
+											}
+										};
 									}}
 								>
 									<input type="hidden" name="itemId" value={item._id} />
