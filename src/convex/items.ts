@@ -27,16 +27,31 @@ export const getAllItems = query({
 	}
 });
 
+export const getAllContainers = query({
+	args: {},
+	handler: async (ctx) => {
+		const containers = await ctx.db.query('containers').collect();
+		// Sort by type first, then by size
+		return containers.sort((a, b) => {
+			if (a.type !== b.type) {
+				return a.type.localeCompare(b.type);
+			}
+			return a.size - b.size;
+		});
+	}
+});
+
 export const createItem = mutation({
 	args: {
 		name: v.string(),
-		price: v.number()
+		price: v.number(),
+		containers: v.optional(v.array(v.id('containers')))
 	},
-	handler: async (ctx, { name, price }) => {
+	handler: async (ctx, { name, price, containers }) => {
 		const itemId = await ctx.db.insert('items', {
 			name,
 			price,
-			containers: []
+			containers: containers ?? []
 		});
 		return { success: true, itemId };
 	}
@@ -46,20 +61,24 @@ export const updateItem = mutation({
 	args: {
 		itemId: v.id('items'),
 		name: v.optional(v.string()),
-		price: v.optional(v.number())
+		price: v.optional(v.number()),
+		containers: v.optional(v.array(v.id('containers')))
 	},
-	handler: async (ctx, { itemId, name, price }) => {
+	handler: async (ctx, { itemId, name, price, containers }) => {
 		const item = await ctx.db.get(itemId);
 		if (!item) {
 			throw new Error('Item not found');
 		}
 
-		const updates: { name?: string; price?: number } = {};
+		const updates: { name?: string; price?: number; containers?: Id<'containers'>[] } = {};
 		if (name !== undefined) {
 			updates.name = name;
 		}
 		if (price !== undefined) {
 			updates.price = price;
+		}
+		if (containers !== undefined) {
+			updates.containers = containers;
 		}
 
 		if (Object.keys(updates).length === 0) {

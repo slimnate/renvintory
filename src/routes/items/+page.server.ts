@@ -28,10 +28,44 @@ export const actions: Actions = {
 			};
 		}
 
+		// Parse container IDs from form data
+		const containerIds: Id<'containers'>[] = [];
+		const containerIdValues = form.getAll('containerIds');
+		for (const id of containerIdValues) {
+			if (id && typeof id === 'string') {
+				containerIds.push(id as Id<'containers'>);
+			}
+		}
+
+		// Handle new container creation
+		const newContainerSizeStr = form.get('newContainerSize') as string;
+		const newContainerType = form.get('newContainerType') as 'can' | 'bottle' | 'cup' | null;
+		if (newContainerSizeStr && newContainerType) {
+			const newContainerSize = parseFloat(newContainerSizeStr);
+			if (!isNaN(newContainerSize) && newContainerSize > 0) {
+				try {
+					const result = await client.mutation(api.containers.createContainer, {
+						size: newContainerSize,
+						type: newContainerType
+					});
+					if (result.containerId) {
+						containerIds.push(result.containerId);
+					}
+				} catch (error) {
+					return {
+						op: 'createItem',
+						success: false,
+						error: error instanceof Error ? error.message : 'Failed to create container'
+					};
+				}
+			}
+		}
+
 		try {
 			await client.mutation(api.items.createItem, {
 				name,
-				price
+				price,
+				containers: containerIds
 			});
 			return { op: 'createItem', success: true };
 		} catch (error) {
@@ -57,7 +91,7 @@ export const actions: Actions = {
 			};
 		}
 
-		const updates: { name?: string; price?: number } = {};
+		const updates: { name?: string; price?: number; containers?: Id<'containers'>[] } = {};
 		if (name !== null && name !== undefined && name !== '') {
 			updates.name = name;
 		}
@@ -73,11 +107,49 @@ export const actions: Actions = {
 			updates.price = price;
 		}
 
+		// Parse container IDs from form data
+		const containerIds: Id<'containers'>[] = [];
+		const containerIdValues = form.getAll('containerIds');
+		for (const id of containerIdValues) {
+			if (id && typeof id === 'string') {
+				containerIds.push(id as Id<'containers'>);
+			}
+		}
+
+		// Handle new container creation
+		const newContainerSizeStr = form.get('newContainerSize') as string;
+		const newContainerType = form.get('newContainerType') as 'can' | 'bottle' | 'cup' | null;
+		if (newContainerSizeStr && newContainerType) {
+			const newContainerSize = parseFloat(newContainerSizeStr);
+			if (!isNaN(newContainerSize) && newContainerSize > 0) {
+				try {
+					const result = await client.mutation(api.containers.createContainer, {
+						size: newContainerSize,
+						type: newContainerType
+					});
+					if (result.containerId) {
+						containerIds.push(result.containerId);
+					}
+				} catch (error) {
+					return {
+						op: 'updateItem',
+						success: false,
+						error: error instanceof Error ? error.message : 'Failed to create container'
+					};
+				}
+			}
+		}
+
+		// Always update containers if provided (even if empty array)
+		if (form.has('containerIds') || (newContainerSizeStr && newContainerType)) {
+			updates.containers = containerIds;
+		}
+
 		if (Object.keys(updates).length === 0) {
 			return {
 				op: 'updateItem',
 				success: false,
-				error: 'At least one field (name or price) must be provided'
+				error: 'At least one field (name, price, or containers) must be provided'
 			};
 		}
 
@@ -118,6 +190,51 @@ export const actions: Actions = {
 				op: 'deleteItem',
 				success: false,
 				error: error instanceof Error ? error.message : 'Failed to delete item'
+			};
+		}
+	},
+	createContainer: async ({ request }) => {
+		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
+		const form = await request.formData();
+		const sizeStr = form.get('size') as string;
+		const type = form.get('type') as 'can' | 'bottle' | 'cup' | null;
+
+		if (!sizeStr || !type) {
+			return {
+				op: 'createContainer',
+				success: false,
+				error: 'Size and type are required'
+			};
+		}
+
+		const size = parseFloat(sizeStr);
+		if (isNaN(size) || size <= 0) {
+			return {
+				op: 'createContainer',
+				success: false,
+				error: 'Size must be a valid positive number'
+			};
+		}
+
+		if (type !== 'can' && type !== 'bottle' && type !== 'cup') {
+			return {
+				op: 'createContainer',
+				success: false,
+				error: 'Type must be can, bottle, or cup'
+			};
+		}
+
+		try {
+			const result = await client.mutation(api.containers.createContainer, {
+				size,
+				type
+			});
+			return { op: 'createContainer', success: true, containerId: result.containerId };
+		} catch (error) {
+			return {
+				op: 'createContainer',
+				success: false,
+				error: error instanceof Error ? error.message : 'Failed to create container'
 			};
 		}
 	}
