@@ -21,9 +21,13 @@ let editMode = $state(false);
 let showDeleteDayModal = $state(false);
 let dayToDelete = $state<string | null>(null);
 let pendingDeleteDate: string | null = null;
+let deleteDayButtonDisabled = $state(false);
+let deleteDayTimeoutId: number | null = null;
 let showRemoveItemModal = $state(false);
 let itemToRemove = $state<{ _id: Id<'items'>; name: string } | null>(null);
 let pendingRemoveItemId: Id<'items'> | null = null;
+let removeItemButtonDisabled = $state(false);
+let removeItemTimeoutId: number | null = null;
 
 	// Inventory type definition
 	type Inventory = {
@@ -72,12 +76,25 @@ function handleDeleteDayClick(date: string) {
 	dayToDelete = date;
 	pendingDeleteDate = date;
 	showDeleteDayModal = true;
+	deleteDayButtonDisabled = true;
+	if (deleteDayTimeoutId) {
+		clearTimeout(deleteDayTimeoutId);
+	}
+	deleteDayTimeoutId = window.setTimeout(() => {
+		deleteDayButtonDisabled = false;
+		deleteDayTimeoutId = null;
+	}, 2000);
 }
 
 function cancelDeleteDay() {
 	showDeleteDayModal = false;
 	dayToDelete = null;
 	pendingDeleteDate = null;
+	deleteDayButtonDisabled = false;
+	if (deleteDayTimeoutId) {
+		clearTimeout(deleteDayTimeoutId);
+		deleteDayTimeoutId = null;
+	}
 }
 
 function confirmDeleteDay() {
@@ -94,12 +111,25 @@ function handleRemoveItemClick(item: { _id: Id<'items'>; name: string }) {
 	itemToRemove = item;
 	pendingRemoveItemId = item._id;
 	showRemoveItemModal = true;
+	removeItemButtonDisabled = true;
+	if (removeItemTimeoutId) {
+		clearTimeout(removeItemTimeoutId);
+	}
+	removeItemTimeoutId = window.setTimeout(() => {
+		removeItemButtonDisabled = false;
+		removeItemTimeoutId = null;
+	}, 2000);
 }
 
 function cancelRemoveItem() {
 	showRemoveItemModal = false;
 	itemToRemove = null;
 	pendingRemoveItemId = null;
+	removeItemButtonDisabled = false;
+	if (removeItemTimeoutId) {
+		clearTimeout(removeItemTimeoutId);
+		removeItemTimeoutId = null;
+	}
 }
 
 function confirmRemoveItem() {
@@ -399,7 +429,14 @@ function confirmRemoveItem() {
 				</p>
 				<div class="modal-action">
 					<button type="button" class="btn" onclick={cancelDeleteDay}>Cancel</button>
-					<button type="button" class="btn btn-error" onclick={confirmDeleteDay}>Delete</button>
+					<button
+						type="button"
+						class="btn btn-error"
+						onclick={confirmDeleteDay}
+						disabled={deleteDayButtonDisabled}
+					>
+						Delete
+					</button>
 				</div>
 			</div>
 			<form method="dialog">
@@ -419,7 +456,14 @@ function confirmRemoveItem() {
 				</p>
 				<div class="modal-action">
 					<button type="button" class="btn" onclick={cancelRemoveItem}>Cancel</button>
-					<button type="button" class="btn btn-error" onclick={confirmRemoveItem}>Remove</button>
+					<button
+						type="button"
+						class="btn btn-error"
+						onclick={confirmRemoveItem}
+						disabled={removeItemButtonDisabled}
+					>
+						Remove
+					</button>
 				</div>
 			</div>
 			<form method="dialog">

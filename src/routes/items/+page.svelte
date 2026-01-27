@@ -46,6 +46,8 @@
 	let showDeleteModal = $state(false);
 	let itemToDelete = $state<{ _id: Id<'items'>; name: string } | null>(null);
 	let pendingDeleteItemId: Id<'items'> | null = null;
+	let deleteButtonDisabled = $state(false);
+	let deleteButtonTimeoutId: number | null = null;
 
 	// Filtered containers for create form
 	const createFilteredContainers = $derived(() => {
@@ -138,12 +140,25 @@
 		itemToDelete = item;
 		pendingDeleteItemId = item._id;
 		showDeleteModal = true;
+		deleteButtonDisabled = true;
+		if (deleteButtonTimeoutId) {
+			clearTimeout(deleteButtonTimeoutId);
+		}
+		deleteButtonTimeoutId = window.setTimeout(() => {
+			deleteButtonDisabled = false;
+			deleteButtonTimeoutId = null;
+		}, 2000);
 	}
 
 	function cancelDelete() {
 		showDeleteModal = false;
 		itemToDelete = null;
 		pendingDeleteItemId = null;
+		deleteButtonDisabled = false;
+		if (deleteButtonTimeoutId) {
+			clearTimeout(deleteButtonTimeoutId);
+			deleteButtonTimeoutId = null;
+		}
 	}
 
 	function confirmDelete() {
@@ -703,7 +718,14 @@
 			{/if}
 			<div class="modal-action">
 				<button type="button" class="btn" onclick={cancelDelete}>Cancel</button>
-				<button type="button" class="btn btn-error" onclick={confirmDelete}>Delete</button>
+				<button
+					type="button"
+					class="btn btn-error"
+					onclick={confirmDelete}
+					disabled={deleteButtonDisabled}
+				>
+					Delete
+				</button>
 			</div>
 		</div>
 		<form method="dialog">
