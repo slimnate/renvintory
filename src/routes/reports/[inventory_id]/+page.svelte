@@ -42,8 +42,9 @@
 		</div>
 		<h1>Report - Close</h1>
 		{#if closeReport}
-			<div class="overflow-x-auto">
-				<table class="table">
+			<div class="max-h-[70vh] overflow-auto">
+				<div class="min-w-full overflow-x-auto">
+					<table class="table table-pin-rows table-pin-cols">
 					<thead>
 						<tr>
 							<th>Item</th>
@@ -85,6 +86,7 @@
 						</tr>
 					</tfoot>
 				</table>
+				</div>
 			</div>
 		{:else}
 			<p>No close report data available.</p>
@@ -108,32 +110,36 @@
 		<p>Inventory: {inventory?._id}</p>
 		<p>Location: {location?.name}</p>
 		<p>Counts: {counts?.length}</p>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Item</th>
-					<th>Price</th>
-					<th>Per container</th>
-					<th class="text-right">Total</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each totals as itemTotal}
+		<div class="max-h-[70vh] overflow-auto">
+			<div class="min-w-full overflow-x-auto">
+				<table class="table table-pin-rows table-pin-cols">
+				<thead>
 					<tr>
-						<td>{itemTotal.item_name}</td>
-						<td>${itemTotal.price.toFixed(0)}</td>
-						<td>
-							<div class="flex flex-wrap gap-2">
-								{#each itemTotal.perContainer as pc}
-									<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
-								{/each}
-							</div>
-						</td>
-						<td class="text-right">{itemTotal.total}</td>
+						<th>Item</th>
+						<th>Price</th>
+						<th>Per container</th>
+						<th class="text-right">Total</th>
 					</tr>
-				{/each}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{#each totals as itemTotal}
+						<tr>
+							<td>{itemTotal.item_name}</td>
+							<td>${itemTotal.price.toFixed(0)}</td>
+							<td>
+								<div class="flex flex-wrap gap-2">
+									{#each itemTotal.perContainer as pc}
+										<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
+									{/each}
+								</div>
+							</td>
+							<td class="text-right">{itemTotal.total}</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+			</div>
+		</div>
 	{:else if inventory.inventoryType === 'intake'}
 		<div class="mb-6 flex w-full items-center justify-between gap-4">
 			<a href={`/locations/${inventory.locationId}`} class="link text-sm link-hover">← Back</a>
@@ -153,32 +159,36 @@
 		<p>Inventory: {inventory?._id}</p>
 		<p>Location: {location?.name}</p>
 		<p>Counts: {counts?.length}</p>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Item</th>
-					<th>Price</th>
-					<th>Per container</th>
-					<th class="text-right">Total</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each totals as itemTotal}
+		<div class="max-h-[70vh] overflow-auto">
+			<div class="min-w-full overflow-x-auto">
+				<table class="table table-pin-rows table-pin-cols">
+				<thead>
 					<tr>
-						<td>{itemTotal.item_name}</td>
-						<td>${itemTotal.price.toFixed(0)}</td>
-						<td>
-							<div class="flex flex-wrap gap-2">
-								{#each itemTotal.perContainer as pc}
-									<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
-								{/each}
-							</div>
-						</td>
-						<td class="text-right">{itemTotal.total}</td>
+						<th>Item</th>
+						<th>Price</th>
+						<th>Per container</th>
+						<th class="text-right">Total</th>
 					</tr>
-				{/each}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{#each totals as itemTotal}
+						<tr>
+							<td>{itemTotal.item_name}</td>
+							<td>${itemTotal.price.toFixed(0)}</td>
+							<td>
+								<div class="flex flex-wrap gap-2">
+									{#each itemTotal.perContainer as pc}
+										<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
+									{/each}
+								</div>
+							</td>
+							<td class="text-right">{itemTotal.total}</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+			</div>
+		</div>
 	{:else}
 		<div class="mb-6 flex w-full items-center justify-between gap-4">
 			<a href={`/locations/${inventory.locationId}`} class="link text-sm link-hover">← Back</a>
@@ -198,31 +208,36 @@
 		<p>Inventory: {inventory?._id}</p>
 		<p>Location: {location?.name}</p>
 		<p>Counts: {counts?.length}</p>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Item</th>
-					<th>Price</th>
-					<th>Per container</th>
-					<th class="text-right">Total</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each totals as itemTotal}
+		<div class="max-h-[70vh] overflow-auto">
+			<div class="min-w-full overflow-x-auto">
+				<table class="table table-pin-rows table-pin-cols">
+				<thead>
 					<tr>
-						<td>{itemTotal.item_name}</td>
-						<td>${itemTotal.price.toFixed(0)}</td>
-						<td>
-							<div class="flex flex-wrap gap-2">
-								{#each itemTotal.perContainer as pc}
-									<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
-								{/each}
-							</div>
-						</td>
-						<td class="text-right">{itemTotal.total}</td>
+						<th>Item</th>
+						<th>Price</th>
+						<th>Per container</th>
+						<th class="text-right">Total</th>
 					</tr>
-				{/each}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{#each totals as itemTotal}
+						<tr>
+							<td>{itemTotal.item_name}</td>
+							<td>${itemTotal.price.toFixed(0)}</td>
+							<td>
+								<div class="flex flex-wrap gap-2">
+									{#each itemTotal.perContainer as pc}
+										<span class="badge badge-ghost">{pc.count} x {pc.size}</span>
+									{/each}
+								</div>
+							</td>
+							<td class="text-right">{itemTotal.total}</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+			</div>
+		</div>
 	{/if}
 </div>
+
