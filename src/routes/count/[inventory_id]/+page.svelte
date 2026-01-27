@@ -94,7 +94,7 @@
 				<div class="card-body gap-3">
 					<div class="flex items-center justify-between">
 						<span class="card-title text-base">{item.name}</span>
-						<span class="badge badge-neutral">Total: {totalFor(item._id)}</span>
+						<span class="badge badge-neutral whitespace-nowrap">Total: {totalFor(item._id)}</span>
 					</div>
 					<div class="grid w-full grid-cols-1 gap-2">
 						{#each containersFor(item._id) as container}
