@@ -158,7 +158,7 @@ Deploying to production requires that:
 
 ## Project Status
 
-Current version: `1.0.0`
+Current version: `1.1.0`
 
 Planned improvements:
 - **Location management** - Allow users to add/remove locations
