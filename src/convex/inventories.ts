@@ -489,34 +489,38 @@ export const getReportData = query({
 				}
 			>();
 
-			for (const c of countsWithDetails) {
-				if (!c.item || !c.container) continue;
+		for (const c of countsWithDetails) {
+			if (!c.item || !c.container) continue;
 
-				const itemId = c.itemId;
-				const itemName = c.item.name;
-				const itemPrice = c.item.price;
-				const containerSize = c.container.size;
-				const containerType = c.container.type;
-				const countValue = c.count ?? 0;
-				const total = countValue * containerSize;
+			const itemId = c.itemId;
+			const itemName = c.item.name;
+			const itemPrice = c.item.price;
+			const containerSize = c.container.size;
+			const containerType = c.container.type;
+			const countValue = c.count ?? 0;
+			
+			// Skip counts with value 0
+			if (countValue === 0) continue;
+			
+			const total = countValue * containerSize;
 
-				const current = itemTotals.get(itemId) ?? {
-					item_name: itemName,
-					price: itemPrice,
-					perContainer: [],
-					total: 0
-				};
-				current.perContainer.push({ size: containerSize, count: countValue, type: containerType });
-				current.total += total;
-				itemTotals.set(itemId, current);
-			}
+			const current = itemTotals.get(itemId) ?? {
+				item_name: itemName,
+				price: itemPrice,
+				perContainer: [],
+				total: 0
+			};
+			current.perContainer.push({ size: containerSize, count: countValue, type: containerType });
+			current.total += total;
+			itemTotals.set(itemId, current);
+		}
 
-			// Sort per container arrays by size
-			for (const entry of itemTotals.values()) {
-				entry.perContainer.sort((a, b) => a.size - b.size);
-			}
+		// Sort per container arrays by size
+		for (const entry of itemTotals.values()) {
+			entry.perContainer.sort((a, b) => a.size - b.size);
+		}
 
-			const totals = Array.from(itemTotals.values());
+		const totals = Array.from(itemTotals.values());
 
 			return {
 				inventory,
@@ -587,6 +591,10 @@ export const getReportData = query({
 			const containerSize = c.container.size;
 			const containerType = c.container.type;
 			const countValue = c.count ?? 0;
+			
+			// Skip counts with value 0
+			if (countValue === 0) continue;
+			
 			const total = countValue * containerSize;
 
 			const current = itemTotals.get(itemId) ?? {
