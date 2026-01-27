@@ -11,13 +11,19 @@
 	const itemsQuery = useQuery(api.items.getItemsByLocationId, { locationId: params.id as Id<"locations"> });
 	const allItemsQuery = useQuery(api.items.getAllItems);
 
-	const location = $derived(locationQuery.data);
-	const items = $derived(itemsQuery.data ?? []);
-	const allItems = $derived(allItemsQuery.data ?? []);
+const location = $derived(locationQuery.data);
+const items = $derived(itemsQuery.data ?? []);
+const allItems = $derived(allItemsQuery.data ?? []);
 
-	let showAddModal = $state(false);
-	let selectedItemId = $state<string | null>(null);
-	let editMode = $state(false);
+let showAddModal = $state(false);
+let selectedItemId = $state<string | null>(null);
+let editMode = $state(false);
+let showDeleteDayModal = $state(false);
+let dayToDelete = $state<string | null>(null);
+let pendingDeleteDate: string | null = null;
+let showRemoveItemModal = $state(false);
+let itemToRemove = $state<{ _id: Id<'items'>; name: string } | null>(null);
+let pendingRemoveItemId: Id<'items'> | null = null;
 
 	// Inventory type definition
 	type Inventory = {
@@ -45,22 +51,66 @@
 		return `${dayAbbr} - ${month}/${day}/${year}`;
 	}
 
-	// Group inventories by date
-	const inventoriesByDate = $derived.by(() => {
-		if (!inventories || inventories.length === 0) {
-			return [];
+// Group inventories by date
+const inventoriesByDate = $derived.by(() => {
+	if (!inventories || inventories.length === 0) {
+		return [];
+	}
+	const grouped = new Map<string, Inventory[]>();
+	for (const inv of inventories) {
+		const date = inv.date;
+		if (!grouped.has(date)) {
+			grouped.set(date, []);
 		}
-		const grouped = new Map<string, Inventory[]>();
-		for (const inv of inventories) {
-			const date = inv.date;
-			if (!grouped.has(date)) {
-				grouped.set(date, []);
-			}
-			grouped.get(date)!.push(inv);
+		grouped.get(date)!.push(inv);
+	}
+	// Sort dates descending (most recent first) and convert to array
+	return Array.from(grouped.entries()).sort((a, b) => b[0].localeCompare(a[0]));
+});
+
+function handleDeleteDayClick(date: string) {
+	dayToDelete = date;
+	pendingDeleteDate = date;
+	showDeleteDayModal = true;
+}
+
+function cancelDeleteDay() {
+	showDeleteDayModal = false;
+	dayToDelete = null;
+	pendingDeleteDate = null;
+}
+
+function confirmDeleteDay() {
+	if (pendingDeleteDate) {
+		const form = document.querySelector(`form[data-delete-date="${pendingDeleteDate}"]`) as HTMLFormElement | null;
+		if (form) {
+			form.requestSubmit();
 		}
-		// Sort dates descending (most recent first) and convert to array
-		return Array.from(grouped.entries()).sort((a, b) => b[0].localeCompare(a[0]));
-	});
+	}
+	cancelDeleteDay();
+}
+
+function handleRemoveItemClick(item: { _id: Id<'items'>; name: string }) {
+	itemToRemove = item;
+	pendingRemoveItemId = item._id;
+	showRemoveItemModal = true;
+}
+
+function cancelRemoveItem() {
+	showRemoveItemModal = false;
+	itemToRemove = null;
+	pendingRemoveItemId = null;
+}
+
+function confirmRemoveItem() {
+	if (pendingRemoveItemId) {
+		const form = document.querySelector(`form[data-remove-item-id="${pendingRemoveItemId}"]`) as HTMLFormElement | null;
+		if (form) {
+			form.requestSubmit();
+		}
+	}
+	cancelRemoveItem();
+}
 </script>
 
 <svelte:head>
@@ -148,29 +198,36 @@
 								{/if}
 							</div>
 							<a href={`/inventories/${params.id}/${date}`} class="btn btn-sm btn-outline">Details</a>
-							<form method="POST" action="?/deleteInventory" use:enhance={({ cancel }) => {
-								if (!confirm('Are you sure you want to delete all inventories for this day?')) {
-									cancel();
-									return;
-								}
-								return ({ result, update }) => {
-									update();
-									if (result.type === 'success') {
-										const data = result.data as { success?: boolean; error?: string } | undefined;
-										if (data?.success) {
-											toast.success('All inventories for the day deleted successfully.');
-										} else if (data?.error) {
-											toast.error(data.error);
+							<form
+								method="POST"
+								action="?/deleteInventory"
+								data-delete-date={date}
+								use:enhance={() => {
+									return ({ result, update }) => {
+										update();
+										if (result.type === 'success') {
+											const data = result.data as { success?: boolean; error?: string } | undefined;
+											if (data?.success) {
+												toast.success('All inventories for the day deleted successfully.');
+											} else if (data?.error) {
+												toast.error(data.error);
+											}
+										} else if (result.type === 'failure') {
+											const data = result.data as { error?: string } | undefined;
+											const error = data?.error || 'Failed to delete inventories';
+											toast.error(error);
 										}
-									} else if (result.type === 'failure') {
-										const data = result.data as { error?: string } | undefined;
-										const error = data?.error || 'Failed to delete inventories';
-										toast.error(error);
-									}
-								};
-							}}>
+									};
+								}}
+							>
 								<input type="hidden" name="date" value={date} />
-								<button type="submit" class="btn btn-sm btn-error">Delete</button>
+								<button
+									type="button"
+									class="btn btn-sm btn-error"
+									onclick={() => handleDeleteDayClick(date)}
+								>
+									Delete
+								</button>
 							</form>
 						</div>
 					</li>
@@ -199,31 +256,49 @@
 							<div class="flex items-center gap-2">
 								<span class="badge badge-neutral">${item.price}</span>
 								{#if editMode}
-									<form method="POST" action="?/removeItem" use:enhance={({ cancel }) => {
-										if (!confirm(`Are you sure you want to remove ${item.name} from this location?`)) {
-											cancel();
-											return;
-										}
-										return ({ result, update }) => {
-											update();
-											if (result.type === 'success') {
-												const data = result.data as { success?: boolean; error?: string } | undefined;
-												if (data?.success) {
-													toast.success('Item removed successfully.');
-												} else if (data?.error) {
-													toast.error(data.error);
+									<form
+										method="POST"
+										action="?/removeItem"
+										data-remove-item-id={item._id}
+										use:enhance={() => {
+											return ({ result, update }) => {
+												update();
+												if (result.type === 'success') {
+													const data = result.data as { success?: boolean; error?: string } | undefined;
+													if (data?.success) {
+														toast.success('Item removed successfully.');
+													} else if (data?.error) {
+														toast.error(data.error);
+													}
+												} else if (result.type === 'failure') {
+													const data = result.data as { error?: string } | undefined;
+													const error = data?.error || 'Failed to remove item';
+													toast.error(error);
 												}
-											} else if (result.type === 'failure') {
-												const data = result.data as { error?: string } | undefined;
-												const error = data?.error || 'Failed to remove item';
-												toast.error(error);
-											}
-										};
-									}} class="flex-shrink-0">
+											};
+										}}
+										class="flex-shrink-0"
+									>
 										<input type="hidden" name="itemId" value={item._id} />
-										<button type="submit" class="btn btn-sm btn-error btn-circle w-6 h-6 min-h-0 p-0" aria-label={`Remove ${item.name} from location`}>
-											<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+										<button
+											type="button"
+											class="btn btn-sm btn-error btn-circle w-6 h-6 min-h-0 p-0"
+											aria-label={`Remove ${item.name} from location`}
+											onclick={() => handleRemoveItemClick(item)}
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												class="h-4 w-4"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													stroke-width="2"
+													d="M6 18L18 6M6 6l12 12"
+												/>
 											</svg>
 										</button>
 									</form>
@@ -308,6 +383,47 @@
 					showAddModal = false;
 					selectedItemId = null;
 				}}>close</button>
+			</form>
+		</div>
+	{/if}
+	{#if showDeleteDayModal && dayToDelete}
+		<div class="modal modal-open">
+			<div class="modal-box">
+				<h3 class="font-bold text-lg mb-4">Delete inventories</h3>
+				<p class="mb-4">
+					Are you sure you want to delete <strong>all inventories</strong> for{' '}
+					<strong>{formatDate(dayToDelete)}</strong>?
+				</p>
+				<p class="text-sm text-neutral/70 mb-4">
+					This action cannot be undone and will remove all counts for this date at this location.
+				</p>
+				<div class="modal-action">
+					<button type="button" class="btn" onclick={cancelDeleteDay}>Cancel</button>
+					<button type="button" class="btn btn-error" onclick={confirmDeleteDay}>Delete</button>
+				</div>
+			</div>
+			<form method="dialog">
+				<button class="modal-backdrop" onclick={cancelDeleteDay}></button>
+			</form>
+		</div>
+	{/if}
+	{#if showRemoveItemModal && itemToRemove}
+		<div class="modal modal-open">
+			<div class="modal-box">
+				<h3 class="font-bold text-lg mb-4">Remove item from location</h3>
+				<p class="mb-4">
+					Are you sure you want to remove <strong>{itemToRemove.name}</strong> from this location?
+				</p>
+				<p class="text-sm text-neutral/70 mb-4">
+					This will not delete the item itself, only its association with this location.
+				</p>
+				<div class="modal-action">
+					<button type="button" class="btn" onclick={cancelRemoveItem}>Cancel</button>
+					<button type="button" class="btn btn-error" onclick={confirmRemoveItem}>Remove</button>
+				</div>
+			</div>
+			<form method="dialog">
+				<button class="modal-backdrop" onclick={cancelRemoveItem}></button>
 			</form>
 		</div>
 	{/if}
