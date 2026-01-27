@@ -42,6 +42,11 @@
 	let editNewContainerType = $state<'can' | 'bottle' | 'cup'>('can');
 	let isEditingContainer = $state(false);
 
+	// Delete confirmation modal state
+	let showDeleteModal = $state(false);
+	let itemToDelete = $state<{ _id: Id<'items'>; name: string } | null>(null);
+	let pendingDeleteItemId: Id<'items'> | null = null;
+
 	// Filtered containers for create form
 	const createFilteredContainers = $derived(() => {
 		return containersByType()[createContainerTypeFilter];
@@ -128,6 +133,38 @@
 		createNewContainerType = 'can';
 		isCreatingContainer = false;
 	}
+
+	function handleDeleteClick(item: { _id: Id<'items'>; name: string }) {
+		itemToDelete = item;
+		pendingDeleteItemId = item._id;
+		showDeleteModal = true;
+	}
+
+	function cancelDelete() {
+		showDeleteModal = false;
+		itemToDelete = null;
+		pendingDeleteItemId = null;
+	}
+
+	function confirmDelete() {
+		// Find and submit the form for the pending item
+		if (pendingDeleteItemId) {
+			const form = document.querySelector(`form[data-item-id="${pendingDeleteItemId}"]`) as HTMLFormElement;
+			if (form) {
+				form.requestSubmit();
+			}
+		}
+		cancelDelete();
+	}
+
+	// Query locations for the item being deleted
+	const locationsQueryArgs = $derived(itemToDelete ? { itemId: itemToDelete._id } : { itemId: null });
+	const locationsQuery = $derived(useQuery(api.items.getLocationsByItemId, locationsQueryArgs));
+	const itemLocations = $derived(locationsQuery.data ?? []);
+
+    $inspect(itemLocations);
+    $inspect(locationsQuery);
+    $inspect(locationsQueryArgs);
 
 </script>
 
@@ -596,13 +633,13 @@
 									<form 
 										method="POST" 
 										action="?/deleteItem" 
-										use:enhance={({ cancel }) => {
-											if (!confirm(`Are you sure you want to delete ${item.name}?`)) {
-												cancel();
-												return;
-											}
+										data-item-id={item._id}
+										use:enhance={() => {
 											return ({ result, update }) => {
 												update();
+												showDeleteModal = false;
+												itemToDelete = null;
+												pendingDeleteItemId = null;
 												if (result.type === 'success') {
 													const data = result.data as { success?: boolean; error?: string } | undefined;
 													if (data?.success) {
@@ -619,7 +656,13 @@
 										}}
 									>
 										<input type="hidden" name="itemId" value={item._id} />
-										<button type="submit" class="btn btn-sm btn-error">Delete</button>
+										<button 
+											type="button" 
+											class="btn btn-sm btn-error"
+											onclick={() => handleDeleteClick(item)}
+										>
+											Delete
+										</button>
 									</form>
 								</div>
 							</div>
@@ -629,4 +672,42 @@
 			</ul>
 		{/if}
 	</section>
+{/if}
+
+{#if showDeleteModal && itemToDelete}
+	<div class="modal modal-open">
+		<div class="modal-box">
+			<h3 class="font-bold text-lg mb-4">Delete Item</h3>
+			<p class="mb-4">
+				Are you sure you want to delete <strong>{itemToDelete.name}</strong>?
+			</p>
+			{#if locationsQuery.loading}
+				<div class="flex justify-center py-4">
+					<span class="loading loading-spinner"></span>
+				</div>
+			{:else if itemLocations.length > 0}
+				<div class="alert alert-warning mb-4">
+					<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+					</svg>
+					<div>
+						<p class="font-semibold">This item is assigned to the following locations:</p>
+						<ul class="list-disc list-inside mt-2">
+							{#each itemLocations as location}
+								<li>{location.name}</li>
+							{/each}
+						</ul>
+						<p class="mt-2 text-sm">Deleting this item will remove it from all locations.</p>
+					</div>
+				</div>
+			{/if}
+			<div class="modal-action">
+				<button type="button" class="btn" onclick={cancelDelete}>Cancel</button>
+				<button type="button" class="btn btn-error" onclick={confirmDelete}>Delete</button>
+			</div>
+		</div>
+		<form method="dialog">
+			<button class="modal-backdrop" onclick={cancelDelete}></button>
+		</form>
+	</div>
 {/if}

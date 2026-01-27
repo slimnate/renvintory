@@ -41,6 +41,17 @@ export const getAllContainers = query({
 	}
 });
 
+export const getLocationsByItemId = query({
+	args: { itemId: v.union(v.id('items'), v.null()) },
+	handler: async (ctx, { itemId }) => {
+		if (!itemId) {
+			return [];
+		}
+		const allLocations = await ctx.db.query('locations').collect();
+		return allLocations.filter((location) => location.items.includes(itemId));
+	}
+});
+
 export const createItem = mutation({
 	args: {
 		name: v.string(),
@@ -108,14 +119,14 @@ export const deleteItem = mutation({
 			throw new Error('Cannot delete item: it is assigned to one or more locations');
 		}
 
-		// Check if item is referenced in any counts
+		// Delete all counts associated with this item
 		const counts = await ctx.db
 			.query('counts')
 			.withIndex('by_item', (q) => q.eq('itemId', itemId))
-			.first();
+			.collect();
 
-		if (counts) {
-			throw new Error('Cannot delete item: it is referenced in inventory counts');
+		for (const count of counts) {
+			await ctx.db.delete(count._id);
 		}
 
 		await ctx.db.delete(itemId);
