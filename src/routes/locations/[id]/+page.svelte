@@ -179,11 +179,7 @@
 		class="-mx-4 mb-4 flex items-center gap-3 boardface px-4 py-3 carved sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
 	>
 		<a href="/" class="text-xl text-goldleaf">&lsaquo;</a>
-		<span
-			class="flex h-11 w-9 shrink-0 items-start justify-center bg-gules pt-2 text-goldleaf ring-1 ring-goldleaf/60 shield"
-		>
-			<Emblem id={emblemFor(params.id)} class="h-5 w-5" />
-		</span>
+		<Emblem id={emblemFor(params.id)} class="h-11 w-9 shrink-0" />
 		<div>
 			<div class="gilt font-display text-xl leading-none font-bold">{location?.name}</div>
 			<div class="text-[10px] tracking-[0.2em] text-cream/40 uppercase">at the sign of</div>

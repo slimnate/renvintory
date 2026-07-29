@@ -37,11 +37,7 @@
 			{#each locationsQuery.data as location}
 				<li class="rounded-sm border-2 border-goldleaf/70 painted shadow-lg carved">
 					<a class="flex items-center gap-3 p-3" href={`/locations/${location._id}`}>
-						<span
-							class="flex h-14 w-12 shrink-0 items-start justify-center boardface pt-2.5 text-goldleaf ring-1 ring-goldleaf/60 shield"
-						>
-							<Emblem id={emblemFor(location._id)} />
-						</span>
+						<Emblem id={emblemFor(location._id)} class="h-14 w-12 shrink-0" />
 						<span class="min-w-0 flex-1">
 							<span class="block font-display text-lg leading-tight font-bold">{location.name}</span
 							>
