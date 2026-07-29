@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>05 Illuminated Ledger &middot; Renvintory Mockups</title>
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..700&family=EB+Garamond:ital,wght@0,400..700;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<style type="text/tailwindcss">
+			@theme {
+				--color-parch: #f2e8d5;
+				--color-parch-edge: #e4d5b7;
+				--color-ink: #2b2118;
+				--color-ink-soft: #6b5b47;
+				--color-vermilion: #e34234;
+				--color-azurite: #2e5c8a;
+				--color-gold: #c9a227;
+				--color-verdigris: #43766c;
+			}
+		</style>
+		<style>
+			body {
+				font-family: 'EB Garamond', Georgia, serif;
+			}
+			.display {
+				font-family: 'Cinzel', Georgia, serif;
+			}
+			.num {
+				font-variant-numeric: tabular-nums lining-nums;
+			}
+			/* diapering: subtle lattice fill so empty ground is never truly empty */
+			.diaper {
+				background-color: #f2e8d5;
+				background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Cpath d='M11 0l11 11-11 11L0 11z' fill='none' stroke='%232B2118' stroke-opacity='0.055'/%3E%3C/svg%3E");
+			}
+			/* ruled ledger lines instead of cards */
+			.ruled {
+				border-bottom: 1px solid rgba(43, 33, 24, 0.18);
+			}
+			.rule-gold {
+				border-bottom: 2px solid #c9a227;
+			}
+			/* burnished gold: leaf over gesso was polished to a sheen, so a soft gradient not a flat fill */
+			.leaf {
+				background-image: linear-gradient(160deg, #e6c65a 0%, #c9a227 45%, #a8821b 100%);
+			}
+			.dropcap {
+				font-family: 'Cinzel', Georgia, serif;
+				background: #e34234;
+				color: #f8f1e0;
+				width: 2.1rem;
+				height: 2.1rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-weight: 700;
+				box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.85);
+			}
+		</style>
+	</head>
+	<body class="bg-stone-300 text-ink antialiased">
+		<nav class="sticky top-0 z-50 border-b border-stone-400 bg-white/95 backdrop-blur">
+			<div class="flex gap-1 overflow-x-auto px-3 py-2 text-xs whitespace-nowrap">
+				<a href="index.html" class="rounded-md px-2 py-1 font-semibold text-slate-500">All</a>
+				<a href="01-focused-utility.html" class="rounded-md px-2 py-1 text-slate-600">01 Utility</a>
+				<a href="02-dark-bar.html" class="rounded-md px-2 py-1 text-slate-600">02 Dark</a>
+				<a href="03-brutalist.html" class="rounded-md px-2 py-1 text-slate-600">03 Brutal</a>
+				<a href="04-native-lists.html" class="rounded-md px-2 py-1 text-slate-600">04 Native</a>
+				<a href="05-illuminated-ledger.html" class="display rounded-md bg-vermilion px-2 py-1 font-bold text-white">05 Illuminated</a>
+				<a href="06-tavern-signboard.html" class="rounded-md px-2 py-1 text-slate-600">06 Signboard</a>
+				<a href="07-heraldic-modern.html" class="rounded-md px-2 py-1 text-slate-600">07 Heraldic</a>
+				<a href="08-dense-ledger.html" class="rounded-md px-2 py-1 text-slate-600">08 Dense</a>
+				<a href="09-gilded-shield.html" class="rounded-md px-2 py-1 text-slate-600">09 Gilded</a>
+				<a href="10-painted-arms.html" class="rounded-md px-2 py-1 text-slate-600">10 Painted</a>
+			</div>
+		</nav>
+
+		<div class="mx-auto max-w-[440px] space-y-10 px-4 py-8">
+			<header>
+				<h1 class="display text-2xl font-bold tracking-tight">05 &middot; Illuminated Ledger</h1>
+				<p class="mt-1 text-base text-stone-700">
+					A stock count is a ledger, so this treats it as a scriptorium page. Ruled lines instead of
+					cards, vermilion rubrication, gold reserved for the primary action.
+				</p>
+			</header>
+
+			<!-- ============ HOME ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-stone-600 uppercase">Home</h2>
+				<div class="diaper relative h-[720px] overflow-hidden rounded-sm border-2 border-parch-edge shadow-lg ring-1 ring-ink/20">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 border-b-2 border-gold bg-parch/95 px-5 py-4 backdrop-blur">
+							<h1 class="display text-center text-xl font-bold tracking-[0.15em] uppercase">
+								Renvintory
+							</h1>
+							<p class="mt-0.5 text-center text-xs tracking-widest text-ink-soft italic">
+								a booke of stocke
+							</p>
+						</header>
+						<div class="px-5 pt-5 pb-28">
+							<h2 class="display mb-1 text-[11px] font-bold tracking-[0.25em] text-vermilion uppercase">
+								Houses
+							</h2>
+							<ul class="mb-7">
+								<li class="ruled flex items-center gap-3 py-3.5">
+									<span class="dropcap shrink-0 text-lg">D</span>
+									<span class="flex-1">
+										<span class="display block text-lg leading-tight font-semibold">Dragon</span>
+										<span class="text-sm text-ink-soft italic">last reckoned Sat 1/23</span>
+									</span>
+									<span class="text-gold">&#10148;</span>
+								</li>
+								<li class="ruled flex items-center gap-3 py-3.5">
+									<span class="dropcap shrink-0 text-lg">W</span>
+									<span class="flex-1">
+										<span class="display block text-lg leading-tight font-semibold">Wizard</span>
+										<span class="text-sm text-ink-soft italic">last reckoned Fri 1/22</span>
+									</span>
+									<span class="text-gold">&#10148;</span>
+								</li>
+								<li class="ruled flex items-center gap-3 py-3.5">
+									<span class="dropcap shrink-0 text-lg">P</span>
+									<span class="flex-1">
+										<span class="display block text-lg leading-tight font-semibold">Pig and Whistle</span>
+										<span class="text-sm text-ink-soft italic">last reckoned Thu 1/21</span>
+									</span>
+									<span class="text-gold">&#10148;</span>
+								</li>
+							</ul>
+
+							<div class="mb-1 flex items-baseline justify-between">
+								<h2 class="display text-[11px] font-bold tracking-[0.25em] text-vermilion uppercase">
+									Wares
+								</h2>
+								<button class="text-sm text-azurite underline underline-offset-2">amend</button>
+							</div>
+							<ul class="num">
+								<li class="ruled flex justify-between py-2.5">
+									<span>Miller Lite</span><span class="text-ink-soft">$6</span>
+								</li>
+								<li class="ruled flex justify-between py-2.5">
+									<span>Coors Light</span><span class="text-ink-soft">$6</span>
+								</li>
+								<li class="ruled flex justify-between py-2.5">
+									<span>Blue Moon</span><span class="text-ink-soft">$7</span>
+								</li>
+								<li class="ruled flex justify-between py-2.5">
+									<span>Guinness</span><span class="text-ink-soft">$8</span>
+								</li>
+								<li class="ruled flex justify-between py-2.5">
+									<span>Topo Chico</span><span class="text-ink-soft">$5</span>
+								</li>
+								<li class="ruled flex justify-between py-2.5">
+									<span>Callsign IPA</span><span class="text-ink-soft">$8</span>
+								</li>
+							</ul>
+							<p class="mt-6 text-center text-xs tracking-widest text-ink-soft italic">&#10086; fol. i &#10087;</p>
+						</div>
+					</div>
+					<nav class="absolute inset-x-0 bottom-0 grid grid-cols-3 border-t-2 border-gold bg-parch-edge pb-2">
+						<button class="display py-3 text-[10px] font-bold tracking-[0.2em] text-vermilion uppercase">Houses</button>
+						<button class="display py-3 text-[10px] font-bold tracking-[0.2em] text-ink-soft uppercase">Counts</button>
+						<button class="display py-3 text-[10px] font-bold tracking-[0.2em] text-ink-soft uppercase">Wares</button>
+					</nav>
+				</div>
+			</section>
+
+			<!-- ============ LOCATION ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-stone-600 uppercase">Location</h2>
+				<div class="diaper relative h-[720px] overflow-hidden rounded-sm border-2 border-parch-edge shadow-lg ring-1 ring-ink/20">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 border-b-2 border-gold bg-parch/95 px-5 py-3.5 backdrop-blur">
+							<div class="flex items-center gap-3">
+								<span class="text-gold">&#10162;</span>
+								<h1 class="display text-xl font-bold tracking-wide">Dragon</h1>
+							</div>
+						</header>
+						<div class="px-5 pt-5 pb-28">
+							<h2 class="display mb-3 text-[11px] font-bold tracking-[0.25em] text-vermilion uppercase">
+								Reckonings
+							</h2>
+
+							<!-- a day -->
+							<div class="mb-6">
+								<div class="rule-gold mb-2 flex items-baseline justify-between pb-1">
+									<span class="display text-base font-semibold">Saturday, 23 January</span>
+									<span class="text-xs text-ink-soft italic">iiij counts</span>
+								</div>
+								<div class="mb-2 grid grid-cols-4 gap-1.5">
+									<button class="border border-ink/30 bg-parch py-2.5 text-xs tracking-wide">Open</button>
+									<button class="border border-ink/30 bg-parch py-2.5 text-xs tracking-wide">Close</button>
+									<button class="border border-ink/30 bg-parch py-2.5 text-xs tracking-wide">Spill</button>
+									<button class="border border-ink/30 bg-parch py-2.5 text-xs tracking-wide">Intake</button>
+								</div>
+								<div class="grid grid-cols-2 gap-1.5">
+									<button class="border border-azurite/60 py-2.5 text-xs text-azurite italic">Opening report</button>
+									<button class="border border-azurite/60 py-2.5 text-xs text-azurite italic">Closing report</button>
+								</div>
+							</div>
+
+							<div class="mb-6">
+								<div class="rule-gold mb-2 flex items-baseline justify-between pb-1">
+									<span class="display text-base font-semibold">Friday, 22 January</span>
+									<span class="text-xs text-ink-soft italic">ij counts</span>
+								</div>
+								<div class="mb-2 grid grid-cols-4 gap-1.5">
+									<button class="border border-ink/30 bg-parch py-2.5 text-xs tracking-wide">Open</button>
+									<button class="border border-ink/30 bg-parch py-2.5 text-xs tracking-wide">Close</button>
+								</div>
+								<div class="grid grid-cols-2 gap-1.5">
+									<button class="border border-azurite/60 py-2.5 text-xs text-azurite italic">Closing report</button>
+								</div>
+							</div>
+
+							<div class="mb-7">
+								<div class="rule-gold mb-2 flex items-baseline justify-between pb-1">
+									<span class="display text-base font-semibold">Thursday, 21 January</span>
+									<span class="text-xs text-ink-soft italic">j count</span>
+								</div>
+								<div class="grid grid-cols-4 gap-1.5">
+									<button class="border border-ink/30 bg-parch py-2.5 text-xs tracking-wide">Open</button>
+								</div>
+							</div>
+
+							<h2 class="display mb-1 text-[11px] font-bold tracking-[0.25em] text-vermilion uppercase">
+								Wares of this house
+							</h2>
+							<ul class="num">
+								<li class="ruled flex justify-between py-2.5"><span>Miller Lite</span><span class="text-ink-soft">$6</span></li>
+								<li class="ruled flex justify-between py-2.5"><span>Coors Light</span><span class="text-ink-soft">$6</span></li>
+								<li class="ruled flex justify-between py-2.5"><span>Blue Moon</span><span class="text-ink-soft">$7</span></li>
+								<li class="ruled flex justify-between py-2.5"><span>Guinness</span><span class="text-ink-soft">$8</span></li>
+							</ul>
+						</div>
+					</div>
+					<div class="absolute inset-x-0 bottom-0 border-t-2 border-gold bg-parch-edge p-3 pb-4">
+						<button class="leaf display w-full py-3.5 text-sm font-bold tracking-[0.2em] text-ink uppercase shadow-sm">
+							Begin a reckoning
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ REPORT ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-stone-600 uppercase">
+					Report (ruled ledger)
+				</h2>
+				<div class="diaper relative h-[720px] overflow-hidden rounded-sm border-2 border-parch-edge shadow-lg ring-1 ring-ink/20">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-20 border-b-2 border-gold bg-parch/95 px-5 py-3.5 backdrop-blur">
+							<div class="flex items-center gap-2">
+								<span class="text-gold">&#10162;</span>
+								<h1 class="display text-lg font-bold tracking-wide">Dragon</h1>
+								<span class="text-sm text-ink-soft italic">Sat, 23 Jan</span>
+								<span class="display ml-auto bg-vermilion px-2 py-0.5 text-[10px] font-bold tracking-widest text-parch uppercase">
+									Close
+								</span>
+							</div>
+						</header>
+						<div class="px-5 pt-5 pb-8">
+							<h2 class="display mb-3 text-center text-sm font-bold tracking-[0.3em] text-vermilion uppercase">
+								The Day&rsquo;s Reckoning
+							</h2>
+
+							<!-- totals, rubricated -->
+							<div class="mb-5 border-y-2 border-gold py-3">
+								<div class="num mb-1 flex items-baseline justify-between">
+									<span class="display text-xs tracking-widest uppercase">Total sales</span>
+									<span class="text-2xl font-semibold">$486</span>
+								</div>
+								<div class="num flex items-baseline justify-between">
+									<span class="display text-xs tracking-widest text-vermilion uppercase">Spillage</span>
+									<span class="text-2xl font-semibold text-vermilion">$29</span>
+								</div>
+							</div>
+
+							<p class="mb-2 text-xs text-ink-soft italic">Draw the leaf sideways for all columns.</p>
+
+							<div class="overflow-x-auto border border-ink/20 bg-parch/60">
+								<table class="num w-max min-w-full text-right text-sm">
+									<thead class="display border-b-2 border-gold text-[10px] tracking-widest text-vermilion uppercase">
+										<tr>
+											<th class="sticky left-0 z-10 bg-parch px-3 py-2 text-left">Ware</th>
+											<th class="px-2 py-2">Price</th>
+											<th class="px-2 py-2">Open</th>
+											<th class="px-2 py-2">Close</th>
+											<th class="px-2 py-2">Spill</th>
+											<th class="px-2 py-2">Intake</th>
+											<th class="px-2 py-2">Op+In</th>
+											<th class="px-2 py-2">Used</th>
+											<th class="px-2 py-2">Spilt&nbsp;$</th>
+											<th class="px-3 py-2">Sales</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="border-b border-ink/15">
+											<th class="sticky left-0 z-10 bg-parch px-3 py-2 text-left font-normal whitespace-nowrap">Miller Lite</th>
+											<td class="px-2 py-2">$6</td><td class="px-2 py-2">47</td><td class="px-2 py-2">31</td>
+											<td class="px-2 py-2">1</td><td class="px-2 py-2">0</td><td class="px-2 py-2">47</td>
+											<td class="px-2 py-2">16</td><td class="px-2 py-2 text-vermilion">$6</td>
+											<td class="px-3 py-2 font-semibold">$90</td>
+										</tr>
+										<tr class="border-b border-ink/15">
+											<th class="sticky left-0 z-10 bg-parch px-3 py-2 text-left font-normal whitespace-nowrap">Coors Light</th>
+											<td class="px-2 py-2">$6</td><td class="px-2 py-2">36</td><td class="px-2 py-2">25</td>
+											<td class="px-2 py-2">0</td><td class="px-2 py-2">12</td><td class="px-2 py-2">48</td>
+											<td class="px-2 py-2">23</td><td class="px-2 py-2">$0</td>
+											<td class="px-3 py-2 font-semibold">$138</td>
+										</tr>
+										<tr class="border-b border-ink/15">
+											<th class="sticky left-0 z-10 bg-parch px-3 py-2 text-left font-normal whitespace-nowrap">Blue Moon</th>
+											<td class="px-2 py-2">$7</td><td class="px-2 py-2">30</td><td class="px-2 py-2">22</td>
+											<td class="px-2 py-2">1</td><td class="px-2 py-2">12</td><td class="px-2 py-2">42</td>
+											<td class="px-2 py-2">20</td><td class="px-2 py-2 text-vermilion">$7</td>
+											<td class="px-3 py-2 font-semibold">$133</td>
+										</tr>
+										<tr class="border-b border-ink/15">
+											<th class="sticky left-0 z-10 bg-parch px-3 py-2 text-left font-normal whitespace-nowrap">Guinness</th>
+											<td class="px-2 py-2">$8</td><td class="px-2 py-2">24</td><td class="px-2 py-2">18</td>
+											<td class="px-2 py-2">0</td><td class="px-2 py-2">0</td><td class="px-2 py-2">24</td>
+											<td class="px-2 py-2">6</td><td class="px-2 py-2">$0</td>
+											<td class="px-3 py-2 font-semibold">$48</td>
+										</tr>
+										<tr class="border-b border-ink/15">
+											<th class="sticky left-0 z-10 bg-parch px-3 py-2 text-left font-normal whitespace-nowrap">Topo Chico</th>
+											<td class="px-2 py-2">$5</td><td class="px-2 py-2">18</td><td class="px-2 py-2">9</td>
+											<td class="px-2 py-2">0</td><td class="px-2 py-2">0</td><td class="px-2 py-2">18</td>
+											<td class="px-2 py-2">9</td><td class="px-2 py-2">$0</td>
+											<td class="px-3 py-2 font-semibold">$45</td>
+										</tr>
+										<tr>
+											<th class="sticky left-0 z-10 bg-parch px-3 py-2 text-left font-normal whitespace-nowrap">Callsign IPA</th>
+											<td class="px-2 py-2">$8</td><td class="px-2 py-2">20</td><td class="px-2 py-2">14</td>
+											<td class="px-2 py-2">2</td><td class="px-2 py-2">0</td><td class="px-2 py-2">20</td>
+											<td class="px-2 py-2">6</td><td class="px-2 py-2 text-vermilion">$16</td>
+											<td class="px-3 py-2 font-semibold">$32</td>
+										</tr>
+									</tbody>
+									<tfoot class="display border-t-2 border-gold text-xs">
+										<tr>
+											<th class="sticky left-0 z-10 bg-parch px-3 py-2.5 text-left tracking-widest uppercase">Sum</th>
+											<td colspan="8"></td>
+											<td class="num px-3 py-2.5 text-base font-bold">$486</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+							<p class="mt-6 text-center text-xs tracking-widest text-ink-soft italic">
+								&#10086; here endeth the reckoning &#10087;
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ COUNT ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-stone-600 uppercase">Count</h2>
+				<div class="diaper relative h-[720px] overflow-hidden rounded-sm border-2 border-parch-edge shadow-lg ring-1 ring-ink/20">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 border-b-2 border-gold bg-parch/95 px-5 py-3.5 backdrop-blur">
+							<div class="flex items-center gap-2">
+								<span class="text-gold">&#10162;</span>
+								<h1 class="display text-lg font-bold tracking-wide">Dragon</h1>
+								<span class="text-sm text-ink-soft italic">Sat, 23 Jan</span>
+								<span class="display ml-auto bg-azurite px-2 py-0.5 text-[10px] font-bold tracking-widest text-parch uppercase">
+									Open
+								</span>
+							</div>
+						</header>
+						<div class="px-5 pt-5 pb-28">
+							<!-- item, rubricated drop cap -->
+							<div class="mb-6">
+								<div class="mb-2 flex items-center gap-3">
+									<span class="dropcap shrink-0 text-lg">M</span>
+									<span class="display flex-1 text-lg font-semibold">iller Lite</span>
+									<span class="num text-2xl font-semibold">47</span>
+								</div>
+								<div class="space-y-2 border-t border-ink/20 pt-2">
+									<div class="grid grid-cols-[52px_1fr_52px] items-center gap-2">
+										<button class="h-11 border border-ink/40 bg-parch text-xl">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 border-b border-dotted border-ink/40">
+											<span class="text-xl font-semibold">3</span>
+											<span class="text-sm text-ink-soft italic">&times; 12 cans</span>
+										</div>
+										<button class="leaf h-11 text-xl font-bold text-ink">+</button>
+									</div>
+									<div class="grid grid-cols-[52px_1fr_52px] items-center gap-2">
+										<button class="h-11 border border-ink/40 bg-parch text-xl">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 border-b border-dotted border-ink/40">
+											<span class="text-xl font-semibold">11</span>
+											<span class="text-sm text-ink-soft italic">&times; 1 can</span>
+										</div>
+										<button class="leaf h-11 text-xl font-bold text-ink">+</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="mb-6">
+								<div class="mb-2 flex items-center gap-3">
+									<span class="dropcap shrink-0 text-lg">C</span>
+									<span class="display flex-1 text-lg font-semibold">oors Light</span>
+									<span class="num text-2xl font-semibold">36</span>
+								</div>
+								<div class="space-y-2 border-t border-ink/20 pt-2">
+									<div class="grid grid-cols-[52px_1fr_52px] items-center gap-2">
+										<button class="h-11 border border-ink/40 bg-parch text-xl">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 border-b border-dotted border-ink/40">
+											<span class="text-xl font-semibold">2</span>
+											<span class="text-sm text-ink-soft italic">&times; 12 cans</span>
+										</div>
+										<button class="leaf h-11 text-xl font-bold text-ink">+</button>
+									</div>
+									<div class="grid grid-cols-[52px_1fr_52px] items-center gap-2">
+										<button class="h-11 border border-ink/40 bg-parch text-xl">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 border-b border-dotted border-ink/40">
+											<span class="text-xl font-semibold">12</span>
+											<span class="text-sm text-ink-soft italic">&times; 1 can</span>
+										</div>
+										<button class="leaf h-11 text-xl font-bold text-ink">+</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="mb-6">
+								<div class="mb-2 flex items-center gap-3">
+									<span class="dropcap shrink-0 text-lg">B</span>
+									<span class="display flex-1 text-lg font-semibold">lue Moon</span>
+									<span class="num text-2xl font-semibold">30</span>
+								</div>
+								<div class="space-y-2 border-t border-ink/20 pt-2">
+									<div class="grid grid-cols-[52px_1fr_52px] items-center gap-2">
+										<button class="h-11 border border-ink/40 bg-parch text-xl">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 border-b border-dotted border-ink/40">
+											<span class="text-xl font-semibold">2</span>
+											<span class="text-sm text-ink-soft italic">&times; 6 bottles</span>
+										</div>
+										<button class="leaf h-11 text-xl font-bold text-ink">+</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="absolute inset-x-0 bottom-0 border-t-2 border-gold bg-parch-edge p-3 pb-4">
+						<div class="flex items-center gap-3">
+							<div class="text-xs text-ink-soft italic">
+								<div>iv of vij wares told</div>
+								<div class="num text-base font-semibold text-ink not-italic">137 units</div>
+							</div>
+							<button class="leaf display ml-auto px-5 py-3 text-xs font-bold tracking-[0.2em] text-ink uppercase">
+								Seal count
+							</button>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
+</html>

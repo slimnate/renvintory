@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>02 Dark Bar Mode &middot; Renvintory Mockups</title>
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<style type="text/tailwindcss">
+			@theme {
+				--color-app-bg: #0a0a0b;
+				--color-app-surface: #16181d;
+				--color-app-border: #26292f;
+				--color-app-text: #f5f5f4;
+				--color-app-muted: #9ca3af;
+				--color-app-accent: #f59e0b;
+				--color-app-positive: #a3e635;
+			}
+		</style>
+		<style>
+			body {
+				font-family:
+					ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif;
+			}
+			.num {
+				font-variant-numeric: tabular-nums;
+			}
+		</style>
+	</head>
+	<body class="bg-slate-200 text-app-text antialiased">
+		<nav class="sticky top-0 z-50 border-b border-slate-300 bg-white/95 backdrop-blur">
+			<div class="flex gap-1 overflow-x-auto px-3 py-2 text-xs whitespace-nowrap">
+				<a href="index.html" class="rounded-md px-2 py-1 font-semibold text-slate-500">All</a>
+				<a href="01-focused-utility.html" class="rounded-md px-2 py-1 text-slate-600">01 Utility</a>
+				<a href="02-dark-bar.html" class="rounded-md bg-slate-900 px-2 py-1 font-semibold text-app-accent">02 Dark</a>
+				<a href="03-brutalist.html" class="rounded-md px-2 py-1 text-slate-600">03 Brutal</a>
+				<a href="04-native-lists.html" class="rounded-md px-2 py-1 text-slate-600">04 Native</a>
+				<a href="05-illuminated-ledger.html" class="rounded-md px-2 py-1 text-slate-600">05 Illuminated</a>
+				<a href="06-tavern-signboard.html" class="rounded-md px-2 py-1 text-slate-600">06 Signboard</a>
+				<a href="07-heraldic-modern.html" class="rounded-md px-2 py-1 text-slate-600">07 Heraldic</a>
+				<a href="08-dense-ledger.html" class="rounded-md px-2 py-1 text-slate-600">08 Dense</a>
+				<a href="09-gilded-shield.html" class="rounded-md px-2 py-1 text-slate-600">09 Gilded</a>
+				<a href="10-painted-arms.html" class="rounded-md px-2 py-1 text-slate-600">10 Painted</a>
+			</div>
+		</nav>
+
+		<div class="mx-auto max-w-[440px] space-y-10 px-4 py-8">
+			<header class="text-slate-900">
+				<h1 class="text-2xl font-semibold tracking-tight">02 &middot; Dark Bar Mode</h1>
+				<p class="mt-1 text-sm text-slate-600">
+					For counting stock in a dim venue at close. Huge numerals, amber accent, full-width
+					steppers.
+				</p>
+			</header>
+
+			<!-- ============ HOME ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-slate-500 uppercase">Home</h2>
+				<div class="relative h-[720px] overflow-hidden rounded-[28px] border border-slate-800 bg-app-bg shadow-2xl">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 border-b border-app-border bg-app-bg/95 px-5 py-4 backdrop-blur">
+							<h1 class="text-sm font-bold tracking-[0.2em] text-app-accent uppercase">Renvintory</h1>
+						</header>
+						<div class="space-y-7 p-5 pb-28">
+							<section>
+								<h2 class="mb-3 text-[10px] font-bold tracking-[0.2em] text-app-muted uppercase">
+									Locations
+								</h2>
+								<ul class="space-y-2">
+									<li class="flex items-center justify-between rounded-lg bg-app-surface px-4 py-4">
+										<div>
+											<div class="text-lg font-bold tracking-wide uppercase">Dragon</div>
+											<div class="text-xs text-app-muted">Last count Sat 1/23</div>
+										</div>
+										<span class="text-2xl text-app-accent">&rsaquo;</span>
+									</li>
+									<li class="flex items-center justify-between rounded-lg bg-app-surface px-4 py-4">
+										<div>
+											<div class="text-lg font-bold tracking-wide uppercase">Wizard</div>
+											<div class="text-xs text-app-muted">Last count Fri 1/22</div>
+										</div>
+										<span class="text-2xl text-app-accent">&rsaquo;</span>
+									</li>
+									<li class="flex items-center justify-between rounded-lg bg-app-surface px-4 py-4">
+										<div>
+											<div class="text-lg font-bold tracking-wide uppercase">Pig and Whistle</div>
+											<div class="text-xs text-app-muted">Last count Thu 1/21</div>
+										</div>
+										<span class="text-2xl text-app-accent">&rsaquo;</span>
+									</li>
+								</ul>
+							</section>
+
+							<section>
+								<div class="mb-3 flex items-center justify-between">
+									<h2 class="text-[10px] font-bold tracking-[0.2em] text-app-muted uppercase">Items</h2>
+									<button class="text-xs font-bold text-app-accent uppercase">Manage</button>
+								</div>
+								<ul class="divide-y divide-app-border overflow-hidden rounded-lg bg-app-surface">
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span>Miller Lite</span><span class="num font-bold text-app-accent">$6</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span>Coors Light</span><span class="num font-bold text-app-accent">$6</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span>Blue Moon</span><span class="num font-bold text-app-accent">$7</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span>Guinness</span><span class="num font-bold text-app-accent">$8</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span>Topo Chico</span><span class="num font-bold text-app-accent">$5</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span>Callsign IPA</span><span class="num font-bold text-app-accent">$8</span>
+									</li>
+								</ul>
+							</section>
+						</div>
+					</div>
+					<nav class="absolute inset-x-0 bottom-0 grid grid-cols-3 border-t border-app-border bg-app-surface pb-2">
+						<button class="py-3 text-[10px] font-bold tracking-widest text-app-accent uppercase">Home</button>
+						<button class="py-3 text-[10px] font-bold tracking-widest text-app-muted uppercase">Counts</button>
+						<button class="py-3 text-[10px] font-bold tracking-widest text-app-muted uppercase">Items</button>
+					</nav>
+				</div>
+			</section>
+
+			<!-- ============ LOCATION ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-slate-500 uppercase">
+					Location (vertical timeline)
+				</h2>
+				<div class="relative h-[720px] overflow-hidden rounded-[28px] border border-slate-800 bg-app-bg shadow-2xl">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 flex items-center gap-3 border-b border-app-border bg-app-bg/95 px-5 py-4 backdrop-blur">
+							<span class="text-app-accent">&lsaquo;</span>
+							<h1 class="text-lg font-bold tracking-wide uppercase">Dragon</h1>
+						</header>
+						<div class="p-5 pb-28">
+							<h2 class="mb-4 text-[10px] font-bold tracking-[0.2em] text-app-muted uppercase">
+								Inventories
+							</h2>
+							<!-- timeline -->
+							<ol class="relative space-y-6 border-l border-app-border pl-5">
+								<li class="relative">
+									<span class="absolute top-1.5 -left-[26px] h-3 w-3 rounded-full bg-app-accent"></span>
+									<div class="mb-3 flex items-baseline gap-2">
+										<span class="font-bold">Sat 1/23</span>
+										<span class="text-xs text-app-muted">4 counts</span>
+									</div>
+									<div class="mb-2 grid grid-cols-2 gap-2">
+										<button class="rounded-md bg-app-surface py-3 text-xs font-bold tracking-wider uppercase">Open</button>
+										<button class="rounded-md bg-app-surface py-3 text-xs font-bold tracking-wider uppercase">Close</button>
+										<button class="rounded-md bg-app-surface py-3 text-xs font-bold tracking-wider uppercase">Spill</button>
+										<button class="rounded-md bg-app-surface py-3 text-xs font-bold tracking-wider uppercase">Intake</button>
+									</div>
+									<div class="flex gap-2">
+										<button class="flex-1 rounded-md border border-app-accent/60 py-2.5 text-[11px] font-bold tracking-wider text-app-accent uppercase">
+											Open report
+										</button>
+										<button class="flex-1 rounded-md border border-app-accent/60 py-2.5 text-[11px] font-bold tracking-wider text-app-accent uppercase">
+											Close report
+										</button>
+									</div>
+								</li>
+								<li class="relative">
+									<span class="absolute top-1.5 -left-[26px] h-3 w-3 rounded-full bg-app-border"></span>
+									<div class="mb-3 flex items-baseline gap-2">
+										<span class="font-bold">Fri 1/22</span>
+										<span class="text-xs text-app-muted">2 counts</span>
+									</div>
+									<div class="mb-2 grid grid-cols-2 gap-2">
+										<button class="rounded-md bg-app-surface py-3 text-xs font-bold tracking-wider uppercase">Open</button>
+										<button class="rounded-md bg-app-surface py-3 text-xs font-bold tracking-wider uppercase">Close</button>
+									</div>
+									<div class="flex gap-2">
+										<button class="flex-1 rounded-md border border-app-accent/60 py-2.5 text-[11px] font-bold tracking-wider text-app-accent uppercase">
+											Close report
+										</button>
+									</div>
+								</li>
+								<li class="relative">
+									<span class="absolute top-1.5 -left-[26px] h-3 w-3 rounded-full bg-app-border"></span>
+									<div class="mb-3 flex items-baseline gap-2">
+										<span class="font-bold">Thu 1/21</span>
+										<span class="text-xs text-app-muted">1 count</span>
+									</div>
+									<div class="grid grid-cols-2 gap-2">
+										<button class="rounded-md bg-app-surface py-3 text-xs font-bold tracking-wider uppercase">Open</button>
+									</div>
+								</li>
+							</ol>
+						</div>
+					</div>
+					<div class="absolute inset-x-0 bottom-0 border-t border-app-border bg-app-surface p-4 pb-5">
+						<button class="w-full rounded-lg bg-app-accent py-4 text-sm font-bold tracking-widest text-black uppercase">
+							New inventory
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ REPORT ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-slate-500 uppercase">
+					Report (accordion, no table)
+				</h2>
+				<div class="relative h-[720px] overflow-hidden rounded-[28px] border border-slate-800 bg-app-bg shadow-2xl">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 flex items-center gap-2 border-b border-app-border bg-app-bg/95 px-5 py-4 backdrop-blur">
+							<span class="text-app-accent">&lsaquo;</span>
+							<h1 class="font-bold tracking-wide uppercase">Dragon</h1>
+							<span class="text-xs text-app-muted">Sat, Jan 23</span>
+							<span class="ml-auto rounded bg-app-accent px-2 py-0.5 text-[10px] font-bold tracking-widest text-black uppercase">
+								Close
+							</span>
+						</header>
+						<div class="space-y-4 p-5 pb-8">
+							<div class="grid grid-cols-2 gap-3">
+								<div class="rounded-lg bg-app-surface p-4">
+									<div class="text-[10px] font-bold tracking-widest text-app-muted uppercase">Sales</div>
+									<div class="num mt-1 text-3xl font-bold text-app-positive">$486</div>
+								</div>
+								<div class="rounded-lg bg-app-surface p-4">
+									<div class="text-[10px] font-bold tracking-widest text-app-muted uppercase">Spillage</div>
+									<div class="num mt-1 text-3xl font-bold text-red-400">$29</div>
+								</div>
+							</div>
+
+							<p class="text-xs text-app-muted">Tap a row to expand the full breakdown.</p>
+
+							<div class="divide-y divide-app-border overflow-hidden rounded-lg bg-app-surface">
+								<!-- collapsed rows -->
+								<div class="flex items-center gap-3 px-4 py-4">
+									<span class="text-app-muted">&rsaquo;</span>
+									<span class="flex-1 font-medium">Miller Lite</span>
+									<span class="num text-sm text-app-muted">47 &rarr; 31</span>
+									<span class="num w-14 text-right font-bold text-app-positive">$90</span>
+								</div>
+								<!-- expanded row -->
+								<div class="bg-black/30 px-4 py-4">
+									<div class="mb-3 flex items-center gap-3">
+										<span class="text-app-accent">&and;</span>
+										<span class="flex-1 font-medium">Coors Light</span>
+										<span class="num text-sm text-app-muted">36 &rarr; 25</span>
+										<span class="num w-14 text-right font-bold text-app-positive">$138</span>
+									</div>
+									<dl class="num grid grid-cols-2 gap-x-6 gap-y-2 pl-6 text-sm">
+										<div class="flex justify-between border-b border-app-border/60 pb-1">
+											<dt class="text-app-muted">Price</dt><dd>$6</dd>
+										</div>
+										<div class="flex justify-between border-b border-app-border/60 pb-1">
+											<dt class="text-app-muted">Open</dt><dd>36</dd>
+										</div>
+										<div class="flex justify-between border-b border-app-border/60 pb-1">
+											<dt class="text-app-muted">Close</dt><dd>25</dd>
+										</div>
+										<div class="flex justify-between border-b border-app-border/60 pb-1">
+											<dt class="text-app-muted">Spill</dt><dd>0</dd>
+										</div>
+										<div class="flex justify-between border-b border-app-border/60 pb-1">
+											<dt class="text-app-muted">Intake</dt><dd>12</dd>
+										</div>
+										<div class="flex justify-between border-b border-app-border/60 pb-1">
+											<dt class="text-app-muted">Open+In</dt><dd>48</dd>
+										</div>
+										<div class="flex justify-between border-b border-app-border/60 pb-1">
+											<dt class="text-app-muted">Used</dt><dd>23</dd>
+										</div>
+										<div class="flex justify-between border-b border-app-border/60 pb-1">
+											<dt class="text-app-muted">Spilled $</dt><dd>$0</dd>
+										</div>
+									</dl>
+								</div>
+								<div class="flex items-center gap-3 px-4 py-4">
+									<span class="text-app-muted">&rsaquo;</span>
+									<span class="flex-1 font-medium">Blue Moon</span>
+									<span class="num text-sm text-app-muted">30 &rarr; 22</span>
+									<span class="num w-14 text-right font-bold text-app-positive">$133</span>
+								</div>
+								<div class="flex items-center gap-3 px-4 py-4">
+									<span class="text-app-muted">&rsaquo;</span>
+									<span class="flex-1 font-medium">Guinness</span>
+									<span class="num text-sm text-app-muted">24 &rarr; 18</span>
+									<span class="num w-14 text-right font-bold text-app-positive">$48</span>
+								</div>
+								<div class="flex items-center gap-3 px-4 py-4">
+									<span class="text-app-muted">&rsaquo;</span>
+									<span class="flex-1 font-medium">Topo Chico</span>
+									<span class="num text-sm text-app-muted">18 &rarr; 9</span>
+									<span class="num w-14 text-right font-bold text-app-positive">$45</span>
+								</div>
+								<div class="flex items-center gap-3 px-4 py-4">
+									<span class="text-app-muted">&rsaquo;</span>
+									<span class="flex-1 font-medium">Callsign IPA</span>
+									<span class="num text-sm text-app-muted">20 &rarr; 14</span>
+									<span class="num w-14 text-right font-bold text-app-positive">$32</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ COUNT ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-slate-500 uppercase">Count</h2>
+				<div class="relative h-[720px] overflow-hidden rounded-[28px] border border-slate-800 bg-app-bg shadow-2xl">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 flex items-center gap-2 border-b border-app-border bg-app-bg/95 px-5 py-4 backdrop-blur">
+							<span class="text-app-accent">&lsaquo;</span>
+							<h1 class="font-bold tracking-wide uppercase">Dragon</h1>
+							<span class="text-xs text-app-muted">Sat, Jan 23</span>
+							<span class="ml-auto rounded bg-app-accent px-2 py-0.5 text-[10px] font-bold tracking-widest text-black uppercase">
+								Open
+							</span>
+						</header>
+						<div class="space-y-6 p-5 pb-32">
+							<!-- item -->
+							<div>
+								<div class="mb-2 flex items-baseline justify-between">
+									<span class="text-sm font-bold tracking-widest uppercase">Miller Lite</span>
+									<span class="num text-3xl font-bold text-app-accent">47</span>
+								</div>
+								<div class="space-y-2">
+									<div class="grid grid-cols-[72px_1fr_72px] gap-2">
+										<button class="h-14 rounded-md bg-app-surface text-2xl font-bold">&minus;</button>
+										<div class="num flex h-14 flex-col items-center justify-center rounded-md bg-app-surface/50">
+											<span class="text-2xl leading-none font-bold">3</span>
+											<span class="text-[10px] tracking-widest text-app-muted uppercase">&times; 12 cans</span>
+										</div>
+										<button class="h-14 rounded-md bg-app-accent text-2xl font-bold text-black">+</button>
+									</div>
+									<div class="grid grid-cols-[72px_1fr_72px] gap-2">
+										<button class="h-14 rounded-md bg-app-surface text-2xl font-bold">&minus;</button>
+										<div class="num flex h-14 flex-col items-center justify-center rounded-md bg-app-surface/50">
+											<span class="text-2xl leading-none font-bold">11</span>
+											<span class="text-[10px] tracking-widest text-app-muted uppercase">&times; 1 can</span>
+										</div>
+										<button class="h-14 rounded-md bg-app-accent text-2xl font-bold text-black">+</button>
+									</div>
+								</div>
+							</div>
+
+							<div>
+								<div class="mb-2 flex items-baseline justify-between">
+									<span class="text-sm font-bold tracking-widest uppercase">Coors Light</span>
+									<span class="num text-3xl font-bold text-app-accent">36</span>
+								</div>
+								<div class="space-y-2">
+									<div class="grid grid-cols-[72px_1fr_72px] gap-2">
+										<button class="h-14 rounded-md bg-app-surface text-2xl font-bold">&minus;</button>
+										<div class="num flex h-14 flex-col items-center justify-center rounded-md bg-app-surface/50">
+											<span class="text-2xl leading-none font-bold">2</span>
+											<span class="text-[10px] tracking-widest text-app-muted uppercase">&times; 12 cans</span>
+										</div>
+										<button class="h-14 rounded-md bg-app-accent text-2xl font-bold text-black">+</button>
+									</div>
+									<div class="grid grid-cols-[72px_1fr_72px] gap-2">
+										<button class="h-14 rounded-md bg-app-surface text-2xl font-bold">&minus;</button>
+										<div class="num flex h-14 flex-col items-center justify-center rounded-md bg-app-surface/50">
+											<span class="text-2xl leading-none font-bold">12</span>
+											<span class="text-[10px] tracking-widest text-app-muted uppercase">&times; 1 can</span>
+										</div>
+										<button class="h-14 rounded-md bg-app-accent text-2xl font-bold text-black">+</button>
+									</div>
+								</div>
+							</div>
+
+							<div>
+								<div class="mb-2 flex items-baseline justify-between">
+									<span class="text-sm font-bold tracking-widest uppercase">Blue Moon</span>
+									<span class="num text-3xl font-bold text-app-accent">30</span>
+								</div>
+								<div class="grid grid-cols-[72px_1fr_72px] gap-2">
+									<button class="h-14 rounded-md bg-app-surface text-2xl font-bold">&minus;</button>
+									<div class="num flex h-14 flex-col items-center justify-center rounded-md bg-app-surface/50">
+										<span class="text-2xl leading-none font-bold">2</span>
+										<span class="text-[10px] tracking-widest text-app-muted uppercase">&times; 6 bottles</span>
+									</div>
+									<button class="h-14 rounded-md bg-app-accent text-2xl font-bold text-black">+</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="absolute inset-x-0 bottom-0 border-t border-app-border bg-app-surface p-4 pb-5">
+						<div class="flex items-center gap-4">
+							<div class="text-[10px] tracking-widest text-app-muted uppercase">
+								<div>Counted</div>
+								<div class="num text-lg font-bold text-app-text">137</div>
+							</div>
+							<button class="ml-auto rounded-lg bg-app-accent px-6 py-3.5 text-sm font-bold tracking-widest text-black uppercase">
+								Finish
+							</button>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
+</html>

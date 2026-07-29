@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>01 Focused Utility &middot; Renvintory Mockups</title>
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<style type="text/tailwindcss">
+			@theme {
+				--color-app-bg: #f8fafc;
+				--color-app-surface: #ffffff;
+				--color-app-border: #e2e8f0;
+				--color-app-text: #0f172a;
+				--color-app-muted: #64748b;
+				--color-app-accent: #2563eb;
+			}
+		</style>
+		<style>
+			body {
+				font-family:
+					ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif;
+			}
+			.num {
+				font-variant-numeric: tabular-nums;
+			}
+		</style>
+	</head>
+	<body class="bg-slate-200 text-app-text antialiased">
+		<!-- style switcher -->
+		<nav class="sticky top-0 z-50 border-b border-slate-300 bg-white/95 backdrop-blur">
+			<div class="flex gap-1 overflow-x-auto px-3 py-2 text-xs whitespace-nowrap">
+				<a href="index.html" class="rounded-md px-2 py-1 font-semibold text-slate-500">All</a>
+				<a href="01-focused-utility.html" class="rounded-md bg-app-accent px-2 py-1 font-semibold text-white">01 Utility</a>
+				<a href="02-dark-bar.html" class="rounded-md px-2 py-1 text-slate-600">02 Dark</a>
+				<a href="03-brutalist.html" class="rounded-md px-2 py-1 text-slate-600">03 Brutal</a>
+				<a href="04-native-lists.html" class="rounded-md px-2 py-1 text-slate-600">04 Native</a>
+				<a href="05-illuminated-ledger.html" class="rounded-md px-2 py-1 text-slate-600">05 Illuminated</a>
+				<a href="06-tavern-signboard.html" class="rounded-md px-2 py-1 text-slate-600">06 Signboard</a>
+				<a href="07-heraldic-modern.html" class="rounded-md px-2 py-1 text-slate-600">07 Heraldic</a>
+				<a href="08-dense-ledger.html" class="rounded-md px-2 py-1 text-slate-600">08 Dense</a>
+				<a href="09-gilded-shield.html" class="rounded-md px-2 py-1 text-slate-600">09 Gilded</a>
+				<a href="10-painted-arms.html" class="rounded-md px-2 py-1 text-slate-600">10 Painted</a>
+			</div>
+		</nav>
+
+		<div class="mx-auto max-w-[440px] space-y-10 px-4 py-8">
+			<header>
+				<h1 class="text-2xl font-semibold tracking-tight">01 &middot; Focused Utility</h1>
+				<p class="mt-1 text-sm text-slate-600">
+					Light and calm. Soft neutrals, one accent, rounded cards, bottom tab bar.
+				</p>
+			</header>
+
+			<!-- ============ HOME ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-slate-500 uppercase">Home</h2>
+				<div class="relative h-[720px] overflow-hidden rounded-[28px] border border-slate-300 bg-app-bg shadow-lg">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 border-b border-app-border bg-app-surface/95 px-4 py-3 backdrop-blur">
+							<h1 class="text-lg font-semibold tracking-tight">Renvintory</h1>
+						</header>
+						<div class="space-y-6 p-4 pb-28">
+							<section>
+								<h2 class="mb-2 text-xs font-semibold tracking-widest text-app-muted uppercase">
+									Locations
+								</h2>
+								<ul class="space-y-2">
+									<li class="flex items-center justify-between rounded-xl border border-app-border bg-app-surface p-4 shadow-sm">
+										<div>
+											<div class="font-semibold">Dragon</div>
+											<div class="text-xs text-app-muted">Last count Sat 1/23</div>
+										</div>
+										<span class="text-app-muted">&rsaquo;</span>
+									</li>
+									<li class="flex items-center justify-between rounded-xl border border-app-border bg-app-surface p-4 shadow-sm">
+										<div>
+											<div class="font-semibold">Wizard</div>
+											<div class="text-xs text-app-muted">Last count Fri 1/22</div>
+										</div>
+										<span class="text-app-muted">&rsaquo;</span>
+									</li>
+									<li class="flex items-center justify-between rounded-xl border border-app-border bg-app-surface p-4 shadow-sm">
+										<div>
+											<div class="font-semibold">Pig and Whistle</div>
+											<div class="text-xs text-app-muted">Last count Thu 1/21</div>
+										</div>
+										<span class="text-app-muted">&rsaquo;</span>
+									</li>
+								</ul>
+							</section>
+
+							<section>
+								<div class="mb-2 flex items-center justify-between">
+									<h2 class="text-xs font-semibold tracking-widest text-app-muted uppercase">Items</h2>
+									<button class="rounded-lg bg-app-accent px-3 py-1.5 text-xs font-semibold text-white">
+										Manage
+									</button>
+								</div>
+								<ul class="divide-y divide-app-border overflow-hidden rounded-xl border border-app-border bg-app-surface shadow-sm">
+									<li class="flex items-center justify-between px-4 py-3">
+										<span class="text-sm">Miller Lite</span>
+										<span class="num rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold">$6</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3">
+										<span class="text-sm">Coors Light</span>
+										<span class="num rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold">$6</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3">
+										<span class="text-sm">Blue Moon</span>
+										<span class="num rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold">$7</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3">
+										<span class="text-sm">Guinness</span>
+										<span class="num rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold">$8</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3">
+										<span class="text-sm">Topo Chico</span>
+										<span class="num rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold">$5</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3">
+										<span class="text-sm">Callsign IPA</span>
+										<span class="num rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold">$8</span>
+									</li>
+								</ul>
+							</section>
+						</div>
+					</div>
+					<nav class="absolute inset-x-0 bottom-0 grid grid-cols-3 border-t border-app-border bg-app-surface/95 pb-2 backdrop-blur">
+						<button class="flex flex-col items-center gap-0.5 py-2 text-app-accent">
+							<span class="text-lg leading-none">&#9737;</span>
+							<span class="text-[10px] font-semibold">Home</span>
+						</button>
+						<button class="flex flex-col items-center gap-0.5 py-2 text-app-muted">
+							<span class="text-lg leading-none">&#9636;</span>
+							<span class="text-[10px]">Counts</span>
+						</button>
+						<button class="flex flex-col items-center gap-0.5 py-2 text-app-muted">
+							<span class="text-lg leading-none">&#9881;</span>
+							<span class="text-[10px]">Items</span>
+						</button>
+					</nav>
+				</div>
+			</section>
+
+			<!-- ============ LOCATION ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-slate-500 uppercase">Location</h2>
+				<div class="relative h-[720px] overflow-hidden rounded-[28px] border border-slate-300 bg-app-bg shadow-lg">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 flex items-center gap-3 border-b border-app-border bg-app-surface/95 px-4 py-3 backdrop-blur">
+							<span class="text-app-accent">&lsaquo;</span>
+							<h1 class="text-lg font-semibold tracking-tight">Dragon</h1>
+						</header>
+						<div class="space-y-6 p-4 pb-28">
+							<section>
+								<h2 class="mb-2 text-xs font-semibold tracking-widest text-app-muted uppercase">
+									Inventories
+								</h2>
+								<ul class="space-y-3">
+									<!-- date card: two-row action layout instead of one wide row -->
+									<li class="rounded-xl border border-app-border bg-app-surface p-3 shadow-sm">
+										<div class="mb-2 flex items-center justify-between">
+											<span class="font-semibold">Sat &middot; 1/23/26</span>
+											<button class="text-xs font-medium text-app-muted">Details</button>
+										</div>
+										<div class="mb-2 grid grid-cols-4 gap-1.5">
+											<button class="rounded-lg border border-app-border py-2 text-xs font-medium">Open</button>
+											<button class="rounded-lg border border-app-border py-2 text-xs font-medium">Close</button>
+											<button class="rounded-lg border border-app-border py-2 text-xs font-medium">Spill</button>
+											<button class="rounded-lg border border-app-border py-2 text-xs font-medium">Intake</button>
+										</div>
+										<div class="grid grid-cols-2 gap-1.5">
+											<button class="rounded-lg border border-app-accent py-2 text-xs font-semibold text-app-accent">
+												Opening report
+											</button>
+											<button class="rounded-lg border border-app-accent py-2 text-xs font-semibold text-app-accent">
+												Closing report
+											</button>
+										</div>
+									</li>
+									<li class="rounded-xl border border-app-border bg-app-surface p-3 shadow-sm">
+										<div class="mb-2 flex items-center justify-between">
+											<span class="font-semibold">Fri &middot; 1/22/26</span>
+											<button class="text-xs font-medium text-app-muted">Details</button>
+										</div>
+										<div class="mb-2 grid grid-cols-4 gap-1.5">
+											<button class="rounded-lg border border-app-border py-2 text-xs font-medium">Open</button>
+											<button class="rounded-lg border border-app-border py-2 text-xs font-medium">Close</button>
+											<span></span>
+											<span></span>
+										</div>
+										<div class="grid grid-cols-2 gap-1.5">
+											<button class="rounded-lg border border-app-accent py-2 text-xs font-semibold text-app-accent">
+												Opening report
+											</button>
+											<button class="rounded-lg border border-app-accent py-2 text-xs font-semibold text-app-accent">
+												Closing report
+											</button>
+										</div>
+									</li>
+									<li class="rounded-xl border border-app-border bg-app-surface p-3 shadow-sm">
+										<div class="mb-2 flex items-center justify-between">
+											<span class="font-semibold">Thu &middot; 1/21/26</span>
+											<button class="text-xs font-medium text-app-muted">Details</button>
+										</div>
+										<div class="grid grid-cols-4 gap-1.5">
+											<button class="rounded-lg border border-app-border py-2 text-xs font-medium">Open</button>
+										</div>
+									</li>
+								</ul>
+							</section>
+
+							<section>
+								<div class="mb-2 flex items-center justify-between">
+									<h2 class="text-xs font-semibold tracking-widest text-app-muted uppercase">
+										Available items
+									</h2>
+									<button class="text-xs font-semibold text-app-accent">Manage</button>
+								</div>
+								<ul class="divide-y divide-app-border overflow-hidden rounded-xl border border-app-border bg-app-surface shadow-sm">
+									<li class="flex items-center justify-between px-4 py-3">
+										<span class="text-sm">Miller Lite</span>
+										<span class="num text-xs text-app-muted">$6</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3">
+										<span class="text-sm">Coors Light</span>
+										<span class="num text-xs text-app-muted">$6</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3">
+										<span class="text-sm">Blue Moon</span>
+										<span class="num text-xs text-app-muted">$7</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3">
+										<span class="text-sm">Guinness</span>
+										<span class="num text-xs text-app-muted">$8</span>
+									</li>
+								</ul>
+							</section>
+						</div>
+					</div>
+					<div class="absolute inset-x-0 bottom-0 border-t border-app-border bg-app-surface/95 p-3 pb-4 backdrop-blur">
+						<button class="w-full rounded-xl bg-app-accent py-3.5 text-sm font-semibold text-white shadow-sm">
+							New inventory
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ REPORT ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-slate-500 uppercase">
+					Report (closing)
+				</h2>
+				<div class="relative h-[720px] overflow-hidden rounded-[28px] border border-slate-300 bg-app-bg shadow-lg">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-20 flex items-center gap-2 border-b border-app-border bg-app-surface/95 px-4 py-3 backdrop-blur">
+							<span class="text-app-accent">&lsaquo;</span>
+							<h1 class="text-base font-semibold tracking-tight">Dragon</h1>
+							<span class="text-sm text-app-muted">Sat, Jan 23</span>
+							<span class="ml-auto rounded-md bg-slate-900 px-2 py-0.5 text-[10px] font-bold tracking-wider text-white uppercase">
+								Close
+							</span>
+						</header>
+						<div class="space-y-4 p-4 pb-8">
+							<!-- summary first -->
+							<div class="grid grid-cols-2 gap-3">
+								<div class="rounded-xl border border-app-border bg-app-surface p-3 shadow-sm">
+									<div class="text-[10px] font-semibold tracking-widest text-app-muted uppercase">
+										Total sales
+									</div>
+									<div class="num mt-1 text-2xl font-semibold">$486</div>
+								</div>
+								<div class="rounded-xl border border-app-border bg-app-surface p-3 shadow-sm">
+									<div class="text-[10px] font-semibold tracking-widest text-app-muted uppercase">
+										Spillage
+									</div>
+									<div class="num mt-1 text-2xl font-semibold text-red-600">$29</div>
+								</div>
+							</div>
+
+							<p class="text-xs text-app-muted">Swipe the table sideways for all columns.</p>
+
+							<!-- pinned first column, scrollable rest -->
+							<div class="overflow-x-auto rounded-xl border border-app-border bg-app-surface shadow-sm">
+								<table class="num w-max min-w-full text-right text-xs">
+									<thead class="border-b border-app-border bg-slate-50 text-[10px] tracking-wider text-app-muted uppercase">
+										<tr>
+											<th class="sticky left-0 z-10 bg-slate-50 px-3 py-2 text-left font-semibold">Item</th>
+											<th class="px-2 py-2 font-semibold">Price</th>
+											<th class="px-2 py-2 font-semibold">Open</th>
+											<th class="px-2 py-2 font-semibold">Close</th>
+											<th class="px-2 py-2 font-semibold">Spill</th>
+											<th class="px-2 py-2 font-semibold">Intake</th>
+											<th class="px-2 py-2 font-semibold">Open+In</th>
+											<th class="px-2 py-2 font-semibold">Used</th>
+											<th class="px-2 py-2 font-semibold">Spilled $</th>
+											<th class="px-3 py-2 font-semibold">Sales</th>
+										</tr>
+									</thead>
+									<tbody class="divide-y divide-app-border">
+										<tr>
+											<th class="sticky left-0 z-10 bg-app-surface px-3 py-2 text-left font-medium whitespace-nowrap">Miller Lite</th>
+											<td class="px-2 py-2">$6</td>
+											<td class="px-2 py-2">47</td>
+											<td class="px-2 py-2">31</td>
+											<td class="px-2 py-2">1</td>
+											<td class="px-2 py-2">0</td>
+											<td class="px-2 py-2">47</td>
+											<td class="px-2 py-2">16</td>
+											<td class="px-2 py-2">$6</td>
+											<td class="px-3 py-2 font-semibold">$90</td>
+										</tr>
+										<tr>
+											<th class="sticky left-0 z-10 bg-app-surface px-3 py-2 text-left font-medium whitespace-nowrap">Coors Light</th>
+											<td class="px-2 py-2">$6</td>
+											<td class="px-2 py-2">36</td>
+											<td class="px-2 py-2">25</td>
+											<td class="px-2 py-2">0</td>
+											<td class="px-2 py-2">12</td>
+											<td class="px-2 py-2">48</td>
+											<td class="px-2 py-2">23</td>
+											<td class="px-2 py-2">$0</td>
+											<td class="px-3 py-2 font-semibold">$138</td>
+										</tr>
+										<tr>
+											<th class="sticky left-0 z-10 bg-app-surface px-3 py-2 text-left font-medium whitespace-nowrap">Blue Moon</th>
+											<td class="px-2 py-2">$7</td>
+											<td class="px-2 py-2">30</td>
+											<td class="px-2 py-2">22</td>
+											<td class="px-2 py-2">1</td>
+											<td class="px-2 py-2">12</td>
+											<td class="px-2 py-2">42</td>
+											<td class="px-2 py-2">20</td>
+											<td class="px-2 py-2">$7</td>
+											<td class="px-3 py-2 font-semibold">$133</td>
+										</tr>
+										<tr>
+											<th class="sticky left-0 z-10 bg-app-surface px-3 py-2 text-left font-medium whitespace-nowrap">Guinness</th>
+											<td class="px-2 py-2">$8</td>
+											<td class="px-2 py-2">24</td>
+											<td class="px-2 py-2">18</td>
+											<td class="px-2 py-2">0</td>
+											<td class="px-2 py-2">0</td>
+											<td class="px-2 py-2">24</td>
+											<td class="px-2 py-2">6</td>
+											<td class="px-2 py-2">$0</td>
+											<td class="px-3 py-2 font-semibold">$48</td>
+										</tr>
+										<tr>
+											<th class="sticky left-0 z-10 bg-app-surface px-3 py-2 text-left font-medium whitespace-nowrap">Topo Chico</th>
+											<td class="px-2 py-2">$5</td>
+											<td class="px-2 py-2">18</td>
+											<td class="px-2 py-2">9</td>
+											<td class="px-2 py-2">0</td>
+											<td class="px-2 py-2">0</td>
+											<td class="px-2 py-2">18</td>
+											<td class="px-2 py-2">9</td>
+											<td class="px-2 py-2">$0</td>
+											<td class="px-3 py-2 font-semibold">$45</td>
+										</tr>
+										<tr>
+											<th class="sticky left-0 z-10 bg-app-surface px-3 py-2 text-left font-medium whitespace-nowrap">Callsign IPA</th>
+											<td class="px-2 py-2">$8</td>
+											<td class="px-2 py-2">20</td>
+											<td class="px-2 py-2">14</td>
+											<td class="px-2 py-2">2</td>
+											<td class="px-2 py-2">0</td>
+											<td class="px-2 py-2">20</td>
+											<td class="px-2 py-2">6</td>
+											<td class="px-2 py-2">$16</td>
+											<td class="px-3 py-2 font-semibold">$32</td>
+										</tr>
+									</tbody>
+									<tfoot class="border-t-2 border-slate-300 bg-slate-50 font-semibold">
+										<tr>
+											<th class="sticky left-0 z-10 bg-slate-50 px-3 py-2 text-left">Total sales</th>
+											<td colspan="8"></td>
+											<td class="px-3 py-2">$486</td>
+										</tr>
+										<tr>
+											<th class="sticky left-0 z-10 bg-slate-50 px-3 py-2 text-left">Spillage</th>
+											<td colspan="8"></td>
+											<td class="px-3 py-2 text-red-600">$29</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ COUNT ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-semibold tracking-widest text-slate-500 uppercase">Count</h2>
+				<div class="relative h-[720px] overflow-hidden rounded-[28px] border border-slate-300 bg-app-bg shadow-lg">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 flex items-center gap-2 border-b border-app-border bg-app-surface/95 px-4 py-3 backdrop-blur">
+							<span class="text-app-accent">&lsaquo;</span>
+							<h1 class="text-base font-semibold tracking-tight">Dragon</h1>
+							<span class="text-sm text-app-muted">Sat, Jan 23</span>
+							<span class="ml-auto rounded-md bg-app-accent px-2 py-0.5 text-[10px] font-bold tracking-wider text-white uppercase">
+								Open
+							</span>
+						</header>
+						<div class="space-y-3 p-4 pb-28">
+							<!-- item card -->
+							<div class="rounded-xl border border-app-border bg-app-surface p-3 shadow-sm">
+								<div class="mb-2 flex items-center justify-between">
+									<span class="font-semibold">Miller Lite</span>
+									<span class="num rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold">Total 47</span>
+								</div>
+								<div class="space-y-2">
+									<div class="grid grid-cols-[56px_1fr_56px] gap-2">
+										<button class="h-11 rounded-lg border border-app-border text-lg font-semibold">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 rounded-lg bg-slate-50 text-sm">
+											<span class="text-lg font-semibold">3</span>
+											<span class="text-app-muted">&times; 12 cans</span>
+										</div>
+										<button class="h-11 rounded-lg bg-app-accent text-lg font-semibold text-white">+</button>
+									</div>
+									<div class="grid grid-cols-[56px_1fr_56px] gap-2">
+										<button class="h-11 rounded-lg border border-app-border text-lg font-semibold">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 rounded-lg bg-slate-50 text-sm">
+											<span class="text-lg font-semibold">11</span>
+											<span class="text-app-muted">&times; 1 can</span>
+										</div>
+										<button class="h-11 rounded-lg bg-app-accent text-lg font-semibold text-white">+</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="rounded-xl border border-app-border bg-app-surface p-3 shadow-sm">
+								<div class="mb-2 flex items-center justify-between">
+									<span class="font-semibold">Coors Light</span>
+									<span class="num rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold">Total 36</span>
+								</div>
+								<div class="space-y-2">
+									<div class="grid grid-cols-[56px_1fr_56px] gap-2">
+										<button class="h-11 rounded-lg border border-app-border text-lg font-semibold">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 rounded-lg bg-slate-50 text-sm">
+											<span class="text-lg font-semibold">2</span>
+											<span class="text-app-muted">&times; 12 cans</span>
+										</div>
+										<button class="h-11 rounded-lg bg-app-accent text-lg font-semibold text-white">+</button>
+									</div>
+									<div class="grid grid-cols-[56px_1fr_56px] gap-2">
+										<button class="h-11 rounded-lg border border-app-border text-lg font-semibold">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 rounded-lg bg-slate-50 text-sm">
+											<span class="text-lg font-semibold">12</span>
+											<span class="text-app-muted">&times; 1 can</span>
+										</div>
+										<button class="h-11 rounded-lg bg-app-accent text-lg font-semibold text-white">+</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="rounded-xl border border-app-border bg-app-surface p-3 shadow-sm">
+								<div class="mb-2 flex items-center justify-between">
+									<span class="font-semibold">Blue Moon</span>
+									<span class="num rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold">Total 30</span>
+								</div>
+								<div class="space-y-2">
+									<div class="grid grid-cols-[56px_1fr_56px] gap-2">
+										<button class="h-11 rounded-lg border border-app-border text-lg font-semibold">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 rounded-lg bg-slate-50 text-sm">
+											<span class="text-lg font-semibold">2</span>
+											<span class="text-app-muted">&times; 6 bottles</span>
+										</div>
+										<button class="h-11 rounded-lg bg-app-accent text-lg font-semibold text-white">+</button>
+									</div>
+									<div class="grid grid-cols-[56px_1fr_56px] gap-2">
+										<button class="h-11 rounded-lg border border-app-border text-lg font-semibold">&minus;</button>
+										<div class="num flex h-11 items-center justify-center gap-2 rounded-lg bg-slate-50 text-sm">
+											<span class="text-lg font-semibold">18</span>
+											<span class="text-app-muted">&times; 1 bottle</span>
+										</div>
+										<button class="h-11 rounded-lg bg-app-accent text-lg font-semibold text-white">+</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="rounded-xl border border-app-border bg-app-surface p-3 shadow-sm">
+								<div class="mb-2 flex items-center justify-between">
+									<span class="font-semibold">Guinness</span>
+									<span class="num rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold">Total 24</span>
+								</div>
+								<div class="grid grid-cols-[56px_1fr_56px] gap-2">
+									<button class="h-11 rounded-lg border border-app-border text-lg font-semibold">&minus;</button>
+									<div class="num flex h-11 items-center justify-center gap-2 rounded-lg bg-slate-50 text-sm">
+										<span class="text-lg font-semibold">2</span>
+										<span class="text-app-muted">&times; 12 cans</span>
+									</div>
+									<button class="h-11 rounded-lg bg-app-accent text-lg font-semibold text-white">+</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="absolute inset-x-0 bottom-0 border-t border-app-border bg-app-surface/95 p-3 pb-4 backdrop-blur">
+						<div class="flex items-center gap-3">
+							<div class="text-xs text-app-muted">
+								<div>4 of 7 items counted</div>
+								<div class="num font-semibold text-app-text">137 units</div>
+							</div>
+							<button class="ml-auto rounded-xl bg-app-accent px-5 py-3 text-sm font-semibold text-white shadow-sm">
+								Finish count
+							</button>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
+</html>

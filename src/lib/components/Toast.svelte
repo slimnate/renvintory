@@ -37,12 +37,12 @@
 	}
 </script>
 
-<div class="toast toast-top toast-end z-50">
+<div class="toast-top toast-end toast z-50">
 	{#each toasts as toastItem (toastItem.id)}
 		<div
 			class="alert {getToastClass(
 				toastItem.type
-			)} animate-in fade-in slide-in-from-top-2 mb-2 shadow-lg"
+			)} mb-2 border-2 border-goldleaf/50 font-num shadow-lg"
 			role="alert"
 		>
 			<svg
@@ -60,7 +60,7 @@
 			</svg>
 			<span>{toastItem.message}</span>
 			<button
-				class="btn btn-sm btn-ghost"
+				class="btn btn-ghost btn-sm"
 				onclick={() => toast.dismiss(toastItem.id)}
 				aria-label="Dismiss"
 			>

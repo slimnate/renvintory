@@ -1,38 +1,37 @@
 <script lang="ts">
+	import '@fontsource-variable/cinzel';
+	import '@fontsource-variable/eb-garamond';
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
-    import { PUBLIC_CONVEX_URL } from '$env/static/public';
-    import { setupConvex } from 'convex-svelte';
-    import Toast from '$lib/components/Toast.svelte'
+	import { PUBLIC_CONVEX_URL } from '$env/static/public';
+	import { setupConvex } from 'convex-svelte';
+	import Toast from '$lib/components/Toast.svelte';
 
 	const { children } = $props();
 
-    setupConvex(PUBLIC_CONVEX_URL);
+	setupConvex(PUBLIC_CONVEX_URL);
 </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div class="min-h-dvh bg-base-200 text-base-content">
-	<header class="border-b bg-base-100">
+<div class="min-h-dvh wood text-base-content">
+	<header class="sticky top-0 z-40 border-b-2 border-goldleaf/60 boardface carved">
 		<div class="mx-auto navbar max-w-7xl px-4 py-0 sm:px-6 lg:px-8">
 			<div class="flex-1">
-				<a href="/" class="btn text-lg font-semibold tracking-tight btn-ghost">Renvintory</a>
+				<a href="/" class="gilt font-display text-xl font-bold tracking-[0.15em] uppercase">
+					Renvintory
+				</a>
 			</div>
 			<div class="flex-none">
-				<a class="btn btn-ghost btn-sm" href="/">Home</a>
+				<a class="btn text-cream/70 btn-ghost btn-sm" href="/">Houses</a>
 			</div>
 		</div>
 	</header>
-	<main class="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+	<main class="container mx-auto px-4 pt-0 pb-32 sm:px-6 lg:px-8">
 		{@render children?.()}
 	</main>
-	<footer class="border-t bg-base-100">
-		<div class="container mx-auto px-4 py-6 text-xs text-base-content/60 sm:px-6 lg:px-8">
-			&copy; {new Date().getFullYear()} Renvintory
-		</div>
-	</footer>
 
-    <Toast />
+	<Toast />
 </div>

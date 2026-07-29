@@ -1,65 +1,88 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { useQuery } from 'convex-svelte';
 	import { api } from '../convex/_generated/api';
+	import { emblemFor } from '$lib/emblems';
+	import Emblem from '$lib/components/Emblem.svelte';
 
-	// const { data }: { data: PageData } = $props();
 	const locationsQuery = useQuery(api.locations.getLocations);
 	const itemsQuery = useQuery(api.items.getAllItems);
-	
+
 	const items = $derived(itemsQuery.data ?? []);
 </script>
 
 <svelte:head>
-    <title>Renvintory</title>
+	<title>Renvintory</title>
 </svelte:head>
 
-<h1 class="mb-6 text-2xl font-semibold tracking-tight">Locations</h1>
-{#if locationsQuery.error}
-	<div class="mb-4 alert alert-error">
-		<span>{locationsQuery.error instanceof Error ? locationsQuery.error.message : String(locationsQuery.error)}</span>
+<section class="mb-10 pt-6">
+	<div class="mb-3 bg-gules px-3 pt-1.5 pb-3.5 text-center shadow-md banner">
+		<span class="font-display text-xs font-bold tracking-[0.25em] text-goldleaf uppercase"
+			>Houses</span
+		>
 	</div>
-{:else if locationsQuery.data && locationsQuery.data.length === 0}
-	<div class="mb-4 alert alert-info">
-		<span>No locations available.</span>
-	</div>
-{:else if locationsQuery.data}
-	<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{#each locationsQuery.data as location}
-			<li class="card border bg-base-100 shadow-sm transition hover:shadow">
-				<a
-					class="card-body flex flex-row items-center justify-between gap-4"
-					href={`/locations/${location._id}`}
-				>
-					<span class="card-title text-base">{location.name}</span>
-					<span class="btn btn-link btn-sm">View</span>
-				</a>
-			</li>
-		{/each}
-	</ul>
-{/if}
+	{#if locationsQuery.error}
+		<div class="mb-4 alert alert-error">
+			<span
+				>{locationsQuery.error instanceof Error
+					? locationsQuery.error.message
+					: String(locationsQuery.error)}</span
+			>
+		</div>
+	{:else if locationsQuery.data && locationsQuery.data.length === 0}
+		<div class="mb-4 alert alert-info">
+			<span>No houses have been raised yet.</span>
+		</div>
+	{:else if locationsQuery.data}
+		<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{#each locationsQuery.data as location}
+				<li class="rounded-sm border-2 border-goldleaf/70 painted shadow-lg carved">
+					<a class="flex items-center gap-3 p-3" href={`/locations/${location._id}`}>
+						<span
+							class="flex h-14 w-12 shrink-0 items-start justify-center boardface pt-2.5 text-goldleaf ring-1 ring-goldleaf/60 shield"
+						>
+							<Emblem id={emblemFor(location._id)} />
+						</span>
+						<span class="min-w-0 flex-1">
+							<span class="block font-display text-lg leading-tight font-bold">{location.name}</span
+							>
+						</span>
+						<span class="text-xl text-gules">&rsaquo;</span>
+					</a>
+				</li>
+			{/each}
+		</ul>
+	{/if}
+</section>
 
-<section class="mt-12">
+<section>
 	<div class="mb-3 flex items-center justify-between gap-4">
-		<h2 class="text-2xl font-semibold tracking-tight">Items</h2>
-		<a href="/items" class="btn btn-sm btn-primary">Manage items</a>
+		<div class="flex-1 bg-gules px-3 pt-1.5 pb-3.5 text-center shadow-md banner">
+			<span class="font-display text-xs font-bold tracking-[0.25em] text-goldleaf uppercase"
+				>Wares</span
+			>
+		</div>
+		<a href="/items" class="btn shrink-0 btn-sm btn-primary">Manage Wares</a>
 	</div>
 	{#if itemsQuery.error}
 		<div class="mb-4 alert alert-error">
-			<span>{itemsQuery.error instanceof Error ? itemsQuery.error.message : String(itemsQuery.error)}</span>
+			<span
+				>{itemsQuery.error instanceof Error
+					? itemsQuery.error.message
+					: String(itemsQuery.error)}</span
+			>
 		</div>
 	{:else if items.length === 0}
 		<div class="mb-4 alert alert-info">
-			<span>No items available.</span>
+			<span>No wares in the ledger.</span>
 		</div>
 	{:else}
-		<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		<ul
+			class="divide-y divide-oak/20 rounded-sm border-2 border-goldleaf/60 painted shadow-lg carved"
+		>
 			{#each items as item}
-				<li class="card border bg-base-100 shadow-sm transition hover:shadow">
-					<div class="card-body flex flex-row items-center justify-between gap-4">
-						<span class="card-title text-base">{item.name}</span>
-						<span class="badge badge-neutral text-right">${item.price}</span>
-					</div>
+				<li class="flex items-center justify-between px-4 py-3">
+					<span class="font-display font-bold">{item.name}</span>
+					<span class="font-num text-sm font-semibold text-azure">${item.price}</span>
 				</li>
 			{/each}
 		</ul>

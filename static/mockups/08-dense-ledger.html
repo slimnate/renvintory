@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>08 Dense Ledger &middot; Renvintory Mockups</title>
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<style type="text/tailwindcss">
+			@theme {
+				--color-app-bg: #101418;
+				--color-app-surface: #161b22;
+				--color-app-grid: #232a33;
+				--color-app-text: #d6dee8;
+				--color-app-muted: #7d8895;
+				--color-cyan: #3fb6c0;
+				--color-warn: #d98c1e;
+			}
+		</style>
+		<style>
+			body {
+				font-family:
+					ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+			}
+			.num {
+				font-variant-numeric: tabular-nums;
+			}
+			.grid-cell {
+				border-right: 1px solid #232a33;
+				border-bottom: 1px solid #232a33;
+			}
+		</style>
+	</head>
+	<body class="bg-slate-200 text-app-text antialiased">
+		<nav class="sticky top-0 z-50 border-b border-slate-300 bg-white/95 backdrop-blur">
+			<div class="flex gap-1 overflow-x-auto px-3 py-2 text-xs whitespace-nowrap">
+				<a href="index.html" class="rounded-md px-2 py-1 font-semibold text-slate-500">All</a>
+				<a href="01-focused-utility.html" class="rounded-md px-2 py-1 text-slate-600">01 Utility</a>
+				<a href="02-dark-bar.html" class="rounded-md px-2 py-1 text-slate-600">02 Dark</a>
+				<a href="03-brutalist.html" class="rounded-md px-2 py-1 text-slate-600">03 Brutal</a>
+				<a href="04-native-lists.html" class="rounded-md px-2 py-1 text-slate-600">04 Native</a>
+				<a href="05-illuminated-ledger.html" class="rounded-md px-2 py-1 text-slate-600">05 Illuminated</a>
+				<a href="06-tavern-signboard.html" class="rounded-md px-2 py-1 text-slate-600">06 Signboard</a>
+				<a href="07-heraldic-modern.html" class="rounded-md px-2 py-1 text-slate-600">07 Heraldic</a>
+				<a href="08-dense-ledger.html" class="rounded-md bg-app-bg px-2 py-1 font-bold text-cyan">08 Dense</a>
+				<a href="09-gilded-shield.html" class="rounded-md px-2 py-1 text-slate-600">09 Gilded</a>
+				<a href="10-painted-arms.html" class="rounded-md px-2 py-1 text-slate-600">10 Painted</a>
+			</div>
+		</nav>
+
+		<div class="mx-auto max-w-[440px] space-y-10 px-4 py-8">
+			<header class="text-slate-900">
+				<h1 class="text-2xl font-bold tracking-tight">08 &middot; Dense Ledger</h1>
+				<p class="mt-1 font-sans text-sm text-slate-600">
+					Maximum information per screen, and the only style that drops the stepper: you type a
+					known case count on a keypad instead of tapping plus twenty times.
+				</p>
+			</header>
+
+			<!-- ============ HOME ============ -->
+			<section>
+				<h2 class="mb-2 font-sans text-xs font-semibold tracking-widest text-slate-500 uppercase">
+					Home
+				</h2>
+				<div class="relative h-[720px] overflow-hidden rounded border border-slate-700 bg-app-bg shadow-2xl">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 flex items-center justify-between border-b border-app-grid bg-app-surface px-3 py-2.5">
+							<h1 class="text-sm font-bold tracking-widest text-cyan uppercase">renvintory</h1>
+							<span class="text-[10px] text-app-muted">v1.1.0</span>
+						</header>
+						<div class="p-3 pb-24">
+							<div class="mb-1 text-[10px] tracking-widest text-app-muted uppercase">
+								// locations
+							</div>
+							<table class="mb-6 w-full text-xs">
+								<thead class="text-[10px] tracking-wider text-app-muted uppercase">
+									<tr class="border-b border-app-grid">
+										<th class="grid-cell px-2 py-1.5 text-left">name</th>
+										<th class="grid-cell px-2 py-1.5 text-right">items</th>
+										<th class="grid-cell px-2 py-1.5 text-right">last</th>
+										<th class="px-2 py-1.5 text-right">open</th>
+									</tr>
+								</thead>
+								<tbody class="num">
+									<tr>
+										<td class="grid-cell px-2 py-2.5">Dragon</td>
+										<td class="grid-cell px-2 py-2.5 text-right">7</td>
+										<td class="grid-cell px-2 py-2.5 text-right text-app-muted">01-23</td>
+										<td class="px-2 py-2.5 text-right text-cyan">&gt;</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2.5">Wizard</td>
+										<td class="grid-cell px-2 py-2.5 text-right">18</td>
+										<td class="grid-cell px-2 py-2.5 text-right text-app-muted">01-22</td>
+										<td class="px-2 py-2.5 text-right text-cyan">&gt;</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2.5">Pig and Whistle</td>
+										<td class="grid-cell px-2 py-2.5 text-right">12</td>
+										<td class="grid-cell px-2 py-2.5 text-right text-app-muted">01-21</td>
+										<td class="px-2 py-2.5 text-right text-cyan">&gt;</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<div class="mb-1 flex items-center justify-between">
+								<span class="text-[10px] tracking-widest text-app-muted uppercase">// items</span>
+								<button class="text-[10px] text-cyan uppercase">[edit]</button>
+							</div>
+							<table class="w-full text-xs">
+								<thead class="text-[10px] tracking-wider text-app-muted uppercase">
+									<tr class="border-b border-app-grid">
+										<th class="grid-cell px-2 py-1.5 text-left">item</th>
+										<th class="grid-cell px-2 py-1.5 text-right">price</th>
+										<th class="px-2 py-1.5 text-right">ctrs</th>
+									</tr>
+								</thead>
+								<tbody class="num">
+									<tr>
+										<td class="grid-cell px-2 py-2">Miller Lite</td>
+										<td class="grid-cell px-2 py-2 text-right">6.00</td>
+										<td class="px-2 py-2 text-right text-app-muted">2</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2">Coors Light</td>
+										<td class="grid-cell px-2 py-2 text-right">6.00</td>
+										<td class="px-2 py-2 text-right text-app-muted">2</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2">Blue Moon</td>
+										<td class="grid-cell px-2 py-2 text-right">7.00</td>
+										<td class="px-2 py-2 text-right text-app-muted">2</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2">Guinness</td>
+										<td class="grid-cell px-2 py-2 text-right">8.00</td>
+										<td class="px-2 py-2 text-right text-app-muted">1</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2">Topo Chico</td>
+										<td class="grid-cell px-2 py-2 text-right">5.00</td>
+										<td class="px-2 py-2 text-right text-app-muted">1</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2">Callsign IPA</td>
+										<td class="grid-cell px-2 py-2 text-right">8.00</td>
+										<td class="px-2 py-2 text-right text-app-muted">1</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<nav class="absolute inset-x-0 bottom-0 grid grid-cols-3 border-t border-app-grid bg-app-surface pb-2 text-[10px] tracking-widest uppercase">
+						<button class="border-r border-app-grid py-3 text-cyan">loc</button>
+						<button class="border-r border-app-grid py-3 text-app-muted">cnt</button>
+						<button class="py-3 text-app-muted">itm</button>
+					</nav>
+				</div>
+			</section>
+
+			<!-- ============ LOCATION ============ -->
+			<section>
+				<h2 class="mb-2 font-sans text-xs font-semibold tracking-widest text-slate-500 uppercase">
+					Location
+				</h2>
+				<div class="relative h-[720px] overflow-hidden rounded border border-slate-700 bg-app-bg shadow-2xl">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 flex items-center gap-2 border-b border-app-grid bg-app-surface px-3 py-2.5">
+							<span class="text-cyan">&lt;</span>
+							<h1 class="text-sm font-bold tracking-widest uppercase">dragon</h1>
+							<span class="ml-auto text-[10px] text-app-muted">7 items</span>
+						</header>
+						<div class="p-3 pb-24">
+							<div class="mb-1 text-[10px] tracking-widest text-app-muted uppercase">
+								// inventories
+							</div>
+							<table class="w-full text-xs">
+								<thead class="text-[10px] tracking-wider text-app-muted uppercase">
+									<tr class="border-b border-app-grid">
+										<th class="grid-cell px-2 py-1.5 text-left">date</th>
+										<th class="grid-cell px-1 py-1.5">op</th>
+										<th class="grid-cell px-1 py-1.5">cl</th>
+										<th class="grid-cell px-1 py-1.5">sp</th>
+										<th class="grid-cell px-1 py-1.5">in</th>
+										<th class="grid-cell px-1 py-1.5">rpt</th>
+										<th class="px-1 py-1.5">del</th>
+									</tr>
+								</thead>
+								<tbody class="num text-center">
+									<tr>
+										<td class="grid-cell px-2 py-3 text-left whitespace-nowrap">2026-01-23</td>
+										<td class="grid-cell px-1 py-3 text-cyan">&#9632;</td>
+										<td class="grid-cell px-1 py-3 text-cyan">&#9632;</td>
+										<td class="grid-cell px-1 py-3 text-cyan">&#9632;</td>
+										<td class="grid-cell px-1 py-3 text-cyan">&#9632;</td>
+										<td class="grid-cell px-1 py-3 text-warn">&#9656;</td>
+										<td class="px-1 py-3 text-red-400">&times;</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-3 text-left whitespace-nowrap">2026-01-22</td>
+										<td class="grid-cell px-1 py-3 text-cyan">&#9632;</td>
+										<td class="grid-cell px-1 py-3 text-cyan">&#9632;</td>
+										<td class="grid-cell px-1 py-3 text-app-muted">&middot;</td>
+										<td class="grid-cell px-1 py-3 text-app-muted">&middot;</td>
+										<td class="grid-cell px-1 py-3 text-warn">&#9656;</td>
+										<td class="px-1 py-3 text-red-400">&times;</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-3 text-left whitespace-nowrap">2026-01-21</td>
+										<td class="grid-cell px-1 py-3 text-cyan">&#9632;</td>
+										<td class="grid-cell px-1 py-3 text-app-muted">&middot;</td>
+										<td class="grid-cell px-1 py-3 text-app-muted">&middot;</td>
+										<td class="grid-cell px-1 py-3 text-app-muted">&middot;</td>
+										<td class="grid-cell px-1 py-3 text-warn">&#9656;</td>
+										<td class="px-1 py-3 text-red-400">&times;</td>
+									</tr>
+								</tbody>
+							</table>
+							<p class="mt-2 text-[10px] leading-relaxed text-app-muted">
+								&#9632; = recorded &nbsp; &middot; = none &nbsp; &#9656; = report
+							</p>
+
+							<div class="mt-6 mb-1 text-[10px] tracking-widest text-app-muted uppercase">
+								// items at this location
+							</div>
+							<table class="w-full text-xs">
+								<tbody class="num">
+									<tr>
+										<td class="grid-cell px-2 py-2">Miller Lite</td>
+										<td class="grid-cell px-2 py-2 text-right">6.00</td>
+										<td class="px-2 py-2 text-right text-red-400">&times;</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2">Coors Light</td>
+										<td class="grid-cell px-2 py-2 text-right">6.00</td>
+										<td class="px-2 py-2 text-right text-red-400">&times;</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2">Blue Moon</td>
+										<td class="grid-cell px-2 py-2 text-right">7.00</td>
+										<td class="px-2 py-2 text-right text-red-400">&times;</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2">Guinness</td>
+										<td class="grid-cell px-2 py-2 text-right">8.00</td>
+										<td class="px-2 py-2 text-right text-red-400">&times;</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="absolute inset-x-0 bottom-0 border-t border-app-grid bg-app-surface p-2 pb-3">
+						<button class="w-full border border-cyan py-3 text-xs tracking-widest text-cyan uppercase">
+							[ new inventory ]
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ REPORT ============ -->
+			<section>
+				<h2 class="mb-2 font-sans text-xs font-semibold tracking-widest text-slate-500 uppercase">
+					Report (all 10 columns, frozen item column)
+				</h2>
+				<div class="relative h-[720px] overflow-hidden rounded border border-slate-700 bg-app-bg shadow-2xl">
+					<div class="flex h-full flex-col">
+						<header class="flex items-center gap-2 border-b border-app-grid bg-app-surface px-3 py-2.5">
+							<span class="text-cyan">&lt;</span>
+							<h1 class="text-sm font-bold tracking-widest uppercase">dragon</h1>
+							<span class="num text-[10px] text-app-muted">2026-01-23</span>
+							<span class="ml-auto bg-warn px-1.5 py-0.5 text-[10px] font-bold tracking-widest text-black uppercase">
+								close
+							</span>
+						</header>
+
+						<div class="border-b border-app-grid bg-app-surface/60 px-3 py-2 text-[10px] text-app-muted">
+							scroll &rarr; for all columns &middot; item column frozen &middot; totals pinned
+						</div>
+
+						<!-- scrollable grid -->
+						<div class="min-h-0 flex-1 overflow-auto">
+							<table class="num w-max min-w-full text-right text-xs">
+								<thead class="sticky top-0 z-20 bg-app-surface text-[10px] tracking-wider text-cyan uppercase">
+									<tr>
+										<th class="grid-cell sticky left-0 z-30 bg-app-surface px-2 py-2 text-left">item</th>
+										<th class="grid-cell px-2 py-2">price</th>
+										<th class="grid-cell px-2 py-2">open</th>
+										<th class="grid-cell px-2 py-2">close</th>
+										<th class="grid-cell px-2 py-2">spill</th>
+										<th class="grid-cell px-2 py-2">intk</th>
+										<th class="grid-cell px-2 py-2">op+in</th>
+										<th class="grid-cell px-2 py-2">used</th>
+										<th class="grid-cell px-2 py-2">splt$</th>
+										<th class="px-2 py-2">sales</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th class="grid-cell sticky left-0 z-10 bg-app-bg px-2 py-2 text-left font-normal whitespace-nowrap">Miller Lite</th>
+										<td class="grid-cell px-2 py-2">6.00</td><td class="grid-cell px-2 py-2">47</td>
+										<td class="grid-cell px-2 py-2">31</td><td class="grid-cell px-2 py-2 text-warn">1</td>
+										<td class="grid-cell px-2 py-2">0</td><td class="grid-cell px-2 py-2">47</td>
+										<td class="grid-cell px-2 py-2">16</td><td class="grid-cell px-2 py-2 text-warn">6</td>
+										<td class="px-2 py-2 text-cyan">90</td>
+									</tr>
+									<tr>
+										<th class="grid-cell sticky left-0 z-10 bg-app-bg px-2 py-2 text-left font-normal whitespace-nowrap">Coors Light</th>
+										<td class="grid-cell px-2 py-2">6.00</td><td class="grid-cell px-2 py-2">36</td>
+										<td class="grid-cell px-2 py-2">25</td><td class="grid-cell px-2 py-2">0</td>
+										<td class="grid-cell px-2 py-2">12</td><td class="grid-cell px-2 py-2">48</td>
+										<td class="grid-cell px-2 py-2">23</td><td class="grid-cell px-2 py-2">0</td>
+										<td class="px-2 py-2 text-cyan">138</td>
+									</tr>
+									<tr>
+										<th class="grid-cell sticky left-0 z-10 bg-app-bg px-2 py-2 text-left font-normal whitespace-nowrap">Blue Moon</th>
+										<td class="grid-cell px-2 py-2">7.00</td><td class="grid-cell px-2 py-2">30</td>
+										<td class="grid-cell px-2 py-2">22</td><td class="grid-cell px-2 py-2 text-warn">1</td>
+										<td class="grid-cell px-2 py-2">12</td><td class="grid-cell px-2 py-2">42</td>
+										<td class="grid-cell px-2 py-2">20</td><td class="grid-cell px-2 py-2 text-warn">7</td>
+										<td class="px-2 py-2 text-cyan">133</td>
+									</tr>
+									<tr>
+										<th class="grid-cell sticky left-0 z-10 bg-app-bg px-2 py-2 text-left font-normal whitespace-nowrap">Guinness</th>
+										<td class="grid-cell px-2 py-2">8.00</td><td class="grid-cell px-2 py-2">24</td>
+										<td class="grid-cell px-2 py-2">18</td><td class="grid-cell px-2 py-2">0</td>
+										<td class="grid-cell px-2 py-2">0</td><td class="grid-cell px-2 py-2">24</td>
+										<td class="grid-cell px-2 py-2">6</td><td class="grid-cell px-2 py-2">0</td>
+										<td class="px-2 py-2 text-cyan">48</td>
+									</tr>
+									<tr>
+										<th class="grid-cell sticky left-0 z-10 bg-app-bg px-2 py-2 text-left font-normal whitespace-nowrap">Topo Chico</th>
+										<td class="grid-cell px-2 py-2">5.00</td><td class="grid-cell px-2 py-2">18</td>
+										<td class="grid-cell px-2 py-2">9</td><td class="grid-cell px-2 py-2">0</td>
+										<td class="grid-cell px-2 py-2">0</td><td class="grid-cell px-2 py-2">18</td>
+										<td class="grid-cell px-2 py-2">9</td><td class="grid-cell px-2 py-2">0</td>
+										<td class="px-2 py-2 text-cyan">45</td>
+									</tr>
+									<tr>
+										<th class="grid-cell sticky left-0 z-10 bg-app-bg px-2 py-2 text-left font-normal whitespace-nowrap">Callsign IPA</th>
+										<td class="grid-cell px-2 py-2">8.00</td><td class="grid-cell px-2 py-2">20</td>
+										<td class="grid-cell px-2 py-2">14</td><td class="grid-cell px-2 py-2 text-warn">2</td>
+										<td class="grid-cell px-2 py-2">0</td><td class="grid-cell px-2 py-2">20</td>
+										<td class="grid-cell px-2 py-2">6</td><td class="grid-cell px-2 py-2 text-warn">16</td>
+										<td class="px-2 py-2 text-cyan">32</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<!-- pinned totals -->
+						<div class="border-t-2 border-cyan bg-app-surface px-3 py-2.5">
+							<div class="num flex items-center justify-between text-xs">
+								<span class="tracking-widest text-app-muted uppercase">total sales</span>
+								<span class="text-lg font-bold text-cyan">$486</span>
+							</div>
+							<div class="num flex items-center justify-between text-xs">
+								<span class="tracking-widest text-app-muted uppercase">total spillage</span>
+								<span class="font-bold text-warn">$29</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ COUNT ============ -->
+			<section>
+				<h2 class="mb-2 font-sans text-xs font-semibold tracking-widest text-slate-500 uppercase">
+					Count (keypad entry, no steppers)
+				</h2>
+				<div class="relative h-[720px] overflow-hidden rounded border border-slate-700 bg-app-bg shadow-2xl">
+					<div class="flex h-full flex-col">
+						<header class="flex items-center gap-2 border-b border-app-grid bg-app-surface px-3 py-2.5">
+							<span class="text-cyan">&lt;</span>
+							<h1 class="text-sm font-bold tracking-widest uppercase">dragon</h1>
+							<span class="num text-[10px] text-app-muted">2026-01-23</span>
+							<span class="ml-auto bg-cyan px-1.5 py-0.5 text-[10px] font-bold tracking-widest text-black uppercase">
+								open
+							</span>
+						</header>
+
+						<div class="min-h-0 flex-1 overflow-y-auto p-3">
+							<div class="mb-1 text-[10px] tracking-widest text-app-muted uppercase">
+								// tap a field, type the count
+							</div>
+							<table class="w-full text-xs">
+								<thead class="text-[10px] tracking-wider text-app-muted uppercase">
+									<tr class="border-b border-app-grid">
+										<th class="grid-cell px-2 py-1.5 text-left">item</th>
+										<th class="grid-cell px-2 py-1.5 text-left">ctr</th>
+										<th class="grid-cell px-2 py-1.5 text-right">qty</th>
+										<th class="px-2 py-1.5 text-right">tot</th>
+									</tr>
+								</thead>
+								<tbody class="num">
+									<!-- active row -->
+									<tr>
+										<th class="grid-cell px-2 py-2 text-left font-normal whitespace-nowrap" rowspan="2">Miller Lite</th>
+										<td class="grid-cell px-2 py-2 text-app-muted">12pk</td>
+										<td class="grid-cell px-1 py-1.5 text-right">
+											<span class="inline-block w-12 border border-cyan bg-cyan/10 px-2 py-1 text-right text-cyan">3</span>
+										</td>
+										<td class="px-2 py-2 text-right text-app-muted" rowspan="2">47</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2 text-app-muted">1</td>
+										<td class="grid-cell px-1 py-1.5 text-right">
+											<span class="inline-block w-12 border border-app-grid px-2 py-1 text-right">11</span>
+										</td>
+									</tr>
+
+									<tr>
+										<th class="grid-cell px-2 py-2 text-left font-normal whitespace-nowrap" rowspan="2">Coors Light</th>
+										<td class="grid-cell px-2 py-2 text-app-muted">12pk</td>
+										<td class="grid-cell px-1 py-1.5 text-right">
+											<span class="inline-block w-12 border border-app-grid px-2 py-1 text-right">2</span>
+										</td>
+										<td class="px-2 py-2 text-right text-app-muted" rowspan="2">36</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2 text-app-muted">1</td>
+										<td class="grid-cell px-1 py-1.5 text-right">
+											<span class="inline-block w-12 border border-app-grid px-2 py-1 text-right">12</span>
+										</td>
+									</tr>
+
+									<tr>
+										<th class="grid-cell px-2 py-2 text-left font-normal whitespace-nowrap" rowspan="2">Blue Moon</th>
+										<td class="grid-cell px-2 py-2 text-app-muted">6pk</td>
+										<td class="grid-cell px-1 py-1.5 text-right">
+											<span class="inline-block w-12 border border-app-grid px-2 py-1 text-right">2</span>
+										</td>
+										<td class="px-2 py-2 text-right text-app-muted" rowspan="2">30</td>
+									</tr>
+									<tr>
+										<td class="grid-cell px-2 py-2 text-app-muted">1</td>
+										<td class="grid-cell px-1 py-1.5 text-right">
+											<span class="inline-block w-12 border border-app-grid px-2 py-1 text-right">18</span>
+										</td>
+									</tr>
+
+									<tr>
+										<th class="grid-cell px-2 py-2 text-left font-normal whitespace-nowrap">Guinness</th>
+										<td class="grid-cell px-2 py-2 text-app-muted">12pk</td>
+										<td class="grid-cell px-1 py-1.5 text-right">
+											<span class="inline-block w-12 border border-app-grid px-2 py-1 text-right">2</span>
+										</td>
+										<td class="px-2 py-2 text-right text-app-muted">24</td>
+									</tr>
+									<tr>
+										<th class="grid-cell px-2 py-2 text-left font-normal whitespace-nowrap">Topo Chico</th>
+										<td class="grid-cell px-2 py-2 text-app-muted">12pk</td>
+										<td class="grid-cell px-1 py-1.5 text-right">
+											<span class="inline-block w-12 border border-app-grid px-2 py-1 text-right">1</span>
+										</td>
+										<td class="px-2 py-2 text-right text-app-muted">18</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<!-- keypad -->
+						<div class="border-t border-app-grid bg-app-surface p-2 pb-3">
+							<div class="mb-2 flex items-center justify-between px-1 text-[10px] tracking-widest text-app-muted uppercase">
+								<span>miller lite &middot; 12pk</span>
+								<span class="num text-cyan">137 units total</span>
+							</div>
+							<div class="num grid grid-cols-4 gap-1.5">
+								<button class="border border-app-grid bg-app-bg py-3 text-base">7</button>
+								<button class="border border-app-grid bg-app-bg py-3 text-base">8</button>
+								<button class="border border-app-grid bg-app-bg py-3 text-base">9</button>
+								<button class="row-span-2 border border-app-grid bg-app-bg text-xs text-app-muted uppercase">del</button>
+								<button class="border border-app-grid bg-app-bg py-3 text-base">4</button>
+								<button class="border border-app-grid bg-app-bg py-3 text-base">5</button>
+								<button class="border border-app-grid bg-app-bg py-3 text-base">6</button>
+								<button class="border border-app-grid bg-app-bg py-3 text-base">1</button>
+								<button class="border border-app-grid bg-app-bg py-3 text-base">2</button>
+								<button class="border border-app-grid bg-app-bg py-3 text-base">3</button>
+								<button class="row-span-2 border border-cyan bg-cyan/15 text-xs tracking-wider text-cyan uppercase">next</button>
+								<button class="col-span-2 border border-app-grid bg-app-bg py-3 text-base">0</button>
+								<button class="border border-app-grid bg-app-bg py-3 text-base text-app-muted">.</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
+</html>

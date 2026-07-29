@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>03 Neo-Brutalist Bold &middot; Renvintory Mockups</title>
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<style type="text/tailwindcss">
+			@theme {
+				--color-app-bg: #fffdf5;
+				--color-app-ink: #000000;
+				--color-app-yellow: #ffe500;
+				--color-app-orange: #ff5c00;
+				--color-app-blue: #0047ff;
+			}
+		</style>
+		<style>
+			body {
+				font-family:
+					ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif;
+			}
+			.num {
+				font-variant-numeric: tabular-nums;
+			}
+			.brut {
+				border: 3px solid #000;
+				box-shadow: 4px 4px 0 #000;
+			}
+			.brut-sm {
+				border: 2px solid #000;
+				box-shadow: 3px 3px 0 #000;
+			}
+		</style>
+	</head>
+	<body class="bg-slate-200 text-app-ink antialiased">
+		<nav class="sticky top-0 z-50 border-b border-slate-300 bg-white/95 backdrop-blur">
+			<div class="flex gap-1 overflow-x-auto px-3 py-2 text-xs whitespace-nowrap">
+				<a href="index.html" class="rounded-md px-2 py-1 font-semibold text-slate-500">All</a>
+				<a href="01-focused-utility.html" class="rounded-md px-2 py-1 text-slate-600">01 Utility</a>
+				<a href="02-dark-bar.html" class="rounded-md px-2 py-1 text-slate-600">02 Dark</a>
+				<a href="03-brutalist.html" class="bg-app-yellow px-2 py-1 font-bold text-black">03 Brutal</a>
+				<a href="04-native-lists.html" class="rounded-md px-2 py-1 text-slate-600">04 Native</a>
+				<a href="05-illuminated-ledger.html" class="rounded-md px-2 py-1 text-slate-600">05 Illuminated</a>
+				<a href="06-tavern-signboard.html" class="rounded-md px-2 py-1 text-slate-600">06 Signboard</a>
+				<a href="07-heraldic-modern.html" class="rounded-md px-2 py-1 text-slate-600">07 Heraldic</a>
+				<a href="08-dense-ledger.html" class="rounded-md px-2 py-1 text-slate-600">08 Dense</a>
+				<a href="09-gilded-shield.html" class="rounded-md px-2 py-1 text-slate-600">09 Gilded</a>
+				<a href="10-painted-arms.html" class="rounded-md px-2 py-1 text-slate-600">10 Painted</a>
+			</div>
+		</nav>
+
+		<div class="mx-auto max-w-[440px] space-y-10 px-4 py-8">
+			<header>
+				<h1 class="text-2xl font-black tracking-tight uppercase">03 &middot; Neo-Brutalist Bold</h1>
+				<p class="mt-1 text-sm text-slate-600">
+					Thick borders, hard shadows, flat color blocks, deliberately enormous tap targets.
+				</p>
+			</header>
+
+			<!-- ============ HOME ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-bold tracking-widest text-slate-500 uppercase">Home</h2>
+				<div class="brut relative h-[720px] overflow-hidden bg-app-bg">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 border-b-[3px] border-black bg-app-yellow px-4 py-4">
+							<h1 class="text-2xl font-black tracking-tight uppercase">Renvintory</h1>
+						</header>
+						<div class="space-y-6 p-4 pb-28">
+							<section>
+								<h2 class="mb-3 inline-block bg-black px-2 py-1 text-xs font-black tracking-widest text-white uppercase">
+									Locations
+								</h2>
+								<ul class="space-y-3">
+									<li class="brut flex items-center justify-between bg-white px-4 py-5">
+										<span class="text-xl font-black uppercase">Dragon</span>
+										<span class="bg-app-blue px-3 py-2 text-xs font-black text-white uppercase">Open</span>
+									</li>
+									<li class="brut flex items-center justify-between bg-white px-4 py-5">
+										<span class="text-xl font-black uppercase">Wizard</span>
+										<span class="bg-app-blue px-3 py-2 text-xs font-black text-white uppercase">Open</span>
+									</li>
+									<li class="brut flex items-center justify-between bg-white px-4 py-5">
+										<span class="text-xl font-black uppercase">Pig and Whistle</span>
+										<span class="bg-app-blue px-3 py-2 text-xs font-black text-white uppercase">Open</span>
+									</li>
+								</ul>
+							</section>
+
+							<section>
+								<div class="mb-3 flex items-center justify-between">
+									<h2 class="inline-block bg-black px-2 py-1 text-xs font-black tracking-widest text-white uppercase">
+										Items
+									</h2>
+									<button class="brut-sm bg-app-orange px-3 py-2 text-xs font-black text-white uppercase">
+										Manage
+									</button>
+								</div>
+								<ul class="brut divide-y-[3px] divide-black bg-white">
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span class="font-bold uppercase">Miller Lite</span>
+										<span class="num bg-app-yellow px-2 py-1 font-black">$6</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span class="font-bold uppercase">Coors Light</span>
+										<span class="num bg-app-yellow px-2 py-1 font-black">$6</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span class="font-bold uppercase">Blue Moon</span>
+										<span class="num bg-app-yellow px-2 py-1 font-black">$7</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span class="font-bold uppercase">Guinness</span>
+										<span class="num bg-app-yellow px-2 py-1 font-black">$8</span>
+									</li>
+									<li class="flex items-center justify-between px-4 py-3.5">
+										<span class="font-bold uppercase">Topo Chico</span>
+										<span class="num bg-app-yellow px-2 py-1 font-black">$5</span>
+									</li>
+								</ul>
+							</section>
+						</div>
+					</div>
+					<nav class="absolute inset-x-0 bottom-0 grid grid-cols-3 border-t-[3px] border-black bg-white pb-1">
+						<button class="border-r-[3px] border-black bg-app-yellow py-4 text-xs font-black uppercase">Home</button>
+						<button class="border-r-[3px] border-black py-4 text-xs font-black uppercase">Counts</button>
+						<button class="py-4 text-xs font-black uppercase">Items</button>
+					</nav>
+				</div>
+			</section>
+
+			<!-- ============ LOCATION ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-bold tracking-widest text-slate-500 uppercase">Location</h2>
+				<div class="brut relative h-[720px] overflow-hidden bg-app-bg">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 flex items-center gap-3 border-b-[3px] border-black bg-app-yellow px-4 py-4">
+							<span class="text-xl font-black">&larr;</span>
+							<h1 class="text-2xl font-black tracking-tight uppercase">Dragon</h1>
+						</header>
+						<div class="space-y-6 p-4 pb-28">
+							<section>
+								<h2 class="mb-3 inline-block bg-black px-2 py-1 text-xs font-black tracking-widest text-white uppercase">
+									Inventories
+								</h2>
+								<ul class="space-y-4">
+									<li class="brut bg-white">
+										<div class="flex items-center justify-between border-b-[3px] border-black bg-app-blue px-3 py-2.5">
+											<span class="font-black tracking-wide text-white uppercase">Sat 1/23/26</span>
+											<button class="bg-white px-2 py-1 text-[10px] font-black uppercase">Details</button>
+										</div>
+										<!-- count blocks -->
+										<div class="grid grid-cols-2 divide-x-[3px] divide-y-[3px] divide-black">
+											<button class="py-5 text-sm font-black uppercase">Open</button>
+											<button class="py-5 text-sm font-black uppercase">Close</button>
+											<button class="py-5 text-sm font-black uppercase">Spill</button>
+											<button class="py-5 text-sm font-black uppercase">Intake</button>
+										</div>
+										<div class="grid grid-cols-2 divide-x-[3px] divide-black border-t-[3px] border-black">
+											<button class="bg-app-orange py-4 text-xs font-black text-white uppercase">Open report</button>
+											<button class="bg-app-orange py-4 text-xs font-black text-white uppercase">Close report</button>
+										</div>
+									</li>
+									<li class="brut bg-white">
+										<div class="flex items-center justify-between border-b-[3px] border-black bg-app-blue px-3 py-2.5">
+											<span class="font-black tracking-wide text-white uppercase">Fri 1/22/26</span>
+											<button class="bg-white px-2 py-1 text-[10px] font-black uppercase">Details</button>
+										</div>
+										<div class="grid grid-cols-2 divide-x-[3px] divide-black">
+											<button class="py-5 text-sm font-black uppercase">Open</button>
+											<button class="py-5 text-sm font-black uppercase">Close</button>
+										</div>
+										<div class="grid grid-cols-1 border-t-[3px] border-black">
+											<button class="bg-app-orange py-4 text-xs font-black text-white uppercase">Close report</button>
+										</div>
+									</li>
+									<li class="brut bg-white">
+										<div class="flex items-center justify-between border-b-[3px] border-black bg-app-blue px-3 py-2.5">
+											<span class="font-black tracking-wide text-white uppercase">Thu 1/21/26</span>
+											<button class="bg-white px-2 py-1 text-[10px] font-black uppercase">Details</button>
+										</div>
+										<div class="grid grid-cols-1">
+											<button class="py-5 text-sm font-black uppercase">Open</button>
+										</div>
+									</li>
+								</ul>
+							</section>
+						</div>
+					</div>
+					<div class="absolute inset-x-0 bottom-0 border-t-[3px] border-black bg-white p-3">
+						<button class="brut-sm w-full bg-app-yellow py-4 text-base font-black uppercase">
+							+ New inventory
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ REPORT ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-bold tracking-widest text-slate-500 uppercase">
+					Report (receipt blocks)
+				</h2>
+				<div class="brut relative h-[720px] overflow-hidden bg-app-bg">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 flex items-center gap-2 border-b-[3px] border-black bg-app-yellow px-4 py-4">
+							<span class="text-xl font-black">&larr;</span>
+							<h1 class="text-lg font-black uppercase">Dragon</h1>
+							<span class="ml-auto bg-black px-2 py-1 text-[10px] font-black text-white uppercase">Close</span>
+						</header>
+						<div class="space-y-4 p-4 pb-8">
+							<div class="brut bg-app-yellow p-4">
+								<div class="text-xs font-black tracking-widest uppercase">Total sales</div>
+								<div class="num text-4xl font-black">$486</div>
+							</div>
+							<div class="brut bg-app-orange p-4 text-white">
+								<div class="text-xs font-black tracking-widest uppercase">Spillage</div>
+								<div class="num text-4xl font-black">$29</div>
+							</div>
+
+							<!-- receipt block per item -->
+							<div class="brut bg-white">
+								<div class="border-b-[3px] border-black bg-black px-3 py-2">
+									<span class="font-black tracking-wide text-white uppercase">Miller Lite</span>
+								</div>
+								<dl class="num grid grid-cols-2 divide-x-[2px] divide-y-[2px] divide-black text-sm">
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Price</dt><dd>$6</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Open</dt><dd>47</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Close</dt><dd>31</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Spill</dt><dd>1</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Intake</dt><dd>0</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Open+In</dt><dd>47</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Used</dt><dd>16</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Spilled</dt><dd>$6</dd></div>
+								</dl>
+								<div class="flex items-center justify-between border-t-[3px] border-black bg-app-yellow px-3 py-2.5">
+									<span class="font-black uppercase">Sales</span>
+									<span class="num text-xl font-black">$90</span>
+								</div>
+							</div>
+
+							<div class="brut bg-white">
+								<div class="border-b-[3px] border-black bg-black px-3 py-2">
+									<span class="font-black tracking-wide text-white uppercase">Coors Light</span>
+								</div>
+								<dl class="num grid grid-cols-2 divide-x-[2px] divide-y-[2px] divide-black text-sm">
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Price</dt><dd>$6</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Open</dt><dd>36</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Close</dt><dd>25</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Spill</dt><dd>0</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Intake</dt><dd>12</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Open+In</dt><dd>48</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Used</dt><dd>23</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Spilled</dt><dd>$0</dd></div>
+								</dl>
+								<div class="flex items-center justify-between border-t-[3px] border-black bg-app-yellow px-3 py-2.5">
+									<span class="font-black uppercase">Sales</span>
+									<span class="num text-xl font-black">$138</span>
+								</div>
+							</div>
+
+							<div class="brut bg-white">
+								<div class="border-b-[3px] border-black bg-black px-3 py-2">
+									<span class="font-black tracking-wide text-white uppercase">Blue Moon</span>
+								</div>
+								<dl class="num grid grid-cols-2 divide-x-[2px] divide-y-[2px] divide-black text-sm">
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Price</dt><dd>$7</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Open</dt><dd>30</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Close</dt><dd>22</dd></div>
+									<div class="flex justify-between px-3 py-2"><dt class="font-bold">Spill</dt><dd>1</dd></div>
+								</dl>
+								<div class="flex items-center justify-between border-t-[3px] border-black bg-app-yellow px-3 py-2.5">
+									<span class="font-black uppercase">Sales</span>
+									<span class="num text-xl font-black">$133</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- ============ COUNT ============ -->
+			<section>
+				<h2 class="mb-2 text-xs font-bold tracking-widest text-slate-500 uppercase">Count</h2>
+				<div class="brut relative h-[720px] overflow-hidden bg-app-bg">
+					<div class="h-full overflow-y-auto">
+						<header class="sticky top-0 z-10 flex items-center gap-2 border-b-[3px] border-black bg-app-yellow px-4 py-4">
+							<span class="text-xl font-black">&larr;</span>
+							<h1 class="text-lg font-black uppercase">Dragon</h1>
+							<span class="text-xs font-bold">Sat 1/23</span>
+							<span class="ml-auto bg-app-blue px-2 py-1 text-[10px] font-black text-white uppercase">Open</span>
+						</header>
+						<div class="space-y-5 p-4 pb-32">
+							<!-- item -->
+							<div class="brut bg-white">
+								<div class="flex items-center justify-between border-b-[3px] border-black bg-black px-3 py-2.5">
+									<span class="font-black tracking-wide text-white uppercase">Miller Lite</span>
+									<span class="num bg-app-yellow px-2 py-1 text-lg font-black">47</span>
+								</div>
+								<div class="grid grid-cols-[1fr_1.2fr_1fr] divide-x-[3px] divide-black border-b-[3px] border-black">
+									<button class="py-6 text-2xl font-black">&minus;</button>
+									<div class="num flex flex-col items-center justify-center py-3">
+										<span class="text-2xl font-black">3</span>
+										<span class="text-[10px] font-bold uppercase">&times; 12 cans</span>
+									</div>
+									<button class="bg-app-yellow py-6 text-2xl font-black">+</button>
+								</div>
+								<div class="grid grid-cols-[1fr_1.2fr_1fr] divide-x-[3px] divide-black">
+									<button class="py-6 text-2xl font-black">&minus;</button>
+									<div class="num flex flex-col items-center justify-center py-3">
+										<span class="text-2xl font-black">11</span>
+										<span class="text-[10px] font-bold uppercase">&times; 1 can</span>
+									</div>
+									<button class="bg-app-yellow py-6 text-2xl font-black">+</button>
+								</div>
+							</div>
+
+							<div class="brut bg-white">
+								<div class="flex items-center justify-between border-b-[3px] border-black bg-black px-3 py-2.5">
+									<span class="font-black tracking-wide text-white uppercase">Coors Light</span>
+									<span class="num bg-app-yellow px-2 py-1 text-lg font-black">36</span>
+								</div>
+								<div class="grid grid-cols-[1fr_1.2fr_1fr] divide-x-[3px] divide-black border-b-[3px] border-black">
+									<button class="py-6 text-2xl font-black">&minus;</button>
+									<div class="num flex flex-col items-center justify-center py-3">
+										<span class="text-2xl font-black">2</span>
+										<span class="text-[10px] font-bold uppercase">&times; 12 cans</span>
+									</div>
+									<button class="bg-app-yellow py-6 text-2xl font-black">+</button>
+								</div>
+								<div class="grid grid-cols-[1fr_1.2fr_1fr] divide-x-[3px] divide-black">
+									<button class="py-6 text-2xl font-black">&minus;</button>
+									<div class="num flex flex-col items-center justify-center py-3">
+										<span class="text-2xl font-black">12</span>
+										<span class="text-[10px] font-bold uppercase">&times; 1 can</span>
+									</div>
+									<button class="bg-app-yellow py-6 text-2xl font-black">+</button>
+								</div>
+							</div>
+
+							<div class="brut bg-white">
+								<div class="flex items-center justify-between border-b-[3px] border-black bg-black px-3 py-2.5">
+									<span class="font-black tracking-wide text-white uppercase">Blue Moon</span>
+									<span class="num bg-app-yellow px-2 py-1 text-lg font-black">30</span>
+								</div>
+								<div class="grid grid-cols-[1fr_1.2fr_1fr] divide-x-[3px] divide-black">
+									<button class="py-6 text-2xl font-black">&minus;</button>
+									<div class="num flex flex-col items-center justify-center py-3">
+										<span class="text-2xl font-black">2</span>
+										<span class="text-[10px] font-bold uppercase">&times; 6 bottles</span>
+									</div>
+									<button class="bg-app-yellow py-6 text-2xl font-black">+</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="absolute inset-x-0 bottom-0 border-t-[3px] border-black bg-white p-3">
+						<button class="brut-sm w-full bg-app-orange py-4 text-base font-black text-white uppercase">
+							Finish count &middot; 137
+						</button>
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
+</html>
