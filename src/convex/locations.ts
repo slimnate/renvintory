@@ -1,5 +1,5 @@
 import { query, mutation } from './_generated/server';
-import { v } from 'convex/values';
+import { ConvexError, v } from 'convex/values';
 import type { Id } from './_generated/dataModel';
 
 export const getLocations = query({
@@ -27,7 +27,7 @@ export const removeItemFromLocation = mutation({
 	handler: async (ctx, { locationId, itemId }) => {
 		const location = await ctx.db.get(locationId);
 		if (!location) {
-			throw new Error('Location not found');
+			throw new ConvexError('No such house.');
 		}
 
 		const updatedItems = location.items.filter((id: Id<'items'>) => id !== itemId);
@@ -45,18 +45,18 @@ export const addItemToLocation = mutation({
 	handler: async (ctx, { locationId, itemId }) => {
 		const location = await ctx.db.get(locationId);
 		if (!location) {
-			throw new Error('Location not found');
+			throw new ConvexError('No such house.');
 		}
 
 		// Check if item already exists in location
 		if (location.items.includes(itemId)) {
-			throw new Error('Item already exists in this location');
+			throw new ConvexError('That ware is already stocked in this house.');
 		}
 
 		// Verify item exists
 		const item = await ctx.db.get(itemId);
 		if (!item) {
-			throw new Error('Item not found');
+			throw new ConvexError('No such ware in the ledger.');
 		}
 
 		const updatedItems = [...location.items, itemId];

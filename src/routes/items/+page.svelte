@@ -237,7 +237,7 @@
 							}
 						} else if (result.type === 'failure') {
 							const data = result.data as { error?: string } | undefined;
-							const error = data?.error || 'Failed to create item';
+							const error = data?.error || 'The ware could not be entered in the ledger.';
 							toast.error(error);
 						}
 					};
@@ -349,20 +349,22 @@
 						use:enhance={({ cancel }) => {
 							// Validate before submission
 							if (!createNewContainerSize) {
-								toast.error('Please enter a vessel size');
+								toast.error('Name the vessel size.');
 								cancel();
 								return;
 							}
 
 							const size = parseFloat(createNewContainerSize);
 							if (isNaN(size) || size <= 0) {
-								toast.error('Size must be a valid positive number');
+								toast.error('Vessel size must be a fair positive number.');
 								cancel();
 								return;
 							}
 
 							if (createSizeExists) {
-								toast.error(`A ${createContainerTypeFilter} with size ${size} already exists`);
+								toast.error(
+									`A ${createContainerTypeFilter} vessel of size ${size} is already in the ledger.`
+								);
 								cancel();
 								return;
 							}
@@ -381,13 +383,13 @@
 										createSelectedContainers.add(containerId);
 										createSelectedContainers = new Set(createSelectedContainers);
 										createNewContainerSize = '';
-										toast.success('Vessel created and selected');
+										toast.success('Vessel forged and chosen.');
 									} else if (data?.error) {
 										toast.error(data.error);
 									}
 								} else if (result.type === 'failure') {
 									const data = result.data as { error?: string } | undefined;
-									const error = data?.error || 'Failed to create vessel';
+									const error = data?.error || 'The vessel could not be forged.';
 									toast.error(error);
 								}
 							};
@@ -418,7 +420,7 @@
 					</form>
 					{#if createSizeExists}
 						<p class="text-xs text-error">
-							A {createContainerTypeFilter} with size {createNewContainerSize} already exists.
+							A {createContainerTypeFilter} vessel of size {createNewContainerSize} is already in the ledger.
 						</p>
 					{/if}
 					{#if createNewContainerSize && !createSizeExists && parseFloat(createNewContainerSize) > 0}
@@ -473,7 +475,7 @@
 												}
 											} else if (result.type === 'failure') {
 												const data = result.data as { error?: string } | undefined;
-												const error = data?.error || 'Failed to update item';
+												const error = data?.error || 'The ware could not be amended.';
 												toast.error(error);
 											}
 										};
@@ -595,21 +597,21 @@
 											action="?/createContainer"
 											use:enhance={({ cancel }) => {
 												if (!editNewContainerSize) {
-													toast.error('Please enter a vessel size');
+													toast.error('Name the vessel size.');
 													cancel();
 													return;
 												}
 
 												const size = parseFloat(editNewContainerSize);
 												if (isNaN(size) || size <= 0) {
-													toast.error('Size must be a valid positive number');
+													toast.error('Vessel size must be a fair positive number.');
 													cancel();
 													return;
 												}
 
 												if (editSizeExists) {
 													toast.error(
-														`A ${editContainerTypeFilter} with size ${size} already exists`
+														`A ${editContainerTypeFilter} vessel of size ${size} is already in the ledger.`
 													);
 													cancel();
 													return;
@@ -633,13 +635,13 @@
 															editSelectedContainers.add(containerId);
 															editSelectedContainers = new Set(editSelectedContainers);
 															editNewContainerSize = '';
-															toast.success('Vessel created and selected');
+															toast.success('Vessel forged and chosen.');
 														} else if (data?.error) {
 															toast.error(data.error);
 														}
 													} else if (result.type === 'failure') {
 														const data = result.data as { error?: string } | undefined;
-														const error = data?.error || 'Failed to create vessel';
+														const error = data?.error || 'The vessel could not be forged.';
 														toast.error(error);
 													}
 												};
@@ -672,7 +674,7 @@
 										</form>
 										{#if editSizeExists}
 											<p class="text-xs text-error">
-												A {editContainerTypeFilter} with size {editNewContainerSize} already exists.
+												A {editContainerTypeFilter} vessel of size {editNewContainerSize} is already in the ledger.
 											</p>
 										{/if}
 										{#if editNewContainerSize && !editSizeExists && parseFloat(editNewContainerSize) > 0}
@@ -734,7 +736,7 @@
 													}
 												} else if (result.type === 'failure') {
 													const data = result.data as { error?: string } | undefined;
-													const error = data?.error || 'Failed to delete item';
+													const error = data?.error || 'The ware could not be struck from the ledger.';
 													toast.error(error);
 												}
 											};

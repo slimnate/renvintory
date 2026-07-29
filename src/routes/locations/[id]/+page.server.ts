@@ -3,6 +3,7 @@ import { ConvexHttpClient } from 'convex/browser';
 import { api } from '../../../convex/_generated/api';
 import { PUBLIC_CONVEX_URL } from '$env/static/public';
 import type { Id } from '../../../convex/_generated/dataModel';
+import { getErrorMessage } from '$lib/convexError';
 
 export const actions: Actions = {
 	createInventory: async ({ params }) => {
@@ -21,7 +22,7 @@ export const actions: Actions = {
 			return {
 				op: 'createInventory',
 				success: false,
-				error: error instanceof Error ? error.message : 'Failed to create inventory'
+				error: getErrorMessage(error, 'The reckoning could not be begun.')
 			};
 		}
 	},
@@ -35,7 +36,7 @@ export const actions: Actions = {
 			return {
 				op: 'deleteInventory',
 				success: false,
-				error: 'Date is required'
+				error: 'A day must be named.'
 			};
 		}
 
@@ -49,7 +50,7 @@ export const actions: Actions = {
 			return {
 				op: 'deleteInventory',
 				success: false,
-				error: error instanceof Error ? error.message : 'Failed to delete inventories'
+				error: getErrorMessage(error, 'The reckonings could not be struck from the record.')
 			};
 		}
 	},
@@ -63,7 +64,7 @@ export const actions: Actions = {
 			return {
 				op: 'removeItem',
 				success: false,
-				error: 'Item ID is required'
+				error: 'A ware must be chosen.'
 			};
 		}
 
@@ -77,7 +78,7 @@ export const actions: Actions = {
 			return {
 				op: 'removeItem',
 				success: false,
-				error: error instanceof Error ? error.message : 'Failed to remove item'
+				error: getErrorMessage(error, 'The ware could not be removed.')
 			};
 		}
 	},
@@ -91,7 +92,7 @@ export const actions: Actions = {
 			return {
 				op: 'addItem',
 				success: false,
-				error: 'Item ID is required'
+				error: 'A ware must be chosen.'
 			};
 		}
 
@@ -105,7 +106,7 @@ export const actions: Actions = {
 			return {
 				op: 'addItem',
 				success: false,
-				error: error instanceof Error ? error.message : 'Failed to add item'
+				error: getErrorMessage(error, 'The ware could not be stocked.')
 			};
 		}
 	}

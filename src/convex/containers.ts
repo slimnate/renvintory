@@ -1,6 +1,5 @@
 import { query, mutation } from './_generated/server';
-import { v } from 'convex/values';
-import type { Id } from './_generated/dataModel';
+import { ConvexError, v } from 'convex/values';
 
 export const getAllContainers = query({
 	args: {},
@@ -29,7 +28,7 @@ export const createContainer = mutation({
 			.first();
 
 		if (existing) {
-			throw new Error(`Container with size ${size} and type ${type} already exists`);
+			throw new ConvexError(`A ${type} vessel of size ${size} is already in the ledger.`);
 		}
 
 		const containerId = await ctx.db.insert('containers', {

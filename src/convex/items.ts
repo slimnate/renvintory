@@ -1,5 +1,5 @@
 import { query, mutation } from './_generated/server';
-import { v } from 'convex/values';
+import { ConvexError, v } from 'convex/values';
 import type { Id } from './_generated/dataModel';
 
 export const getItemsByLocationId = query({
@@ -78,7 +78,7 @@ export const updateItem = mutation({
 	handler: async (ctx, { itemId, name, price, containers }) => {
 		const item = await ctx.db.get(itemId);
 		if (!item) {
-			throw new Error('Item not found');
+			throw new ConvexError('No such ware in the ledger.');
 		}
 
 		const updates: { name?: string; price?: number; containers?: Id<'containers'>[] } = {};
@@ -93,7 +93,7 @@ export const updateItem = mutation({
 		}
 
 		if (Object.keys(updates).length === 0) {
-			throw new Error('No fields to update');
+			throw new ConvexError('Nothing to amend in the ledger.');
 		}
 
 		await ctx.db.patch(itemId, updates);
@@ -108,7 +108,7 @@ export const deleteItem = mutation({
 	handler: async (ctx, { itemId }) => {
 		const item = await ctx.db.get(itemId);
 		if (!item) {
-			throw new Error('Item not found');
+			throw new ConvexError('No such ware in the ledger.');
 		}
 
 		// Check if item is referenced in any locations
@@ -116,7 +116,9 @@ export const deleteItem = mutation({
 		const isInLocation = locations.some((location) => location.items.includes(itemId));
 
 		if (isInLocation) {
-			throw new Error('Cannot delete item: it is assigned to one or more locations');
+			throw new ConvexError(
+				'This ware is still stocked in a house and cannot be struck from the ledger.'
+			);
 		}
 
 		// Delete all counts associated with this item

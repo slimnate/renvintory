@@ -170,7 +170,7 @@
 											}
 										} else if (result.type === 'failure') {
 											const data = result.data as { error?: string } | undefined;
-											const error = data?.error || 'Failed to update count';
+											const error = data?.error || 'The tally could not be marked.';
 											toast.error(error);
 										}
 									};

@@ -3,6 +3,7 @@ import { ConvexHttpClient } from 'convex/browser';
 import { api } from '../../convex/_generated/api';
 import { PUBLIC_CONVEX_URL } from '$env/static/public';
 import type { Id } from '../../convex/_generated/dataModel';
+import { getErrorMessage } from '$lib/convexError';
 
 export const actions: Actions = {
 	createItem: async ({ request }) => {
@@ -15,7 +16,7 @@ export const actions: Actions = {
 			return {
 				op: 'createItem',
 				success: false,
-				error: 'Name and price are required'
+				error: 'Name and price are required for the ledger.'
 			};
 		}
 
@@ -24,7 +25,7 @@ export const actions: Actions = {
 			return {
 				op: 'createItem',
 				success: false,
-				error: 'Price must be a valid positive number'
+				error: 'Price must be a fair positive number.'
 			};
 		}
 
@@ -55,7 +56,7 @@ export const actions: Actions = {
 					return {
 						op: 'createItem',
 						success: false,
-						error: error instanceof Error ? error.message : 'Failed to create container'
+						error: getErrorMessage(error, 'The vessel could not be forged.')
 					};
 				}
 			}
@@ -72,7 +73,7 @@ export const actions: Actions = {
 			return {
 				op: 'createItem',
 				success: false,
-				error: error instanceof Error ? error.message : 'Failed to create item'
+				error: getErrorMessage(error, 'The ware could not be entered in the ledger.')
 			};
 		}
 	},
@@ -87,7 +88,7 @@ export const actions: Actions = {
 			return {
 				op: 'updateItem',
 				success: false,
-				error: 'Item ID is required'
+				error: 'A ware must be chosen.'
 			};
 		}
 
@@ -101,7 +102,7 @@ export const actions: Actions = {
 				return {
 					op: 'updateItem',
 					success: false,
-					error: 'Price must be a valid positive number'
+					error: 'Price must be a fair positive number.'
 				};
 			}
 			updates.price = price;
@@ -134,7 +135,7 @@ export const actions: Actions = {
 					return {
 						op: 'updateItem',
 						success: false,
-						error: error instanceof Error ? error.message : 'Failed to create container'
+						error: getErrorMessage(error, 'The vessel could not be forged.')
 					};
 				}
 			}
@@ -149,7 +150,7 @@ export const actions: Actions = {
 			return {
 				op: 'updateItem',
 				success: false,
-				error: 'At least one field (name, price, or containers) must be provided'
+				error: 'Something must be amended — name, price, or vessels.'
 			};
 		}
 
@@ -163,7 +164,7 @@ export const actions: Actions = {
 			return {
 				op: 'updateItem',
 				success: false,
-				error: error instanceof Error ? error.message : 'Failed to update item'
+				error: getErrorMessage(error, 'The ware could not be amended.')
 			};
 		}
 	},
@@ -176,7 +177,7 @@ export const actions: Actions = {
 			return {
 				op: 'deleteItem',
 				success: false,
-				error: 'Item ID is required'
+				error: 'A ware must be chosen.'
 			};
 		}
 
@@ -189,7 +190,7 @@ export const actions: Actions = {
 			return {
 				op: 'deleteItem',
 				success: false,
-				error: error instanceof Error ? error.message : 'Failed to delete item'
+				error: getErrorMessage(error, 'The ware could not be struck from the ledger.')
 			};
 		}
 	},
@@ -203,7 +204,7 @@ export const actions: Actions = {
 			return {
 				op: 'createContainer',
 				success: false,
-				error: 'Size and type are required'
+				error: 'Vessel size and type are required.'
 			};
 		}
 
@@ -212,7 +213,7 @@ export const actions: Actions = {
 			return {
 				op: 'createContainer',
 				success: false,
-				error: 'Size must be a valid positive number'
+				error: 'Vessel size must be a fair positive number.'
 			};
 		}
 
@@ -220,7 +221,7 @@ export const actions: Actions = {
 			return {
 				op: 'createContainer',
 				success: false,
-				error: 'Type must be can, bottle, or cup'
+				error: 'Vessel must be a can, bottle, or cup.'
 			};
 		}
 
@@ -234,7 +235,7 @@ export const actions: Actions = {
 			return {
 				op: 'createContainer',
 				success: false,
-				error: error instanceof Error ? error.message : 'Failed to create container'
+				error: getErrorMessage(error, 'The vessel could not be forged.')
 			};
 		}
 	}

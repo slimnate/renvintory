@@ -205,7 +205,7 @@
 {:else if !location}
 	<div class="mb-6 flex items-center gap-4">
 		<a href="/" class="text-xl text-goldleaf">&lsaquo;</a>
-		<h2 class="font-display text-xl font-semibold text-cream">Location not found</h2>
+		<h2 class="font-display text-xl font-semibold text-cream">No such house.</h2>
 	</div>
 {:else}
 	<header

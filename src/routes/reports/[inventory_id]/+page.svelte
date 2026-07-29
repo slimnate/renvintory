@@ -114,7 +114,7 @@
 <div>
 	{#if reportData.error}
 		<h1 class="font-display text-cream">
-			Error loading report: {reportData.error instanceof Error
+			The tally could not be read: {reportData.error instanceof Error
 				? reportData.error.message
 				: String(reportData.error)}
 		</h1>

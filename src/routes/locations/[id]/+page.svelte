@@ -171,7 +171,7 @@
 						? itemsQuery.error instanceof Error
 							? itemsQuery.error.message
 							: String(itemsQuery.error)
-						: 'Unknown error'}
+						: 'Something went awry.'}
 		</h2>
 	</div>
 {:else}
@@ -227,7 +227,8 @@
 													}
 												} else if (result.type === 'failure') {
 													const data = result.data as { error?: string } | undefined;
-													const error = data?.error || 'Failed to delete inventories';
+													const error =
+														data?.error || 'The reckonings could not be struck from the record.';
 													toast.error(error);
 												}
 											};
@@ -333,7 +334,7 @@
 													}
 												} else if (result.type === 'failure') {
 													const data = result.data as { error?: string } | undefined;
-													const error = data?.error || 'Failed to remove item';
+													const error = data?.error || 'The ware could not be removed.';
 													toast.error(error);
 												}
 											};
@@ -416,7 +417,7 @@
 							}
 						} else if (result.type === 'failure') {
 							const data = result.data as { error?: string } | undefined;
-							const error = data?.error || 'Failed to create inventory';
+							const error = data?.error || 'The reckoning could not be begun.';
 							toast.error(error);
 						}
 					};
@@ -488,7 +489,7 @@
 									}
 								} else if (result.type === 'failure') {
 									const data = result.data as { error?: string } | undefined;
-									const error = data?.error || 'Failed to add item';
+									const error = data?.error || 'The ware could not be stocked.';
 									toast.error(error);
 								}
 							};

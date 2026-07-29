@@ -1,5 +1,5 @@
 import { query, mutation } from './_generated/server';
-import { v } from 'convex/values';
+import { ConvexError, v } from 'convex/values';
 import type { Id } from './_generated/dataModel';
 
 export const getInventoriesByLocationId = query({
@@ -88,7 +88,9 @@ export const createInventory = mutation({
 		}
 
 		if (toCreate.length === 0) {
-			throw new Error('All inventories already exist for this location and date');
+			throw new ConvexError(
+				`This house already has reckonings for ${date}. One day, one reckoning.`
+			);
 		}
 
 		const now = new Date().toISOString();
@@ -357,7 +359,7 @@ export const getReportData = query({
 
 			// Require that an open inventory exists
 			if (!inventoriesByType.open) {
-				throw new Error('Open inventory is required to generate close report');
+				throw new ConvexError('An open reckoning is needed before the close can be tallied.');
 			}
 
 			// Helper function to get counts for an inventory
