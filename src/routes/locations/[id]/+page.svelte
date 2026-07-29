@@ -179,7 +179,7 @@
 		class="-mx-4 mb-4 flex items-center gap-3 boardface px-4 py-3 carved sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
 	>
 		<a href="/" class="text-xl text-goldleaf">&lsaquo;</a>
-		<Emblem id={emblemFor(params.id)} class="h-11 w-9 shrink-0" />
+		<Emblem id={emblemFor(params.id, location?.name)} class="h-11 w-9 shrink-0" />
 		<div>
 			<div class="gilt font-display text-xl leading-none font-bold">{location?.name}</div>
 			<div class="text-[10px] tracking-[0.2em] text-cream/40 uppercase">at the sign of</div>
@@ -248,28 +248,28 @@
 								{#if openInv}
 									<a
 										href={`/count/${openInv._id}`}
-										class="leaf carved font-num rounded-sm border-2 border-goldleaf/80 py-2.5 text-center text-xs font-bold text-board"
+										class="rounded-sm border-2 border-goldleaf/80 leaf py-2.5 text-center font-num text-xs font-bold text-board carved"
 										>Open</a
 									>
 								{/if}
 								{#if closeInv}
 									<a
 										href={`/count/${closeInv._id}`}
-										class="leaf carved font-num rounded-sm border-2 border-goldleaf/80 py-2.5 text-center text-xs font-bold text-board"
+										class="rounded-sm border-2 border-goldleaf/80 leaf py-2.5 text-center font-num text-xs font-bold text-board carved"
 										>Close</a
 									>
 								{/if}
 								{#if spillInv}
 									<a
 										href={`/count/${spillInv._id}`}
-										class="leaf carved font-num rounded-sm border-2 border-goldleaf/80 py-2.5 text-center text-xs font-bold text-board"
+										class="rounded-sm border-2 border-goldleaf/80 leaf py-2.5 text-center font-num text-xs font-bold text-board carved"
 										>Spill</a
 									>
 								{/if}
 								{#if intakeInv}
 									<a
 										href={`/count/${intakeInv._id}`}
-										class="leaf carved font-num rounded-sm border-2 border-goldleaf/80 py-2.5 text-center text-xs font-bold text-board"
+										class="rounded-sm border-2 border-goldleaf/80 leaf py-2.5 text-center font-num text-xs font-bold text-board carved"
 										>Intake</a
 									>
 								{/if}
@@ -278,7 +278,7 @@
 								{#if openInv}
 									<a
 										href={`/reports/${openInv._id}`}
-										class="font-num boardface carved rounded-sm border-2 border-goldleaf/70 py-2.5 text-center text-[11px] font-bold text-goldleaf"
+										class="rounded-sm border-2 border-goldleaf/70 boardface py-2.5 text-center font-num text-[11px] font-bold text-goldleaf carved"
 									>
 										Opening Account
 									</a>
@@ -286,7 +286,7 @@
 								{#if closeInv}
 									<a
 										href={`/reports/${closeInv._id}`}
-										class="font-num boardface carved rounded-sm border-2 border-goldleaf/70 py-2.5 text-center text-[11px] font-bold text-goldleaf"
+										class="rounded-sm border-2 border-goldleaf/70 boardface py-2.5 text-center font-num text-[11px] font-bold text-goldleaf carved"
 									>
 										Closing Account
 									</a>
