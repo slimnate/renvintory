@@ -66,7 +66,7 @@
 {#snippet simpleTable()}
 	<p class="mb-2 text-xs text-cream/70 italic">Swipe the board sideways for all columns.</p>
 	<div
-		class="max-h-[70vh] overflow-auto rounded-sm border-2 border-goldleaf/70 painted shadow-lg carved"
+		class="-mx-4 max-h-[70vh] overflow-auto rounded-sm border-2 border-goldleaf/70 painted shadow-lg carved sm:-mx-6 lg:-mx-8"
 		use:axisLockScroll
 	>
 		<table class="report-board table-pin-rows table font-num">
@@ -74,24 +74,23 @@
 				<tr>
 					<th class="pin-ware boardface sticky top-0 z-30">Ware</th>
 					<th class="boardface sticky top-0 z-20">Price</th>
-					<th class="boardface sticky top-0 z-20 min-w-40">Per vessel</th>
+					<th class="boardface sticky top-0 z-20">Per vessel</th>
 					<th class="boardface sticky top-0 z-20 text-right">Total</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each totals as itemTotal}
 					<tr>
-						<th
-							class="pin-ware painted z-10 px-3 py-2 text-left font-medium whitespace-nowrap"
+						<th class="pin-ware painted z-10 text-left font-medium whitespace-nowrap"
 							>{itemTotal.item_name}</th
 						>
 						<td class="whitespace-nowrap">${itemTotal.price.toFixed(0)}</td>
 						<td>
-							<div class="flex flex-wrap gap-1.5">
+							<div class="flex flex-wrap gap-0.5">
 								{#each itemTotal.perContainer as pc}
 									<span
-										class="shrink-0 whitespace-nowrap rounded-sm border border-oak/25 bg-oak/10 px-2 py-0.5 text-xs"
-										>{pc.count}&nbsp;&times;&nbsp;{pc.size}</span
+										class="shrink-0 whitespace-nowrap rounded-sm border border-oak/25 bg-oak/10 px-1 text-[10px] leading-4"
+										>{pc.count}&times;{pc.size}</span
 									>
 								{/each}
 							</div>
@@ -138,7 +137,7 @@
 			</div>
 			<p class="mb-2 text-xs text-cream/70 italic">Swipe the board sideways for all columns.</p>
 			<div
-				class="max-h-[70vh] overflow-auto rounded-t-sm border-2 border-b-0 border-goldleaf/70 painted shadow-lg carved"
+				class="-mx-4 max-h-[70vh] overflow-auto rounded-t-sm border-2 border-b-0 border-goldleaf/70 painted shadow-lg carved sm:-mx-6 lg:-mx-8"
 				use:axisLockScroll
 			>
 				<table class="report-board table-pin-rows table font-num">
@@ -159,8 +158,7 @@
 					<tbody>
 						{#each closeReport.rows as row}
 							<tr>
-								<th
-									class="pin-ware painted z-10 px-3 py-2 text-left font-medium whitespace-nowrap"
+								<th class="pin-ware painted z-10 text-left font-medium whitespace-nowrap"
 									>{row.name}</th
 								>
 								<td>${row.price.toFixed(0)}</td>
@@ -178,7 +176,7 @@
 				</table>
 			</div>
 			<div
-				class="boardface carved flex items-center justify-between gap-4 rounded-b-sm border-2 border-goldleaf/70 px-4 py-3"
+				class="boardface carved -mx-4 flex items-center justify-between gap-4 rounded-b-sm border-2 border-goldleaf/70 px-3 py-2 sm:-mx-6 lg:-mx-8"
 			>
 				<div class="flex flex-col">
 					<span class="font-display text-[10px] tracking-widest text-goldleaf uppercase"
