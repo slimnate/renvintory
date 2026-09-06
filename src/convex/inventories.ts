@@ -225,6 +225,50 @@ export const getCountPageData = query({
 	}
 });
 
+export const setCounts = mutation({
+	args: {
+		inventoryId: v.id('inventories'),
+		updates: v.array(
+			v.object({
+				itemId: v.id('items'),
+				containerId: v.id('containers'),
+				count: v.number()
+			})
+		)
+	},
+	returns: v.object({ success: v.boolean() }),
+	handler: async (ctx, { inventoryId, updates }) => {
+		const existing = await ctx.db
+			.query('counts')
+			.withIndex('by_inventory_item', (q) => q.eq('inventoryId', inventoryId))
+			.collect();
+		const byKey = new Map<string, (typeof existing)[number]>(
+			existing.map((row) => [`${row.itemId}:${row.containerId}`, row])
+		);
+
+		for (const update of updates) {
+			const count = Math.max(0, Math.floor(update.count));
+			const key = `${update.itemId}:${update.containerId}`;
+			const row = byKey.get(key);
+
+			if (row) {
+				if (row.count !== count) {
+					await ctx.db.patch(row._id, { count });
+				}
+			} else if (count > 0) {
+				await ctx.db.insert('counts', {
+					inventoryId,
+					itemId: update.itemId,
+					containerId: update.containerId,
+					count
+				});
+			}
+		}
+
+		return { success: true };
+	}
+});
+
 export const incrementCount = mutation({
 	args: {
 		inventoryId: v.id('inventories'),

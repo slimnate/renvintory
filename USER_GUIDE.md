@@ -216,8 +216,9 @@ The closing report shows a table with the following columns:
 - **Intake** - Received count
 - **Open + Intake** - Total available inventory (opening + received)
 - **Total Used** - Total items used (opening + intake - closing)
+- **Sold** - Items sold (used - spill)
 - **Spilled Value** - Dollar value of spilled items
-- **Sales** - Dollar value of items sold (total used - spilled value)
+- **Sales** - Dollar value of items sold (sold × price)
 
 At the bottom of the report, you'll find:
 - **Total sales for the location for that day** - Sum of all sales
