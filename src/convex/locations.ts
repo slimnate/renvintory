@@ -65,3 +65,39 @@ export const addItemToLocation = mutation({
 		return { success: true };
 	}
 });
+
+export const reorderLocationItems = mutation({
+	args: {
+		locationId: v.id('locations'),
+		itemIds: v.array(v.id('items'))
+	},
+	handler: async (ctx, { locationId, itemIds }) => {
+		const location = await ctx.db.get(locationId);
+		if (!location) {
+			throw new ConvexError('No such house.');
+		}
+
+		if (itemIds.length !== location.items.length) {
+			throw new ConvexError('The wares list does not match this house.');
+		}
+
+		const currentIds = new Set(location.items);
+		const nextIds = new Set(itemIds);
+		if (nextIds.size !== itemIds.length) {
+			throw new ConvexError('The wares list does not match this house.');
+		}
+		for (const itemId of itemIds) {
+			if (!currentIds.has(itemId)) {
+				throw new ConvexError('The wares list does not match this house.');
+			}
+		}
+		for (const itemId of location.items) {
+			if (!nextIds.has(itemId)) {
+				throw new ConvexError('The wares list does not match this house.');
+			}
+		}
+
+		await ctx.db.patch(locationId, { items: itemIds });
+		return { success: true };
+	}
+});

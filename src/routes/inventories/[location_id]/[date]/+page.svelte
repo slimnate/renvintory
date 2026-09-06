@@ -23,7 +23,8 @@
 			containerId: Id<'containers'>;
 			container: { size: number; type: 'can' | 'bottle' | 'cup' } | null;
 			count: number;
-		}>
+		}>,
+		itemOrder: Id<'items'>[]
 	) {
 		const map = new Map<
 			string,
@@ -52,16 +53,33 @@
 		for (const entry of map.values()) {
 			entry.perContainer.sort((a, b) => a.size - b.size);
 		}
-		return Array.from(map.entries()).map(([itemId, data]) => ({
-			itemId: itemId as Id<'items'>,
-			...data
-		}));
+
+		const ordered: Array<{
+			itemId: Id<'items'>;
+			name: string;
+			price: number;
+			perContainer: Array<{ size: number; count: number }>;
+			total: number;
+		}> = [];
+		const seen = new Set<string>();
+		for (const itemId of itemOrder) {
+			const data = map.get(itemId);
+			if (!data) continue;
+			ordered.push({ itemId, ...data });
+			seen.add(itemId);
+		}
+		for (const [itemId, data] of map) {
+			if (seen.has(itemId)) continue;
+			ordered.push({ itemId: itemId as Id<'items'>, ...data });
+		}
+		return ordered;
 	}
 
-	const groupedOpen = $derived(groupByItem(counts.open));
-	const groupedClose = $derived(groupByItem(counts.close));
-	const groupedSpill = $derived(groupByItem(counts.spill));
-	const groupedIntake = $derived(groupByItem(counts.intake));
+	const itemOrder = $derived(location?.items ?? []);
+	const groupedOpen = $derived(groupByItem(counts.open, itemOrder));
+	const groupedClose = $derived(groupByItem(counts.close, itemOrder));
+	const groupedSpill = $derived(groupByItem(counts.spill, itemOrder));
+	const groupedIntake = $derived(groupByItem(counts.intake, itemOrder));
 
 	const formattedDate = $derived(formatCalendarDate(params.date));
 

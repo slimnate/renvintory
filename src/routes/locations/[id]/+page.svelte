@@ -1,13 +1,17 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { useQuery } from 'convex-svelte';
+	import { useConvexClient, useQuery } from 'convex-svelte';
 	import { api } from '../../../convex/_generated/api';
 	import type { Id } from '../../../convex/_generated/dataModel';
 	import { toast } from '$lib/stores/toast';
 	import { emblemFor } from '$lib/emblems';
 	import Emblem from '$lib/components/Emblem.svelte';
 	import { formatCalendarDateShort, todayCalendarDate } from '$lib/dates';
+	import { sortableList } from '$lib/actions/sortableList';
+	import { getErrorMessage } from '$lib/convexError';
 	let { params }: { params: { id: string } } = $props();
+
+	const convex = useConvexClient();
 
 	const locationQuery = useQuery(api.locations.getLocationById, {
 		id: params.id as Id<'locations'>
@@ -23,6 +27,8 @@
 	const location = $derived(locationQuery.data);
 	const items = $derived(itemsQuery.data ?? []);
 	const allItems = $derived(allItemsQuery.data ?? []);
+	let optimisticItems = $state<typeof items | null>(null);
+	const displayItems = $derived(optimisticItems ?? items);
 
 	let activeTab = $state<'inventories' | 'items'>('inventories');
 	let showAddModal = $state(false);
@@ -140,6 +146,42 @@
 			}
 		}
 		cancelRemoveItem();
+	}
+
+	$effect(() => {
+		const serverItems = items;
+		const pending = optimisticItems;
+		if (!pending) return;
+
+		const serverSet = [...serverItems.map((item) => item._id)].sort().join(',');
+		const pendingSet = [...pending.map((item) => item._id)].sort().join(',');
+		if (serverSet !== pendingSet) {
+			optimisticItems = null;
+			return;
+		}
+
+		const serverOrder = serverItems.map((item) => item._id).join(',');
+		const pendingOrder = pending.map((item) => item._id).join(',');
+		if (serverOrder === pendingOrder) {
+			optimisticItems = null;
+		}
+	});
+
+	async function handleReorder(orderedIds: string[]) {
+		const previous = displayItems;
+		const next = orderedIds
+			.map((id) => previous.find((item) => item._id === id))
+			.filter((item): item is (typeof previous)[number] => item != null);
+		optimisticItems = next;
+		try {
+			await convex.mutation(api.locations.reorderLocationItems, {
+				locationId: params.id as Id<'locations'>,
+				itemIds: orderedIds as Id<'items'>[]
+			});
+		} catch (error) {
+			optimisticItems = previous;
+			toast.error(getErrorMessage(error, 'The wares could not be reordered.'));
+		}
 	}
 </script>
 
@@ -299,93 +341,125 @@
 					<span>No wares stocked at this house.</span>
 				</div>
 			{:else}
-				<ul
-					class="divide-y divide-oak/20 rounded-sm border-2 border-goldleaf/60 painted shadow-lg carved"
+				<div
+					class="overflow-hidden rounded-sm border-2 border-goldleaf/60 painted shadow-lg carved"
 				>
-					{#each items as item}
-						<li class="flex items-center justify-between px-4 py-3">
-							<span class="font-display font-bold">{item.name}</span>
-							<div class="flex items-center gap-2">
-								<span class="font-num text-sm font-semibold text-azure">${item.price}</span>
-								{#if editMode}
-									<form
-										method="POST"
-										action="?/removeItem"
-										data-remove-item-id={item._id}
-										use:enhance={() => {
-											return ({ result, update }) => {
-												update();
-												if (result.type === 'success') {
-													const data = result.data as
-														| { success?: boolean; error?: string }
-														| undefined;
-													if (data?.success) {
-														toast.success('Ware removed.');
-													} else if (data?.error) {
-														toast.error(data.error);
-													}
-												} else if (result.type === 'failure') {
-													const data = result.data as { error?: string } | undefined;
-													const error = data?.error || 'The ware could not be removed.';
-													toast.error(error);
-												}
-											};
-										}}
-										class="flex-shrink-0"
-									>
-										<input type="hidden" name="itemId" value={item._id} />
-										<button
-											type="button"
-											class="btn btn-circle h-6 min-h-0 w-6 p-0 btn-sm btn-error"
-											aria-label={`Remove ${item.name} from location`}
-											onclick={() => handleRemoveItemClick(item)}
-										>
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												class="h-4 w-4"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke="currentColor"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M6 18L18 6M6 6l12 12"
-												/>
-											</svg>
-										</button>
-									</form>
-								{/if}
-							</div>
-						</li>
-					{/each}
-					{#if editMode && availableItems.length > 0}
-						<li>
-							<button
-								type="button"
-								class="flex min-h-[80px] w-full flex-row items-center justify-center gap-4 border-t-2 border-dashed border-goldleaf/50 transition-colors hover:bg-oak/5"
-								onclick={() => (showAddModal = true)}
+					<ul
+						class="divide-y divide-oak/20"
+						use:sortableList={{
+							enabled: editMode && displayItems.length > 1,
+							onReorder: handleReorder
+						}}
+					>
+						{#each displayItems as item (item._id)}
+							<li
+								data-sortable-id={item._id}
+								class="flex items-center gap-2 px-4 py-3 {editMode ? 'select-none pl-1' : ''}"
 							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="h-6 w-6"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M12 4v16m8-8H4"
-									/>
-								</svg>
-								<span class="font-display text-base font-medium">Add Ware</span>
-							</button>
-						</li>
+								{#if editMode}
+									<button
+										type="button"
+										data-drag-handle
+										class="touch-none flex h-11 w-11 shrink-0 cursor-grab items-center justify-center text-oak/45 active:cursor-grabbing"
+										aria-label={`Reorder ${item.name}`}
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 24 24"
+											class="h-5 w-5"
+											fill="currentColor"
+											aria-hidden="true"
+										>
+											<circle cx="9" cy="6" r="1.6" />
+											<circle cx="15" cy="6" r="1.6" />
+											<circle cx="9" cy="12" r="1.6" />
+											<circle cx="15" cy="12" r="1.6" />
+											<circle cx="9" cy="18" r="1.6" />
+											<circle cx="15" cy="18" r="1.6" />
+										</svg>
+									</button>
+								{/if}
+								<span class="min-w-0 flex-1 font-display font-bold">{item.name}</span>
+								<div class="flex items-center gap-2 pr-2">
+									<span class="font-num text-sm font-semibold text-azure">${item.price}</span>
+									{#if editMode}
+										<form
+											method="POST"
+											action="?/removeItem"
+											data-remove-item-id={item._id}
+											use:enhance={() => {
+												return ({ result, update }) => {
+													update();
+													if (result.type === 'success') {
+														const data = result.data as
+															| { success?: boolean; error?: string }
+															| undefined;
+														if (data?.success) {
+															toast.success('Ware removed.');
+														} else if (data?.error) {
+															toast.error(data.error);
+														}
+													} else if (result.type === 'failure') {
+														const data = result.data as { error?: string } | undefined;
+														const error = data?.error || 'The ware could not be removed.';
+														toast.error(error);
+													}
+												};
+											}}
+											class="flex-shrink-0"
+										>
+											<input type="hidden" name="itemId" value={item._id} />
+											<button
+												type="button"
+												class="btn btn-circle h-6 min-h-0 w-6 p-0 btn-sm btn-error"
+												aria-label={`Remove ${item.name} from location`}
+												onclick={() => handleRemoveItemClick(item)}
+											>
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													class="h-4 w-4"
+													fill="none"
+													viewBox="0 0 24 24"
+													stroke="currentColor"
+												>
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="2"
+														d="M6 18L18 6M6 6l12 12"
+													/>
+												</svg>
+											</button>
+										</form>
+									{/if}
+								</div>
+							</li>
+						{/each}
+					</ul>
+					{#if editMode && availableItems.length > 0}
+						<button
+							type="button"
+							class="flex min-h-[80px] w-full flex-row items-center justify-center gap-4 border-t-2 border-dashed border-goldleaf/50 transition-colors hover:bg-oak/5"
+							onclick={() => (showAddModal = true)}
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-6 w-6"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M12 4v16m8-8H4"
+								/>
+							</svg>
+							<span class="font-display text-base font-medium">Add Ware</span>
+						</button>
 					{/if}
-				</ul>
+				</div>
 			{/if}
 		</section>
 	{/if}

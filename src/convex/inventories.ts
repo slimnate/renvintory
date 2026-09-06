@@ -2,6 +2,24 @@ import { query, mutation } from './_generated/server';
 import { ConvexError, v } from 'convex/values';
 import type { Id } from './_generated/dataModel';
 
+function valuesInLocationOrder<T>(locationItemIds: Id<'items'>[], byItemId: Map<string, T>): T[] {
+	const ordered: T[] = [];
+	const seen = new Set<string>();
+	for (const itemId of locationItemIds) {
+		const value = byItemId.get(itemId);
+		if (value !== undefined) {
+			ordered.push(value);
+			seen.add(itemId);
+		}
+	}
+	for (const [itemId, value] of byItemId) {
+		if (!seen.has(itemId)) {
+			ordered.push(value);
+		}
+	}
+	return ordered;
+}
+
 export const getInventoriesByLocationId = query({
 	args: { locationId: v.id('locations') },
 	handler: async (ctx, { locationId }) => {
@@ -522,7 +540,7 @@ export const getReportData = query({
 			entry.perContainer.sort((a, b) => a.size - b.size);
 		}
 
-		const totals = Array.from(itemTotals.values());
+		const totals = valuesInLocationOrder(location.items, itemTotals);
 
 			return {
 				inventory,
@@ -615,7 +633,7 @@ export const getReportData = query({
 			entry.perContainer.sort((a, b) => a.size - b.size);
 		}
 
-		const totals = Array.from(itemTotals.values());
+		const totals = valuesInLocationOrder(location.items, itemTotals);
 
 		return {
 			inventory,
