@@ -3,6 +3,7 @@
 	import { api } from '../../../convex/_generated/api';
 	import type { Id } from '../../../convex/_generated/dataModel';
 	import { axisLockScroll } from '$lib/actions/axisLockScroll';
+	import { formatCalendarDate } from '$lib/dates';
 	let { params }: { params: { inventory_id: string } } = $props();
 
 	const reportData = useQuery(api.inventories.getReportData, {
@@ -14,15 +15,7 @@
 	const totals = $derived(reportData.data?.totals ?? []);
 	const closeReport = $derived(reportData.data?.closeReport ?? null);
 
-	const formattedDate = $derived(
-		inventory
-			? new Date(String(inventory.date)).toLocaleDateString('en-US', {
-					weekday: 'short',
-					month: 'short',
-					day: 'numeric'
-				})
-			: ''
-	);
+	const formattedDate = $derived(inventory ? formatCalendarDate(String(inventory.date)) : '');
 
 	const typeLabel = $derived(
 		inventory?.inventoryType === 'close'

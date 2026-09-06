@@ -4,6 +4,7 @@
 	import { api } from '../../../convex/_generated/api';
 	import type { Id } from '../../../convex/_generated/dataModel';
 	import { toast } from '$lib/stores/toast';
+	import { formatCalendarDate } from '$lib/dates';
 	let { params }: { params: { inventory_id: string } } = $props();
 
 	const countPageDataQuery = useQuery(api.inventories.getCountPageData, {
@@ -112,11 +113,7 @@
 					{location?.name}
 				</div>
 				<div class="mt-1 font-num text-xs text-cream/60">
-					{new Date(String(inventory.date)).toLocaleDateString('en-US', {
-						weekday: 'short',
-						month: 'short',
-						day: 'numeric'
-					})}
+					{formatCalendarDate(String(inventory.date))}
 				</div>
 			</div>
 		</div>

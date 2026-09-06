@@ -6,6 +6,7 @@
 	import { toast } from '$lib/stores/toast';
 	import { emblemFor } from '$lib/emblems';
 	import Emblem from '$lib/components/Emblem.svelte';
+	import { formatCalendarDateShort, todayCalendarDate } from '$lib/dates';
 	let { params }: { params: { id: string } } = $props();
 
 	const locationQuery = useQuery(api.locations.getLocationById, {
@@ -51,15 +52,6 @@
 	const availableItems = $derived(
 		allItems.filter((item) => !items.some((locationItem) => locationItem._id === item._id))
 	);
-
-	function formatDate(dateString: string): string {
-		const date = new Date(dateString);
-		const dayAbbr = date.toLocaleDateString('en-US', { weekday: 'short' });
-		const month = date.getMonth() + 1;
-		const day = date.getDate();
-		const year = date.getFullYear().toString().slice(-2);
-		return `${dayAbbr} - ${month}/${day}/${year}`;
-	}
 
 	const inventoriesByDate = $derived.by(() => {
 		if (!inventories || inventories.length === 0) {
@@ -203,7 +195,7 @@
 							<div
 								class="flex items-center justify-between border-b-2 border-oak/25 bg-oak/12 px-3 py-2"
 							>
-								<span class="font-num font-bold">{formatDate(date)}</span>
+								<span class="font-num font-bold">{formatCalendarDateShort(date)}</span>
 								<div class="flex items-center gap-3">
 									<a
 										href={`/inventories/${params.id}/${date}`}
@@ -423,6 +415,7 @@
 					};
 				}}
 			>
+				<input type="hidden" name="date" value={todayCalendarDate()} />
 				<button
 					type="submit"
 					class="w-full rounded-sm leaf py-3.5 font-display text-sm font-bold tracking-[0.2em] text-board uppercase carved"
@@ -543,7 +536,7 @@
 				<h3 class="mb-4 font-display text-lg font-bold">Delete reckonings</h3>
 				<p class="mb-4">
 					Are you sure you want to delete <strong>all reckonings</strong> for{' '}
-					<strong>{formatDate(dayToDelete)}</strong>?
+					<strong>{formatCalendarDateShort(dayToDelete)}</strong>?
 				</p>
 				<p class="mb-4 text-sm text-neutral/70">
 					This action cannot be undone and will remove all counts for this date at this house.

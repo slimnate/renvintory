@@ -4,13 +4,22 @@ import { api } from '../../../convex/_generated/api';
 import { PUBLIC_CONVEX_URL } from '$env/static/public';
 import type { Id } from '../../../convex/_generated/dataModel';
 import { getErrorMessage } from '$lib/convexError';
+import { isCalendarDate } from '$lib/dates';
 
 export const actions: Actions = {
-	createInventory: async ({ params }) => {
+	createInventory: async ({ params, request }) => {
 		const client = new ConvexHttpClient(PUBLIC_CONVEX_URL);
 		const locationId = params.id as Id<'locations'>;
-		const now = new Date();
-		const date = now.toISOString().slice(0, 10);
+		const form = await request.formData();
+		const date = form.get('date');
+
+		if (typeof date !== 'string' || !isCalendarDate(date)) {
+			return {
+				op: 'createInventory',
+				success: false,
+				error: 'A day must be named.'
+			};
+		}
 
 		try {
 			await client.mutation(api.inventories.createInventory, {

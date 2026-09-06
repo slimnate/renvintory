@@ -2,6 +2,7 @@
 	import { useQuery } from 'convex-svelte';
 	import { api } from '../../../../convex/_generated/api';
 	import type { Id } from '../../../../convex/_generated/dataModel';
+	import { formatCalendarDate } from '$lib/dates';
 	let { params }: { params: { location_id: string; date: string } } = $props();
 
 	const dataQuery = useQuery(api.inventories.getInventoriesByLocationAndDate, {
@@ -62,13 +63,7 @@
 	const groupedSpill = $derived(groupByItem(counts.spill));
 	const groupedIntake = $derived(groupByItem(counts.intake));
 
-	const formattedDate = $derived(
-		new Date(params.date).toLocaleDateString('en-US', {
-			weekday: 'short',
-			month: 'short',
-			day: 'numeric'
-		})
-	);
+	const formattedDate = $derived(formatCalendarDate(params.date));
 
 	const pageTitle = $derived(`${location?.name} - ${formattedDate} - Reckonings`);
 
