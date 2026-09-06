@@ -443,9 +443,10 @@ export const getReportData = query({
 				const spillCount = getItemTotal(item._id, countsByType.spill);
 				const intakeCount = getItemTotal(item._id, countsByType.intake);
 				const openPlusIntakeCount = openCount + intakeCount;
-				const totalUsed = openPlusIntakeCount - spillCount;
+				const totalUsed = openPlusIntakeCount - closeCount;
+				const soldCount = totalUsed - spillCount;
 				const spilledValue = spillCount * item.price;
-				const sales = (totalUsed - closeCount) * item.price;
+				const sales = soldCount * item.price;
 
 				return {
 					itemId: item._id,
@@ -457,6 +458,7 @@ export const getReportData = query({
 					intakeCount,
 					openPlusIntakeCount,
 					totalUsed,
+					soldCount,
 					spilledValue,
 					sales
 				};

@@ -151,6 +151,7 @@
 							<th class="boardface sticky top-0 z-20 text-right">Intake</th>
 							<th class="boardface sticky top-0 z-20 text-right">Total</th>
 							<th class="boardface sticky top-0 z-20 text-right">Used</th>
+							<th class="boardface sticky top-0 z-20 text-right">Sold</th>
 							<th class="boardface sticky top-0 z-20 text-right">Spilt $</th>
 							<th class="boardface sticky top-0 z-20 text-right">Sales</th>
 						</tr>
@@ -168,6 +169,7 @@
 								<td class="text-right">{row.intakeCount}</td>
 								<td class="text-right">{row.openPlusIntakeCount}</td>
 								<td class="text-right">{row.totalUsed}</td>
+								<td class="text-right">{row.soldCount}</td>
 								<td class="text-right">${row.spilledValue.toFixed(0)}</td>
 								<td class="text-right">${row.sales.toFixed(0)}</td>
 							</tr>
