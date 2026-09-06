@@ -92,24 +92,48 @@
 		return serverCountFor(containerId, itemId);
 	}
 
+	function containerFor(itemId: Id<'items'>, containerId: Id<'containers'>) {
+		const item = items.find((entry) => entry._id === itemId);
+		return item?.containers.find((container) => container._id === containerId);
+	}
+
+	function revertFailedFlush(sent: Record<string, number>, baselines: Record<string, number>) {
+		const nextPending = { ...pendingCounts };
+
+		for (const [key, sentCount] of Object.entries(sent)) {
+			const extra = (nextPending[key] ?? sentCount) - sentCount;
+			const restored = Math.max(0, (baselines[key] ?? 0) + extra);
+			const { itemId, containerId } = parseCountKey(key);
+			const serverCount = serverCountFor(containerId, itemId);
+
+			if (restored === serverCount) {
+				delete nextPending[key];
+			} else {
+				nextPending[key] = restored;
+			}
+		}
+
+		pendingCounts = nextPending;
+	}
+
 	function toastFlushedCounts(
 		updates: Array<{ itemId: Id<'items'>; containerId: Id<'containers'>; count: number }>,
 		baselines: Record<string, number>
 	) {
-		const deltaByItem = new Map<Id<'items'>, number>();
-
 		for (const update of updates) {
 			const previous = baselines[countKey(update.itemId, update.containerId)] ?? 0;
 			const delta = update.count - previous;
 			if (delta === 0) continue;
-			deltaByItem.set(update.itemId, (deltaByItem.get(update.itemId) ?? 0) + delta);
-		}
 
-		for (const [itemId, delta] of deltaByItem) {
-			if (delta === 0) continue;
-			const itemName = items.find((item) => item._id === itemId)?.name;
+			const item = items.find((entry) => entry._id === update.itemId);
+			const container = containerFor(update.itemId, update.containerId);
 			const signed = delta > 0 ? `+${delta}` : `${delta}`;
-			const message = itemName ? `${signed} ${itemName}` : signed;
+			const pack =
+				container != null
+					? ` × ${container.size} ${packLabel(container.type, container.size, Math.abs(delta))}`
+					: '';
+			const message = item?.name ? `${signed} ${item.name}${pack}` : `${signed}${pack}`;
+
 			if (delta > 0) {
 				toast.success(message);
 			} else {
@@ -164,9 +188,10 @@
 					inventoryId: params.inventory_id as Id<'inventories'>,
 					updates
 				});
-				toastFlushedCounts(updates, baselines);
 				lastFlushedCounts = { ...lastFlushedCounts, ...sent };
+				toastFlushedCounts(updates, baselines);
 			} catch (error) {
+				revertFailedFlush(sent, baselines);
 				toast.error(getErrorMessage(error, 'The tally could not be marked.'));
 				throw error;
 			} finally {
