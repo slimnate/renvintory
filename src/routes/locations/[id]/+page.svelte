@@ -287,11 +287,11 @@
 										>Open</a
 									>
 								{/if}
-								{#if closeInv}
+								{#if intakeInv}
 									<a
-										href={`/count/${closeInv._id}`}
+										href={`/count/${intakeInv._id}`}
 										class="rounded-sm border-2 border-goldleaf/80 leaf py-2.5 text-center font-num text-xs font-bold text-board carved"
-										>Close</a
+										>Intake</a
 									>
 								{/if}
 								{#if spillInv}
@@ -301,11 +301,11 @@
 										>Spill</a
 									>
 								{/if}
-								{#if intakeInv}
+								{#if closeInv}
 									<a
-										href={`/count/${intakeInv._id}`}
+										href={`/count/${closeInv._id}`}
 										class="rounded-sm border-2 border-goldleaf/80 leaf py-2.5 text-center font-num text-xs font-bold text-board carved"
-										>Intake</a
+										>Close</a
 									>
 								{/if}
 							</div>
@@ -315,7 +315,7 @@
 										href={`/reports/${openInv._id}`}
 										class="rounded-sm border-2 border-goldleaf/70 boardface py-2.5 text-center font-num text-[11px] font-bold text-goldleaf carved"
 									>
-										Opening Account
+										Opening Report
 									</a>
 								{/if}
 								{#if closeInv}
@@ -323,7 +323,7 @@
 										href={`/reports/${closeInv._id}`}
 										class="rounded-sm border-2 border-goldleaf/70 boardface py-2.5 text-center font-num text-[11px] font-bold text-goldleaf carved"
 									>
-										Closing Account
+										Closing Report
 									</a>
 								{/if}
 							</div>

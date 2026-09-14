@@ -27,7 +27,13 @@
 					: 'Opening'
 	);
 
-	const pageTitle = $derived(`${location?.name} - ${inventory?.date} - ${typeLabel} Account`);
+	const pageTitle = $derived(
+		`${location?.name} - ${inventory?.date} - ${typeLabel} ${
+			inventory?.inventoryType === 'spill' || inventory?.inventoryType === 'intake'
+				? 'Account'
+				: 'Report'
+		}`
+	);
 </script>
 
 <svelte:head>

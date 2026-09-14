@@ -105,8 +105,8 @@
 		};
 
 		const reportLabels = {
-			open: 'Opening Account',
-			close: 'Closing Account',
+			open: 'Opening Report',
+			close: 'Closing Report',
 			spill: 'Spill Account',
 			intake: 'Intake Account'
 		};
