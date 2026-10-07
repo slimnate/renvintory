@@ -4,6 +4,14 @@
 	import type { Id } from '../../../convex/_generated/dataModel';
 	import { axisLockScroll } from '$lib/actions/axisLockScroll';
 	import { formatCalendarDate } from '$lib/dates';
+	import {
+		GREEN_PAGE_SIZE,
+		YELLOW_PAGE_SIZE,
+		chunk,
+		expandGreenRows,
+		expandYellowRows,
+		sheetTotals
+	} from '$lib/sheetRows';
 	let { params }: { params: { inventory_id: string } } = $props();
 
 	const reportData = useQuery(api.inventories.getReportData, {
@@ -14,6 +22,12 @@
 	const location = $derived(reportData.data?.location ?? null);
 	const totals = $derived(reportData.data?.totals ?? []);
 	const closeReport = $derived(reportData.data?.closeReport ?? null);
+
+	const greenRows = $derived(closeReport ? expandGreenRows(closeReport.rows) : []);
+	const yellowRows = $derived(closeReport ? expandYellowRows(closeReport.rows) : []);
+	const greenPages = $derived(chunk(greenRows, GREEN_PAGE_SIZE));
+	const yellowPages = $derived(chunk(yellowRows, YELLOW_PAGE_SIZE));
+	const dayTotals = $derived(sheetTotals(greenRows));
 
 	const formattedDate = $derived(inventory ? formatCalendarDate(String(inventory.date)) : '');
 
@@ -34,6 +48,10 @@
 				: 'Report'
 		}`
 	);
+
+	function money(value: number): string {
+		return `$${value.toFixed(0)}`;
+	}
 </script>
 
 <svelte:head>
@@ -75,19 +93,19 @@
 		class="-mx-4 max-h-[70vh] overflow-auto rounded-sm border-2 border-goldleaf/70 painted shadow-lg carved sm:-mx-6 lg:-mx-8"
 		use:axisLockScroll
 	>
-		<table class="report-board table-pin-rows table font-num">
+		<table class="table-pin-rows table report-board font-num">
 			<thead class="boardface text-[10px] tracking-wider text-goldleaf uppercase">
 				<tr>
-					<th class="pin-ware boardface sticky top-0 z-30">Ware</th>
-					<th class="boardface sticky top-0 z-20">Price</th>
-					<th class="boardface sticky top-0 z-20">Per vessel</th>
-					<th class="boardface sticky top-0 z-20 text-right">Total</th>
+					<th class="pin-ware sticky top-0 z-30 boardface">Ware</th>
+					<th class="sticky top-0 z-20 boardface">Price</th>
+					<th class="sticky top-0 z-20 boardface">Per vessel</th>
+					<th class="sticky top-0 z-20 boardface text-right">Total</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each totals as itemTotal}
 					<tr>
-						<th class="pin-ware painted z-10 text-left font-medium whitespace-nowrap"
+						<th class="pin-ware z-10 painted text-left font-medium whitespace-nowrap"
 							>{itemTotal.item_name}</th
 						>
 						<td class="whitespace-nowrap">${itemTotal.price.toFixed(0)}</td>
@@ -95,7 +113,7 @@
 							<div class="flex flex-wrap gap-0.5">
 								{#each itemTotal.perContainer as pc}
 									<span
-										class="shrink-0 whitespace-nowrap rounded-sm border border-oak/25 bg-oak/10 px-1 text-[10px] leading-4"
+										class="shrink-0 rounded-sm border border-oak/25 bg-oak/10 px-1 text-[10px] leading-4 whitespace-nowrap"
 										>{pc.count}&times;{pc.size}</span
 									>
 								{/each}
@@ -107,6 +125,18 @@
 			</tbody>
 		</table>
 	</div>
+{/snippet}
+
+{#snippet sheetHeading(title: string)}
+	<h2 class="mb-1 font-display text-sm font-bold tracking-[0.2em] text-goldleaf uppercase">
+		{title}
+	</h2>
+{/snippet}
+
+{#snippet pageLabel(index: number, total: number)}
+	<p class="mb-1.5 font-num text-[10px] tracking-wider text-cream/55 uppercase">
+		Page {index + 1} of {total}
+	</p>
 {/snippet}
 
 <div>
@@ -123,86 +153,131 @@
 	{:else if inventory.inventoryType === 'close'}
 		{@render reportHeader()}
 		{#if closeReport}
-			<div class="mb-4 flex justify-center gap-4">
+			<div class="mb-6 flex justify-center gap-4">
 				<div
 					class="flex h-28 w-24 flex-col items-center justify-start bg-vert pt-4 text-cream ring-1 ring-goldleaf/70 shield"
 				>
 					<span class="font-display text-[9px] font-bold tracking-widest uppercase">Sales</span>
-					<span class="font-num text-2xl font-bold"
-						>${closeReport.totals.totalSales.toFixed(0)}</span
-					>
+					<span class="font-num text-2xl font-bold">{money(dayTotals.totalSales)}</span>
 				</div>
 				<div
 					class="flex h-28 w-24 flex-col items-center justify-start bg-gules pt-4 text-cream ring-1 ring-goldleaf/70 shield"
 				>
 					<span class="font-display text-[9px] font-bold tracking-widest uppercase">Spilt</span>
-					<span class="font-num text-2xl font-bold"
-						>${closeReport.totals.totalSpillage.toFixed(0)}</span
-					>
+					<span class="font-num text-2xl font-bold">{money(dayTotals.totalSpillage)}</span>
 				</div>
 			</div>
-			<p class="mb-2 text-xs text-cream/70 italic">Swipe the board sideways for all columns.</p>
-			<div
-				class="-mx-4 max-h-[70vh] overflow-auto rounded-t-sm border-2 border-b-0 border-goldleaf/70 painted shadow-lg carved sm:-mx-6 lg:-mx-8"
-				use:axisLockScroll
-			>
-				<table class="report-board table-pin-rows table font-num">
-					<thead class="boardface text-[10px] tracking-wider text-goldleaf uppercase">
-						<tr>
-							<th class="pin-ware boardface sticky top-0 z-30">Ware</th>
-							<th class="boardface sticky top-0 z-20">Price</th>
-							<th class="boardface sticky top-0 z-20 text-right">Open</th>
-							<th class="boardface sticky top-0 z-20 text-right">Close</th>
-							<th class="boardface sticky top-0 z-20 text-right">Spill</th>
-							<th class="boardface sticky top-0 z-20 text-right">Intake</th>
-							<th class="boardface sticky top-0 z-20 text-right">Total</th>
-							<th class="boardface sticky top-0 z-20 text-right">Used</th>
-							<th class="boardface sticky top-0 z-20 text-right">Sold</th>
-							<th class="boardface sticky top-0 z-20 text-right">Spilt $</th>
-							<th class="boardface sticky top-0 z-20 text-right">Sales</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each closeReport.rows as row}
-							<tr>
-								<th class="pin-ware painted z-10 text-left font-medium whitespace-nowrap"
-									>{row.name}</th
+
+			<section class="mb-8">
+				{@render sheetHeading('Daily Inventory Record')}
+				<p class="mb-3 text-xs text-cream/70 italic">Swipe the board sideways for all columns.</p>
+				{#each greenPages as page, pageIndex (pageIndex)}
+					<div class="mb-4 last:mb-0">
+						{@render pageLabel(pageIndex, greenPages.length)}
+						<div
+							class="-mx-4 overflow-auto rounded-sm border-2 border-goldleaf/70 painted shadow-lg carved sm:-mx-6 lg:-mx-8"
+							use:axisLockScroll
+						>
+							<table class="table-pin-rows table report-board font-num">
+								<thead class="boardface text-[10px] tracking-wider text-goldleaf uppercase">
+									<tr>
+										<th class="pin-ware sticky top-0 z-30 boardface">Ware</th>
+										<th class="sticky top-0 z-20 boardface text-right">Open</th>
+										<th class="sticky top-0 z-20 boardface text-right">Intake</th>
+										<th class="sticky top-0 z-20 boardface text-right">Total</th>
+										<th class="sticky top-0 z-20 boardface text-right">Closing</th>
+										<th class="sticky top-0 z-20 boardface text-right">Used</th>
+										<th class="sticky top-0 z-20 boardface text-right">Spill</th>
+										<th class="sticky top-0 z-20 boardface text-right">Sold</th>
+										<th class="sticky top-0 z-20 boardface text-right">Price</th>
+										<th class="sticky top-0 z-20 boardface text-right">Sales</th>
+									</tr>
+								</thead>
+								<tbody>
+									{#each page as row (row.name)}
+										<tr>
+											<th class="pin-ware z-10 painted text-left font-medium whitespace-nowrap"
+												>{row.name}</th
+											>
+											<td class="text-right">{row.openCount}</td>
+											<td class="text-right">{row.intakeCount}</td>
+											<td class="text-right">{row.openPlusIntakeCount}</td>
+											<td class="text-right">{row.closeCount}</td>
+											<td class="text-right">{row.totalUsed}</td>
+											<td class="text-right">{row.spillCount}</td>
+											<td class="text-right">{row.soldCount}</td>
+											<td class="text-right">{money(row.price)}</td>
+											<td class="text-right">{money(row.sales)}</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				{/each}
+			</section>
+
+			<section class="mb-4">
+				{@render sheetHeading('Booth Daily Summary')}
+				<p class="mb-3 text-xs text-cream/70 italic">Swipe the board sideways for all columns.</p>
+				{#each yellowPages as page, pageIndex (pageIndex)}
+					{@const pageTotals = sheetTotals(page)}
+					<div class="mb-4 last:mb-0">
+						{@render pageLabel(pageIndex, yellowPages.length)}
+						<div
+							class="-mx-4 overflow-auto rounded-t-sm border-2 border-b-0 border-goldleaf/70 painted shadow-lg carved sm:-mx-6 lg:-mx-8"
+							use:axisLockScroll
+						>
+							<table class="table-pin-rows table report-board font-num">
+								<thead class="boardface text-[10px] tracking-wider text-goldleaf uppercase">
+									<tr>
+										<th class="pin-ware sticky top-0 z-30 boardface">Ware</th>
+										<th class="sticky top-0 z-20 boardface text-right">Used</th>
+										<th class="sticky top-0 z-20 boardface text-right">Spilled</th>
+										<th class="sticky top-0 z-20 boardface text-right">Sold</th>
+										<th class="sticky top-0 z-20 boardface text-right">Price</th>
+										<th class="sticky top-0 z-20 boardface text-right">Sales</th>
+									</tr>
+								</thead>
+								<tbody>
+									{#each page as row (row.name)}
+										<tr>
+											<th class="pin-ware z-10 painted text-left font-medium whitespace-nowrap"
+												>{row.name}</th
+											>
+											<td class="text-right">{row.totalUsed ?? ''}</td>
+											<td class="text-right">{row.spillCount ?? ''}</td>
+											<td class="text-right">{row.soldCount ?? ''}</td>
+											<td class="text-right">{money(row.price)}</td>
+											<td class="text-right">{row.sales === null ? '' : money(row.sales)}</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						</div>
+						<div
+							class="-mx-4 flex items-center justify-between gap-4 rounded-b-sm border-2 border-goldleaf/70 boardface px-3 py-2 carved sm:-mx-6 lg:-mx-8"
+						>
+							<div class="flex flex-col">
+								<span class="font-display text-[10px] tracking-widest text-goldleaf uppercase"
+									>Total sales</span
 								>
-								<td>${row.price.toFixed(0)}</td>
-								<td class="text-right">{row.openCount}</td>
-								<td class="text-right">{row.closeCount}</td>
-								<td class="text-right">{row.spillCount}</td>
-								<td class="text-right">{row.intakeCount}</td>
-								<td class="text-right">{row.openPlusIntakeCount}</td>
-								<td class="text-right">{row.totalUsed}</td>
-								<td class="text-right">{row.soldCount}</td>
-								<td class="text-right">${row.spilledValue.toFixed(0)}</td>
-								<td class="text-right">${row.sales.toFixed(0)}</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			</div>
-			<div
-				class="boardface carved -mx-4 flex items-center justify-between gap-4 rounded-b-sm border-2 border-goldleaf/70 px-3 py-2 sm:-mx-6 lg:-mx-8"
-			>
-				<div class="flex flex-col">
-					<span class="font-display text-[10px] tracking-widest text-goldleaf uppercase"
-						>Sum</span
-					>
-					<span class="font-num text-lg font-bold text-cream"
-						>${closeReport.totals.totalSales.toFixed(0)}</span
-					>
-				</div>
-				<div class="flex flex-col text-right">
-					<span class="font-display text-[10px] tracking-widest text-goldleaf uppercase"
-						>Spilt</span
-					>
-					<span class="font-num text-lg font-bold text-cream"
-						>${closeReport.totals.totalSpillage.toFixed(0)}</span
-					>
-				</div>
-			</div>
+								<span class="font-num text-lg font-bold text-cream"
+									>{money(pageTotals.totalSales)}</span
+								>
+							</div>
+							<div class="flex flex-col text-right">
+								<span class="font-display text-[10px] tracking-widest text-goldleaf uppercase"
+									>Spoilage total</span
+								>
+								<span class="font-num text-lg font-bold text-cream"
+									>{money(pageTotals.totalSpillage)}</span
+								>
+							</div>
+						</div>
+					</div>
+				{/each}
+			</section>
 		{:else}
 			<p class="text-cream/70">No reckoning was recorded for this day.</p>
 		{/if}
